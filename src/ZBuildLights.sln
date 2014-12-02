@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZBuildLightsConsole", "ZBui
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZWaveControl", "ZWaveControl\ZWaveControl.csproj", "{CFA3620A-DF75-4B1B-B039-C02E38693D91}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TEsts", "TEsts", "{FD3C53D5-91DD-4584-A92D-F170D0A551EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{3CF89D49-88AC-4DF7-9F19-0BAE61C77376}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +25,15 @@ Global
 		{CFA3620A-DF75-4B1B-B039-C02E38693D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFA3620A-DF75-4B1B-B039-C02E38693D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFA3620A-DF75-4B1B-B039-C02E38693D91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CF89D49-88AC-4DF7-9F19-0BAE61C77376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CF89D49-88AC-4DF7-9F19-0BAE61C77376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CF89D49-88AC-4DF7-9F19-0BAE61C77376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CF89D49-88AC-4DF7-9F19-0BAE61C77376}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3CF89D49-88AC-4DF7-9F19-0BAE61C77376} = {FD3C53D5-91DD-4584-A92D-F170D0A551EF}
 	EndGlobalSection
 EndGlobal
