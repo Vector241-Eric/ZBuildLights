@@ -11,16 +11,16 @@ namespace ZBuildLights.Web.Controllers
         {
             var project1
                 = new Project {StatusMode = StatusMode.Success, Name = "My Successful Project"}
-                    .AddLight(new Light(LightColor.Green, LightStatus.On) {Description = "Project 1 Green"})
-                    .AddLight(new Light(LightColor.Yellow, LightStatus.Off) {Description = "Project 1 Yellow"})
-                    .AddLight(new Light(LightColor.Red, LightStatus.Off) {Description = "Project 1 Red"})
+                    .AddLight(new SwitchableLight(LightColor.Green, SwitchState.On) {Description = "Project 1 Green"})
+                    .AddLight(new SwitchableLight(LightColor.Yellow, SwitchState.Off) {Description = "Project 1 Yellow"})
+                    .AddLight(new SwitchableLight(LightColor.Red, SwitchState.Off) {Description = "Project 1 Red"})
                 ;
 
             var project2
                 = new Project {StatusMode = StatusMode.BrokenAndBuilding, Name = "Trying To Fix This One"}
-                    .AddLight(new Light(LightColor.Green, LightStatus.Off) {Description = "Project 2 Green"})
-                    .AddLight(new Light(LightColor.Yellow, LightStatus.On) {Description = "Project 2 Yellow"})
-                    .AddLight(new Light(LightColor.Red, LightStatus.On) {Description = "Project 2 Red"})
+                    .AddLight(new SwitchableLight(LightColor.Green, SwitchState.Off) {Description = "Project 2 Green"})
+                    .AddLight(new SwitchableLight(LightColor.Yellow, SwitchState.On) {Description = "Project 2 Yellow"})
+                    .AddLight(new SwitchableLight(LightColor.Red, SwitchState.On) {Description = "Project 2 Red"})
                 ;
 
             var model = new ViewModel

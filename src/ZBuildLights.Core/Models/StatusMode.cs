@@ -16,14 +16,14 @@ namespace ZBuildLights.Core.Models
         private StatusMode(string displayName, params LightColor[] lights)
             : base(displayName, displayName)
         {
-            LightConfiguration = new LightConfiguration
+            StatusLightConfiguration = new StatusLightConfiguration
             {
-                Green = lights.Contains(LightColor.Green) ? LightStatus.On : LightStatus.Off,
-                Yellow = lights.Contains(LightColor.Yellow) ? LightStatus.On : LightStatus.Off,
-                Red = lights.Contains(LightColor.Red) ? LightStatus.On : LightStatus.Off
+                GreenSwitchState = lights.Contains(LightColor.Green) ? SwitchState.On : SwitchState.Off,
+                YellowSwitchState = lights.Contains(LightColor.Yellow) ? SwitchState.On : SwitchState.Off,
+                RedSwitchState = lights.Contains(LightColor.Red) ? SwitchState.On : SwitchState.Off
             };
         }
 
-        public LightConfiguration LightConfiguration { get; private set; }
+        public StatusLightConfiguration StatusLightConfiguration { get; private set; }
     }
 }

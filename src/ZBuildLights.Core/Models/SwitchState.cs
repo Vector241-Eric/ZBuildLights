@@ -1,8 +1,9 @@
 ﻿namespace BuildLightControl
 {
-    public enum LightStatus
+    public enum SwitchState
     {
         On,
-        Off
+        Off,
+        Unknown
     }
 }

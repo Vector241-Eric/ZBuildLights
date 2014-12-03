@@ -6,19 +6,25 @@ namespace ZBuildLights.Core.Models
 {
     public class Project
     {
-        private readonly List<Light> _lights = new List<Light>();
+        private readonly List<SwitchableLight> _lights = new List<SwitchableLight>();
         public string Name { get; set; }
         public StatusMode StatusMode { get; set; }
 
-        public Light[] Lights
+        public SwitchableLight[] SwitchableLights
         {
             get { return _lights.OrderBy(x => x.Color.DisplayOrder).ToArray(); }
         }
 
-        public Project AddLight(Light light)
+        public Project AddLight(SwitchableLight switchableLight)
         {
-            _lights.Add(light);
+            _lights.Add(switchableLight);
             return this;
         }
+    }
+
+    public class Light
+    {
+        public SwitchableLight SwitchableLight { get; set; }
+        public string Description { get; set; }
     }
 }

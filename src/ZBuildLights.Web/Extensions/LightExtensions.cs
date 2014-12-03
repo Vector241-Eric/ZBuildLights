@@ -5,21 +5,21 @@ namespace ZBuildLights.Web.Extensions
 {
     public static class LightExtensions
     {
-        public static string DisplayClass(this Light light)
+        public static string DisplayClass(this SwitchableLight switchableLight)
         {
-            if (light.Status == LightStatus.Off)
+            if (switchableLight.SwitchState == SwitchState.Off)
                 return string.Empty;
 
-            if (light.Color.Equals(LightColor.Green))
+            if (switchableLight.Color.Equals(LightColor.Green))
                 return "success";
 
-            if (light.Color.Equals(LightColor.Yellow))
+            if (switchableLight.Color.Equals(LightColor.Yellow))
                 return "warning";
 
-            if (light.Color.Equals(LightColor.Red))
+            if (switchableLight.Color.Equals(LightColor.Red))
                 return "danger";
 
-            throw new Exception(string.Format("light color {0} is not handled.", light.Color.DisplayName));
+            throw new Exception(string.Format("light color {0} is not handled.", switchableLight.Color.DisplayName));
         }
     }
 }
