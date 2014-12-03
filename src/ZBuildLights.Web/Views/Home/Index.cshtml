@@ -1,0 +1,50 @@
+﻿@using ZBuildLights.Core.Models
+@using ZBuildLights.Web.Extensions
+@model ZBuildLights.Web.Models.Home.ViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+
+    var projects = Model.Projects;
+}
+
+<div class="row">
+    <h1>Project Build Status</h1>
+    <p class="lead">View project and light status below</p>
+</div>
+
+<div class="row">
+    @{ var isFirst = true; }
+    @foreach (Project project in projects)
+    {
+        if (isFirst)
+        {
+            isFirst = false;
+        }
+        else
+        {
+            <hr/>
+        }
+        <h6>@project.Name</h6>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Color</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var light in project.Lights)
+                {
+                    <tr>
+                        <td>@light.Description</td>
+                        <td>@light.Color</td>
+                        <td class="@light.DisplayClass()" style="width: 20%"></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <p>@project.StatusMode.DisplayName</p>
+    }
+</div>
