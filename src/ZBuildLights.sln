@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZBuildLights.Web", "ZBuildL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZBuildLights.Core", "ZBuildLights.Core\ZBuildLights.Core.csproj", "{67332DF2-4ACD-4CA3-B39B-86C93A7D738C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97514507-3456-4864-B011-F0C64032C012}"
+	ProjectSection(SolutionItems) = preProject
+		..\Backlog.md = ..\Backlog.md
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
