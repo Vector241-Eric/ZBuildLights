@@ -5,26 +5,23 @@ namespace ZBuildLights.Core.Models
 {
     public class StatusLightConfiguration
     {
-        public SwitchState GreenSwitchState { get; set; }
-        public SwitchState YellowSwitchState { get; set; }
-        public SwitchState RedSwitchState { get; set; }
+        public SwitchState GreenState { get; set; }
+        public SwitchState YellowState { get; set; }
+        public SwitchState RedState { get; set; }
 
-        public SwitchableLight[] SwitchableLights
+        private LightSetting[] AsSettings()
         {
-            get
+            return new[]
             {
-                return new[]
-                {
-                    new SwitchableLight(LightColor.Green).SetState(GreenSwitchState),
-                    new SwitchableLight(LightColor.Yellow).SetState(YellowSwitchState),
-                    new SwitchableLight(LightColor.Red).SetState(RedSwitchState)
-                };
-            }
+                new LightSetting(LightColor.Green, GreenState),
+                new LightSetting(LightColor.Yellow, YellowState),
+                new LightSetting(LightColor.Red, RedState)
+            };
         }
 
         public override string ToString()
         {
-            return string.Join(", ", SwitchableLights.Select(x => x.ToString()));
+            return string.Join(", ", AsSettings().Select(x => x.ToString()));
         }
     }
 }

@@ -18,9 +18,9 @@ namespace ZBuildLights.Core.Models
         {
             StatusLightConfiguration = new StatusLightConfiguration
             {
-                GreenSwitchState = lights.Contains(LightColor.Green) ? SwitchState.On : SwitchState.Off,
-                YellowSwitchState = lights.Contains(LightColor.Yellow) ? SwitchState.On : SwitchState.Off,
-                RedSwitchState = lights.Contains(LightColor.Red) ? SwitchState.On : SwitchState.Off
+                GreenState = lights.Contains(LightColor.Green) ? SwitchState.On : SwitchState.Off,
+                YellowState = lights.Contains(LightColor.Yellow) ? SwitchState.On : SwitchState.Off,
+                RedState = lights.Contains(LightColor.Red) ? SwitchState.On : SwitchState.Off
             };
         }
 

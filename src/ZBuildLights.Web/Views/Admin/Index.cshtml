@@ -1,0 +1,123 @@
+﻿@using BuildLightControl
+@using ZBuildLights.Web.Extensions
+@model dynamic
+
+@{
+    ViewBag.Title = "ZBuildLights Admin";
+}
+
+<h2>Admin</h2>
+<p class="lead">Modify existing projects or add new lights</p>
+
+<h3>Core</h3>
+<table class="table table-hover">
+    <thead>
+        <tr><td colspan="3" class="text-center lead">Snp Square</td></tr>
+        <tr>
+            <th>Color</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="@LightColor.Green.DisplayClass()">Green</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+        <tr>
+            <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+        <tr>
+            <td class="@LightColor.Red.DisplayClass()">Red</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-hover">
+    <thead>
+        <tr><td colspan="3" class="text-center lead">Snp Near Matt</td></tr>
+        <tr>
+            <th>Color</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="@LightColor.Green.DisplayClass()">Green</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+        <tr>
+            <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+        <tr>
+            <td class="@LightColor.Red.DisplayClass()">Red</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+    </tbody>
+</table>
+<hr />
+<h3>Apps</h3>
+<table class="table table-hover">
+    <thead>
+        <tr><td colspan="3" class="text-center lead">Apps Near Window</td></tr>
+        <tr>
+            <th>Color</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="@LightColor.Green.DisplayClass()">Green</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+        <tr>
+            <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+        <tr>
+            <td class="@LightColor.Red.DisplayClass()">Red</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+    </tbody>
+</table>
+<hr/>
+<h3>Unassigned</h3>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Color</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="@LightColor.Green.DisplayClass()">Green</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+        <tr>
+            <td class="@LightColor.Unknown.DisplayClass()">Unknown</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+        <tr>
+            <td class="@LightColor.Unknown.DisplayClass()">Unknown</td>
+            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+            <td><a href="javascript:void(0)">Edit</a></td>
+        </tr>
+    </tbody>
+</table>

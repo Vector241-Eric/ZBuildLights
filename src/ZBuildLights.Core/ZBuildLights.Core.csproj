@@ -40,19 +40,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreMarkerType.cs" />
     <Compile Include="Headspring\Enumeration.cs" />
-    <Compile Include="Models\SwitchableLight.cs" />
+    <Compile Include="Models\Light.cs" />
+    <Compile Include="Models\LightSetting.cs" />
+    <Compile Include="Models\LightSwitch.cs" />
     <Compile Include="Models\LightColor.cs" />
     <Compile Include="Models\StatusLightConfiguration.cs" />
     <Compile Include="Models\SwitchState.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\StatusMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IProjectProvider.cs" />
+    <Compile Include="Services\ProjectProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Headspring\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Models\ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

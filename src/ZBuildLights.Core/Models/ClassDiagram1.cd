@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ZBuildLights.Core.Models.StatusLightConfiguration">
+    <Position X="8" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAMAAAAAAAAAAgAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\StatusLightConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZBuildLights.Core.Models.StatusMode">
+    <Position X="12.5" Y="5.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAACAAAEAAAABAAAAgAAACAAAIAAAAAAAAA=</HashCode>
+      <FileName>Models\StatusMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BuildLightControl.LightSwitch">
+    <Position X="6.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAEIAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Models\LightSwitch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZBuildLights.Core.Models.Project">
+    <Position X="3.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAgAQgAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Project.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZBuildLights.Core.Models.Light">
+    <Position X="5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Light.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="BuildLightControl.SwitchState">
+    <Position X="10.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJA=</HashCode>
+      <FileName>Models\SwitchState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

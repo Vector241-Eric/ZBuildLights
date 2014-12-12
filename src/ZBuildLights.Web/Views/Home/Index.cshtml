@@ -11,6 +11,7 @@
 <div class="row">
     <h1>Project Build Status</h1>
     <p class="lead">View project and light status below</p>
+    <p>Last status update: @DateTime.Now.ToString("g")</p>
 </div>
 
 <div class="row">
@@ -35,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var light in project.SwitchableLights)
+                @foreach (var light in project.Lights)
                 {
                     <tr>
                         <td>@light.Description</td>

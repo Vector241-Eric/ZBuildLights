@@ -4,19 +4,21 @@ using System.Web.Script.Serialization;
 namespace BuildLightControl
 {
     [Serializable]
-    public class SwitchableLight
+    public class LightSwitch
     {
-        public LightColor Color { get; private set; }
         [ScriptIgnore]
         public SwitchState SwitchState { get; private set; }
+        public byte Id { get; private set; }
+        public uint HomeId { get; private set; }
 
-        public SwitchableLight(LightColor color)
+        public LightSwitch(uint homeId, byte id)
         {
-            Color = color;
+            HomeId = homeId;
+            Id = id;
             SwitchState = SwitchState.Unknown;
         }
 
-        public SwitchableLight SetState(SwitchState state)
+        public LightSwitch SetState(SwitchState state)
         {
             SwitchState = state;
             return this;
@@ -24,7 +26,7 @@ namespace BuildLightControl
 
         public override string ToString()
         {
-            return string.Format("{0}:{1}", Color, SwitchState);
+            return string.Format("Home: {0} Id:{1}, State: {2}", HomeId, Id, SwitchState);
         }
     }
 }

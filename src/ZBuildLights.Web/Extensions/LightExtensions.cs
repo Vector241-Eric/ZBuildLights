@@ -1,25 +1,33 @@
 ﻿using System;
 using BuildLightControl;
+using ZBuildLights.Core.Models;
 
 namespace ZBuildLights.Web.Extensions
 {
     public static class LightExtensions
     {
-        public static string DisplayClass(this SwitchableLight switchableLight)
+        public static string DisplayClass(this Light light)
         {
-            if (switchableLight.SwitchState == SwitchState.Off)
+            if (light.LightSwitch.SwitchState == SwitchState.Off)
                 return string.Empty;
+            return light.Color.DisplayClass();
+        }
 
-            if (switchableLight.Color.Equals(LightColor.Green))
+        public static string DisplayClass(this LightColor color)
+        {
+            if (color.Equals(LightColor.Green))
                 return "success";
 
-            if (switchableLight.Color.Equals(LightColor.Yellow))
+            if (color.Equals(LightColor.Yellow))
                 return "warning";
 
-            if (switchableLight.Color.Equals(LightColor.Red))
+            if (color.Equals(LightColor.Red))
                 return "danger";
 
-            throw new Exception(string.Format("light color {0} is not handled.", switchableLight.Color.DisplayName));
+            if (color.Equals(LightColor.Unknown))
+                return string.Empty;
+
+            throw new Exception(string.Format("light color {0} is not handled.", color.DisplayName));
         }
     }
 }
