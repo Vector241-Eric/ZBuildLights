@@ -6,172 +6,213 @@
     ViewBag.Title = "ZBuildLights Admin";
 }
 
-<h2>Admin</h2>
-<p class="lead">Modify existing projects or add new lights</p>
-<div class="row text-right" style="padding-right: 15px; padding-bottom: 15px;"><a class="btn btn-default" href="javascript:void(0)"><span class="glyphicon glyphicon-plus"></span> Add Project</a></div>
-<div class="panel-group" id="projects-panel" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="panel-heading-core">
-            <h4>
-                <a data-toggle="collapse"
-                   data-parent="projects-panel"
-                   href="#collapse-core"
-                   aria-expanded="true"
-                   aria-controls="collapse-core"
-                   class="collapsed">
-                    Core
-                </a>
-            </h4>
-        </div>
-        <div id="collapse-core" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-core">
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr><td colspan="3" class="text-center lead">Snp Square</td></tr>
-                        <tr>
-                            <th>Color</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="@LightColor.Green.DisplayClass()">Green</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <td class="@LightColor.Red.DisplayClass()">Red</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table table-hover">
-                    <thead>
-                        <tr><td colspan="3" class="text-center lead">Snp Near Matt</td></tr>
-                        <tr>
-                            <th>Color</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="@LightColor.Green.DisplayClass()">Green</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <td class="@LightColor.Red.DisplayClass()">Red</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+@section scripts {
+    <script>
+        $(function() {
+            $('.collapse').on('show.bs.collapse', function() {
+                var headingId = $(this).attr('data-panelheading');
+                $('#' + headingId + ' .heading-icon').removeClass('fa-plus-circle').addClass('fa-minus-circle');
+            });
+            $('.collapse').on('hide.bs.collapse', function() {
+                var headingId = $(this).attr('data-panelheading');
+                $('#' + headingId + ' .heading-icon').removeClass('fa-minus-circle').addClass('fa-plus-circle');
+            });
+        });
+    </script>
+}
+<div class="row">
+    <h2>Admin</h2>
+    <p class="lead">Modify existing projects or add new lights</p>
+</div>
+<div class="row">
+    <div class="panel-group" id="projects-panel" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="panel-heading-core">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>
+                            <a data-toggle="collapse"
+                               data-parent="projects-panel"
+                               href="#collapse-core"
+                               aria-expanded="true"
+                               aria-controls="collapse-core"
+                               class="collapsed">
+                                <i class="fa fa-plus-circle heading-icon"></i> Core
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a class="btn btn-default" href="javascript:void(0)"><i class="fa fa-pencil"></i> Edit Project</a>
+                    </div>
+                </div>
+            </div>
+            <div id="collapse-core" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-core" data-panelheading="panel-heading-core">
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr><td colspan="3" class="text-center lead">Snp Square</td></tr>
+                            <tr>
+                                <th>Color</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="@LightColor.Green.DisplayClass()">Green</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td class="@LightColor.Red.DisplayClass()">Red</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr><td colspan="3" class="text-center lead">Snp Near Matt</td></tr>
+                            <tr>
+                                <th>Color</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="@LightColor.Green.DisplayClass()">Green</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td class="@LightColor.Red.DisplayClass()">Red</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row text-right" style="padding-right: 15px; padding-bottom: 15px;">
+                        <a class="btn btn-default" href="javascript:void(0)"><i class="fa fa-plus"></i> Add Group</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="apps-panel-heading">
-            <h4>
-                <a data-toggle="collapse"
-                   data-parent="projects-panel"
-                   href="#collapse-apps"
-                   aria-expanded="true"
-                   aria-controls="collapse-apps"
-                   class="collapsed">
-                    Apps
-                </a>
-            </h4>
-        </div>
-        <div id="collapse-apps" class="panel-collapse collapse" role="tabpanel" aria-labelledby="apps-panel-heading">
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr><td colspan="3" class="text-center lead">Apps Near Window</td></tr>
-                        <tr>
-                            <th>Color</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="@LightColor.Green.DisplayClass()">Green</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <td class="@LightColor.Red.DisplayClass()">Red</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="panel-heading-apps">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>
+                            <a data-toggle="collapse"
+                               data-parent="projects-panel"
+                               href="#collapse-apps"
+                               aria-expanded="true"
+                               aria-controls="collapse-apps"
+                               class="collapsed">
+                                <i class="fa fa-plus-circle heading-icon"></i> Apps
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a class="btn btn-default" href="javascript:void(0)"><i class="fa fa-pencil"></i> Edit Project</a>
+                    </div>
+                </div>
+            </div>
+            <div id="collapse-apps" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-apps" data-panelheading="panel-heading-apps">
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr><td colspan="3" class="text-center lead">Apps Near Window</td></tr>
+                            <tr>
+                                <th>Color</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="@LightColor.Green.DisplayClass()">Green</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td class="@LightColor.Red.DisplayClass()">Red</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="panel-heading-unassigned">
-            <h4>
-                <a 
-                    data-toggle="collapse" 
-                    data-parent="projects-panel" 
-                    href="#collapse-unassigned" 
-                    aria-expanded="true" 
-                    aria-controls="collapse-unassigned"
-                    class="collapsed"
-                   >
-                    Unassigned
-                </a>
-            </h4>
-        </div>
-        <div id="collapse-unassigned" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-unassigned">
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Color</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="@LightColor.Green.DisplayClass()">Green</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <td class="@LightColor.Unknown.DisplayClass()">Unknown</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                        <tr>
-                            <td class="@LightColor.Unknown.DisplayClass()">Unknown</td>
-                            <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                            <td><a href="javascript:void(0)">Edit</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="panel-heading-unassigned">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>
+                            <a data-toggle="collapse"
+                               data-parent="projects-panel"
+                               href="#collapse-unassigned"
+                               aria-expanded="true"
+                               aria-controls="collapse-unassigned"
+                               class="collapsed">
+                                <i class="fa fa-plus-circle heading-icon"></i> Unassigned
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a class="btn btn-default" href="javascript:void(0)"><i class="fa fa-pencil"></i> Edit Project</a>
+                    </div>
+                </div>
+            </div>
+            <div id="collapse-unassigned" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-unassigned" data-panelheading="panel-heading-unassigned">
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Color</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="@LightColor.Green.DisplayClass()">Green</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td class="@LightColor.Unknown.DisplayClass()">Unknown</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                            <tr>
+                                <td class="@LightColor.Unknown.DisplayClass()">Unknown</td>
+                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
+                                <td><a href="javascript:void(0)">Edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div class="row text-right" style="padding-right: 15px; padding-bottom: 10px;"><a class="btn btn-default" href="javascript:void(0)"><span class="glyphicon glyphicon-plus"></span> Add Project</a></div>
+<div class="row text-right" style="padding-bottom: 15px;">
+    <a class="btn btn-default" href="javascript:void(0)"><i class="fa fa-plus"></i> Add Project</a>
+</div>

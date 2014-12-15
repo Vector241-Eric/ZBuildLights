@@ -11,3 +11,5 @@ Admin Comp
 * Add Project
 * Add Group
 
+* Project names must be unique
+
