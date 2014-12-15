@@ -1,9 +1,11 @@
 ﻿@using BuildLightControl
 @using ZBuildLights.Web.Extensions
-@model dynamic
+@model ZBuildLights.Web.Models.Admin.AdminViewModel
 
 @{
     ViewBag.Title = "ZBuildLights Admin";
+    var projects = Model.Projects;
+    var unassigned = Model.Unassigned;
 }
 
 @section scripts {
@@ -60,152 +62,63 @@
 </div>
 <div class="row">
     <div class="panel-group" id="projects-panel" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="panel-heading-core">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h4>
-                            <a data-toggle="collapse"
-                               data-parent="projects-panel"
-                               href="#collapse-core"
-                               aria-expanded="true"
-                               aria-controls="collapse-core"
-                               class="collapsed">
-                                <i class="fa fa-plus-circle heading-icon"></i> Core
-                            </a>
-                        </h4>
+        @foreach (var project in projects)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="@project.HeaderId">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>
+                                <a data-toggle="collapse"
+                                   data-parent="projects-panel"
+                                   href="@project.PanelId.ToJqueryId()"
+                                   aria-expanded="true"
+                                   aria-controls="@project.PanelId"
+                                   class="collapsed">
+                                    <i class="fa fa-plus-circle heading-icon"></i> @project.Name
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button class="btn btn-default"><i class="fa fa-pencil"></i></button>
+                        </div>
                     </div>
-                    <div class="col-md-6 text-right">
-                        <button class="btn btn-default"><i class="fa fa-pencil"></i></button>
+                </div>
+                <div id="@project.PanelId" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@project.HeaderId" data-panelheading="@project.HeaderId">
+                    <div class="panel-body">
+                        @foreach(var group in project.Groups)
+                        { 
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <td colspan="2" class="lead">@group.Name</td>
+                                        <td class="lead text-right"><button class="btn btn-default"><i class="fa fa-pencil"></i></button></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Color</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var light in group.Lights)
+                                    {
+                                        <tr>
+                                            <td class="@light.Color.DisplayClass()">@light.Color.DisplayName</td>
+                                            <td><a href="javascript:void(0)">Toggle Status (@light.SwitchState.ToString())</a></td>
+                                            <td><a href="javascript:void(0)">Edit</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        <div class="row text-right" style="padding-right: 15px; padding-bottom: 15px;">
+                            <button class="btn btn-default"><i class="fa fa-plus"></i> Add Group</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="collapse-core" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-core" data-panelheading="panel-heading-core">
-                <div class="panel-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <td colspan="2" class="lead">Snp Square</td>
-                                <td class="lead text-right"><button class="btn btn-default"><i class="fa fa-pencil"></i></button></td>
-                            </tr>
-                            <tr>
-                                <th>Color</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="@LightColor.Green.DisplayClass()">Green</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td class="@LightColor.Red.DisplayClass()">Red</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <td colspan="2" class="lead">Snp Near Matt</td>
-                                <td class="lead text-right"><button class="btn btn-default"><i class="fa fa-pencil"></i></button></td>
-                            </tr>
-                            <tr>
-                                <th>Color</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="@LightColor.Green.DisplayClass()">Green</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td class="@LightColor.Red.DisplayClass()">Red</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="row text-right" style="padding-right: 15px; padding-bottom: 15px;">
-                        <button class="btn btn-default"><i class="fa fa-plus"></i> Add Group</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="panel-heading-apps">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h4>
-                            <a data-toggle="collapse"
-                               data-parent="projects-panel"
-                               href="#collapse-apps"
-                               aria-expanded="true"
-                               aria-controls="collapse-apps"
-                               class="collapsed">
-                                <i class="fa fa-plus-circle heading-icon"></i> Apps
-                            </a>
-                        </h4>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <button class="btn btn-default"><i class="fa fa-pencil"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div id="collapse-apps" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-apps" data-panelheading="panel-heading-apps">
-                <div class="panel-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <td colspan="2" class="lead">Apps Near Window</td>
-                                <td class="lead text-right"><button class="btn btn-default"><i class="fa fa-pencil"></i></button></td>
-                            </tr>
-                            <tr>
-                                <th>Color</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="@LightColor.Green.DisplayClass()">Green</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td class="@LightColor.Yellow.DisplayClass()">Yellow</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td class="@LightColor.Red.DisplayClass()">Red</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="row text-right" style="padding-right: 15px; padding-bottom: 15px;">
-                        <button class="btn btn-default"><i class="fa fa-plus"></i> Add Group</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        }
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="panel-heading-unassigned">
                 <div class="row">
@@ -217,7 +130,7 @@
                                aria-expanded="true"
                                aria-controls="collapse-unassigned"
                                class="collapsed">
-                                <i class="fa fa-plus-circle heading-icon"></i> Unassigned
+                                <i class="fa fa-plus-circle heading-icon"></i> @unassigned.Name
                             </a>
                         </h4>
                     </div>
@@ -237,21 +150,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="@LightColor.Green.DisplayClass()">Green</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td class="@LightColor.Unknown.DisplayClass()">Unknown</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
-                            <tr>
-                                <td class="@LightColor.Unknown.DisplayClass()">Unknown</td>
-                                <td><a href="javascript:void(0)">Toggle Status (On)</a></td>
-                                <td><a href="javascript:void(0)">Edit</a></td>
-                            </tr>
+                            @foreach (var light in unassigned.Lights)
+                            {
+                                <tr>
+                                    <td class="@light.Color.DisplayClass()">@light.Color.DisplayName</td>
+                                    <td><a href="javascript:void(0)">Toggle Status (@light.SwitchState.ToString())</a></td>
+                                    <td><a href="javascript:void(0)">Edit</a></td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

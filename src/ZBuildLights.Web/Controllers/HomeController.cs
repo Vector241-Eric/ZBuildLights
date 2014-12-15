@@ -6,16 +6,16 @@ namespace ZBuildLights.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IProjectProvider _projectProvider;
+        private readonly IStatusProvider _statusProvider;
 
-        public HomeController(IProjectProvider projectProvider)
+        public HomeController(IStatusProvider statusProvider)
         {
-            _projectProvider = projectProvider;
+            _statusProvider = statusProvider;
         }
 
         public ActionResult Index()
         {
-            var model = new ViewModel {Projects = _projectProvider.GetCurrentProjects()};
+            var model = new ViewModel {Projects = _statusProvider.GetCurrentProjects()};
             return View(model);
         }
 

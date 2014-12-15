@@ -30,6 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Should">
+      <HintPath>..\packages\Should.1.1.20\lib\Should.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,6 +49,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZBuildLights.Web\Services\ViewModelProviders\AdminViewModelProviderTests.cs" />
+    <Compile Include="_Bases\TestBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZBuildLights.Core\ZBuildLights.Core.csproj">
+      <Project>{67332df2-4acd-4ca3-b39b-86c93a7d738c}</Project>
+      <Name>ZBuildLights.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZBuildLights.Web\ZBuildLights.Web.csproj">
+      <Project>{67cd3bfd-169d-43ab-8660-ffc466a25a8f}</Project>
+      <Name>ZBuildLights.Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

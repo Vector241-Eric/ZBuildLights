@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using ZBuildLights.Core.Enumerations;
 
 namespace ZBuildLights.Core.Models
 {
@@ -8,6 +10,7 @@ namespace ZBuildLights.Core.Models
 
         public string Name { get; set; }
         public StatusMode StatusMode { get; set; }
+        public Guid Id { get; internal set; }
 
         public LightGroup[] Groups
         {

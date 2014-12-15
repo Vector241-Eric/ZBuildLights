@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using BuildLightControl;
 using Headspring;
+using ZBuildLights.Core.Models;
 
-namespace ZBuildLights.Core.Models
+namespace ZBuildLights.Core.Enumerations
 {
     public class StatusMode : Enumeration<StatusMode, string>
     {

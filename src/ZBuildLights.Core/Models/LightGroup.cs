@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ZBuildLights.Core.Models
@@ -7,6 +8,7 @@ namespace ZBuildLights.Core.Models
     {
         private readonly List<Light> _lights = new List<Light>();
         public string Name { get; set; }
+        public Guid Id { get; internal set; }
 
         public Light[] Lights
         {

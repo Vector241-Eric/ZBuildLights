@@ -2,7 +2,7 @@
 
 namespace ZBuildLights.Core.Services
 {
-    public interface IProjectProvider
+    public interface IStatusProvider
     {
         Project[] GetCurrentProjects();
     }

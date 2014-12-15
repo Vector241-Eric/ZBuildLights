@@ -15,26 +15,30 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using StructureMap.Configuration.DSL;
+using StructureMap.Graph;
 using ZBuildLights.Core;
+using ZBuildLights.Core.Services;
 
-namespace ZBuildLights.Web.DependencyResolution {
-    using StructureMap.Configuration.DSL;
-    using StructureMap.Graph;
-	
-    public class DefaultRegistry : Registry {
+namespace ZBuildLights.Web.DependencyResolution
+{
+    public class DefaultRegistry : Registry
+    {
         #region Constructors and Destructors
 
-        public DefaultRegistry() {
+        public DefaultRegistry()
+        {
             Scan(
-                scan => {
+                scan =>
+                {
                     scan.TheCallingAssembly();
                     scan.AssemblyContainingType<CoreMarkerType>();
                     scan.WithDefaultConventions();
-					scan.With(new ControllerConvention());
+                    scan.With(new ControllerConvention());
                 });
 
-            
-            //For<IExample>().Use<Example>();
+
+            For<IStatusProvider>().Use<StubStatusProvider>();
         }
 
         #endregion

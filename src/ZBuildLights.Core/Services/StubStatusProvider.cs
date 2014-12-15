@@ -1,9 +1,10 @@
 ﻿using BuildLightControl;
+using ZBuildLights.Core.Enumerations;
 using ZBuildLights.Core.Models;
 
 namespace ZBuildLights.Core.Services
 {
-    public class ProjectProvider : IProjectProvider
+    public class StubStatusProvider : IStatusProvider
     {
         public Project[] GetCurrentProjects()
         {
@@ -27,17 +28,6 @@ namespace ZBuildLights.Core.Services
                 ;
 
             return new[] {core, apps};
-        }
-
-        public LightGroup GetUnassignedLights()
-        {
-            var lightGroup = new LightGroup {Name = "Unassigned"};
-            lightGroup.AddLight(new Light(1, 50))
-                .AddLight(new Light(1, 51))
-                .AddLight(new Light(1, 52))
-                .AddLight(new Light(1, 53))
-                ;
-            return lightGroup;
         }
     }
 }

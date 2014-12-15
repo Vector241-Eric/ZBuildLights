@@ -7,14 +7,16 @@ namespace ZBuildLights.Core.Models
     [Serializable]
     public class Light
     {
-        public byte Id { get; private set; }
-        public uint HomeId { get; private set; }
+        public byte ZWaveDeviceId { get; private set; }
+        public uint ZWaveHomeId { get; private set; }
+        public Guid Id { get; internal set; }
 
-        public Light(uint homeId, byte id)
+        public Light(uint zwaveHomeId, byte zWaveDeviceId)
         {
-            HomeId = homeId;
-            Id = id;
+            ZWaveHomeId = zwaveHomeId;
+            ZWaveDeviceId = zWaveDeviceId;
             SwitchState = SwitchState.Unknown;
+            Color = LightColor.Unknown;
         }
 
         public LightColor Color { get; set; }
@@ -23,7 +25,7 @@ namespace ZBuildLights.Core.Models
 
         public override string ToString()
         {
-            return string.Format("Home: {0} Id:{1}, State: {2}", HomeId, Id, SwitchState);
+            return string.Format("Home: {0} Id:{1}, State: {2}", ZWaveHomeId, ZWaveDeviceId, SwitchState);
         }
     }
 }
