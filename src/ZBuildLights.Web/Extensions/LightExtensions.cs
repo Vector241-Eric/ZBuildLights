@@ -8,7 +8,7 @@ namespace ZBuildLights.Web.Extensions
     {
         public static string DisplayClass(this Light light)
         {
-            if (light.LightSwitch.SwitchState == SwitchState.Off)
+            if (light.SwitchState == SwitchState.Off)
                 return string.Empty;
             return light.Color.DisplayClass();
         }

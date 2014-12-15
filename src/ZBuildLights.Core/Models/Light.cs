@@ -1,32 +1,29 @@
-using System.ComponentModel;
+using System;
+using System.Web.Script.Serialization;
 using BuildLightControl;
 
 namespace ZBuildLights.Core.Models
 {
+    [Serializable]
     public class Light
     {
-        public Project Project { get; private set; }
-        public LightColor Color { get; private set; }
-        public LightSwitch LightSwitch { get; private set; }
-        public string Description { get; set; }
-        
+        public byte Id { get; private set; }
+        public uint HomeId { get; private set; }
 
-        public Light(LightSwitch lightSwitch, Project project)
+        public Light(uint homeId, byte id)
         {
-            LightSwitch = lightSwitch;
-            Project = project;
+            HomeId = homeId;
+            Id = id;
+            SwitchState = SwitchState.Unknown;
         }
 
-        public Light SetColor(LightColor color)
-        {
-            Color = color;
-            return this;
-        }
+        public LightColor Color { get; set; }
+        [ScriptIgnore]
+        public SwitchState SwitchState { get; set; }
 
-        public Light SetDescription(string description)
+        public override string ToString()
         {
-            Description = description;
-            return this;
+            return string.Format("Home: {0} Id:{1}, State: {2}", HomeId, Id, SwitchState);
         }
     }
 }

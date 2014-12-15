@@ -8,44 +8,47 @@
     var projects = Model.Projects;
 }
 
-<div class="row">
-    <h1>Project Build Status</h1>
-    <p class="lead">View project and light status below</p>
-    <p>Last status update: @DateTime.Now.ToString("g")</p>
-</div>
-
-<div class="row">
-    @{ var isFirst = true; }
-    @foreach (Project project in projects)
+@{ var isFirstProject = true; }
+@foreach (Project project in projects)
+{
+    if (isFirstProject)
     {
-        if (isFirst)
-        {
-            isFirst = false;
-        }
-        else
-        {
-            <hr/>
-        }
-        <h6>@project.Name</h6>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Color</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var light in project.Lights)
-                {
-                    <tr>
-                        <td>@light.Description</td>
-                        <td>@light.Color</td>
-                        <td class="@light.DisplayClass()" style="width: 20%"></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <p>@project.StatusMode.DisplayName</p>
+        isFirstProject = false;
     }
-</div>
+    else
+    {
+        <hr/>
+    }
+    <div class="row"><h4>@project.Name <span class="small">(@project.StatusMode.DisplayName)</span></h4></div>
+    for (int groupIndex = 0; groupIndex < project.Groups.Length; groupIndex++)
+    {
+        var isEvenGroup = groupIndex%2 == 0;
+        var isOddGroup = !isEvenGroup;
+        var isLastGroup = groupIndex == project.Groups.Length - 1;
+        var group = project.Groups[groupIndex];
+        if (isEvenGroup)
+        {
+            @Html.Raw("<div class=\"row\">")
+        }
+        <div class="col-md-6">
+            <table class="table table-hover">
+                <thead>
+                    <tr><td class="lead">@group.Name</td></tr>
+                </thead>
+                <tbody>
+                    @foreach (var light in group.Lights)
+                    {
+                        <tr>
+                            <td class="@light.DisplayClass()">@light.Color</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        if (isOddGroup || isLastGroup)
+        {
+            @Html.Raw("</div>")
+        }
+    }
+}
+<div class="clearfix"></div>

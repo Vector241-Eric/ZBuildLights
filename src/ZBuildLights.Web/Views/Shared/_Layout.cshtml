@@ -33,7 +33,12 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>Version: 0.1</p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">Version: 0.1</div>
+                    <div class="col-md-6 text-right">Last status update: @DateTime.Now.ToString("g")</div>
+                </div>
+            </div>
         </footer>
     </div>
 

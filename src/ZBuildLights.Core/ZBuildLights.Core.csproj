@@ -43,8 +43,8 @@
     <Compile Include="CoreMarkerType.cs" />
     <Compile Include="Headspring\Enumeration.cs" />
     <Compile Include="Models\Light.cs" />
+    <Compile Include="Models\LightGroup.cs" />
     <Compile Include="Models\LightSetting.cs" />
-    <Compile Include="Models\LightSwitch.cs" />
     <Compile Include="Models\LightColor.cs" />
     <Compile Include="Models\StatusLightConfiguration.cs" />
     <Compile Include="Models\SwitchState.cs" />

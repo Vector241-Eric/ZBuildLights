@@ -1,25 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using BuildLightControl;
 
 namespace ZBuildLights.Core.Models
 {
     public class Project
     {
-        private readonly List<Light> _lights = new List<Light>();
+        public readonly List<LightGroup> _groups = new List<LightGroup>();
+
         public string Name { get; set; }
         public StatusMode StatusMode { get; set; }
 
-        public Light[] Lights
+        public LightGroup[] Groups
         {
-            get { return _lights.OrderBy(x => x.Color.DisplayOrder).ToArray(); }
+            get { return _groups.ToArray(); }
         }
 
-        public Light AddLight(LightSwitch lightSwitch)
+        public LightGroup AddGroup(LightGroup group)
         {
-            var light = new Light(lightSwitch, this);
-            _lights.Add(light);
-            return light;
+            _groups.Add(group);
+            return group;
         }
     }
 }

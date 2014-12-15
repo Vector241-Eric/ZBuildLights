@@ -8,5 +8,11 @@ namespace ZBuildLights.Web.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult AddGroup(string groupName)
+        {
+            return Json(new {Success = true});
+        }
     }
 }

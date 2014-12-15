@@ -7,17 +7,37 @@ namespace ZBuildLights.Core.Services
     {
         public Project[] GetCurrentProjects()
         {
-            var project1 = new Project { StatusMode = StatusMode.Success, Name = "My Successful Project" };
-            project1.AddLight(new LightSwitch(101, 1).SetState(SwitchState.On)).SetColor(LightColor.Green);
-            project1.AddLight(new LightSwitch(101, 2).SetState(SwitchState.Off)).SetColor(LightColor.Yellow);
-            project1.AddLight(new LightSwitch(101, 3).SetState(SwitchState.Off)).SetColor(LightColor.Red);
+            var core = new Project {StatusMode = StatusMode.Success, Name = "Core"};
+            core.AddGroup(new LightGroup {Name = "SnP Square"})
+                .AddLight(new Light(1, 1) {Color = LightColor.Green, SwitchState = SwitchState.On})
+                .AddLight(new Light(1, 2) {Color = LightColor.Yellow, SwitchState = SwitchState.Off})
+                .AddLight(new Light(1, 3) {Color = LightColor.Red, SwitchState = SwitchState.Off})
+                ;
+            core.AddGroup(new LightGroup {Name = "SnP Near Matt"})
+                .AddLight(new Light(1, 4) {Color = LightColor.Green, SwitchState = SwitchState.On})
+                .AddLight(new Light(1, 5) {Color = LightColor.Yellow, SwitchState = SwitchState.Off})
+                .AddLight(new Light(1, 6) {Color = LightColor.Red, SwitchState = SwitchState.Off})
+                ;
 
-            var project2 = new Project { StatusMode = StatusMode.BrokenAndBuilding, Name = "Trying To Fix This One" };
-            project2.AddLight(new LightSwitch(101, 4).SetState(SwitchState.Off)).SetColor(LightColor.Green);
-            project2.AddLight(new LightSwitch(101, 5).SetState(SwitchState.On)).SetColor(LightColor.Yellow);
-            project2.AddLight(new LightSwitch(101, 6).SetState(SwitchState.On)).SetColor(LightColor.Red);
+            var apps = new Project {StatusMode = StatusMode.BrokenAndBuilding, Name = "Apps"};
+            apps.AddGroup(new LightGroup {Name = "Near Window"})
+                .AddLight(new Light(1, 7) {Color = LightColor.Green, SwitchState = SwitchState.Off})
+                .AddLight(new Light(1, 8) {Color = LightColor.Yellow, SwitchState = SwitchState.On})
+                .AddLight(new Light(1, 9) {Color = LightColor.Red, SwitchState = SwitchState.On})
+                ;
 
-            return new[] {project1, project2};
+            return new[] {core, apps};
+        }
+
+        public LightGroup GetUnassignedLights()
+        {
+            var lightGroup = new LightGroup {Name = "Unassigned"};
+            lightGroup.AddLight(new Light(1, 50))
+                .AddLight(new Light(1, 51))
+                .AddLight(new Light(1, 52))
+                .AddLight(new Light(1, 53))
+                ;
+            return lightGroup;
         }
     }
 }
