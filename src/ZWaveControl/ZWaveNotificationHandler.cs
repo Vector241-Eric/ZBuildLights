@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using OpenZWaveDotNet;
 
-namespace BuildLightControl.ZWave
+namespace ZWaveControl
 {
     public static class ZWaveNotificationHandler
     {

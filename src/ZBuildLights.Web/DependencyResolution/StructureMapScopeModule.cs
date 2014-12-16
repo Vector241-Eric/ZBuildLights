@@ -1,8 +1,5 @@
 namespace ZBuildLights.Web.DependencyResolution {
     using System.Web;
-
-    using ZBuildLights.Web.App_Start;
-
     using StructureMap.Web.Pipeline;
 
     public class StructureMapScopeModule : IHttpModule {

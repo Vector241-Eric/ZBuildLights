@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using OpenZWaveDotNet;
 
-namespace BuildLightControl.ZWave
+namespace ZWaveControl
 {
     public class Node
     {

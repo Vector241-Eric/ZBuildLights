@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using OpenZWaveDotNet;
 
-namespace BuildLightControl.ZWave
+namespace ZWaveControl
 {
     public static class ZWaveManagerFactory
     {

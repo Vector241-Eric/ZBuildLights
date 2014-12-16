@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using ZBuildLights.Core.Repository;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Web.Services.ViewModelProviders;
 

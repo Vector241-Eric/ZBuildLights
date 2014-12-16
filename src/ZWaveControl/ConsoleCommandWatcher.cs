@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace BuildLightControl.ZWave
+namespace ZWaveControl
 {
     public class ConsoleCommandWatcher
     {

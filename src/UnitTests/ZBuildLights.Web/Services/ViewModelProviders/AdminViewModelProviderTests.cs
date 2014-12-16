@@ -4,6 +4,7 @@ using Rhino.Mocks;
 using Should;
 using UnitTests._Bases;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Repository;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Wrappers;
 using ZBuildLights.Web.Models.Admin;

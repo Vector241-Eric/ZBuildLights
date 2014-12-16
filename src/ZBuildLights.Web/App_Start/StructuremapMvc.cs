@@ -15,23 +15,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using ZBuildLights.Web.App_Start;
-
+using System.Web.Mvc;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using StructureMap;
 using WebActivatorEx;
+using ZBuildLights.Web;
+using ZBuildLights.Web.DependencyResolution;
 
 [assembly: PreApplicationStartMethod(typeof(StructuremapMvc), "Start")]
 [assembly: ApplicationShutdownMethod(typeof(StructuremapMvc), "End")]
 
-namespace ZBuildLights.Web.App_Start {
-	using System.Web.Mvc;
-
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
-	using ZBuildLights.Web.DependencyResolution;
-
-    using StructureMap;
-    
-	public static class StructuremapMvc {
+namespace ZBuildLights.Web {
+    public static class StructuremapMvc {
         #region Public Properties
 
         public static StructureMapDependencyScope StructureMapDependencyScope { get; set; }

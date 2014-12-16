@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace BuildLightControl.ZWave
+namespace ZWaveControl
 {
     public class ConfigurationSettings
     {

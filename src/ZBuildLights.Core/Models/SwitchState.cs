@@ -1,4 +1,4 @@
-﻿namespace BuildLightControl
+﻿namespace ZBuildLights.Core.Models
 {
     public enum SwitchState
     {

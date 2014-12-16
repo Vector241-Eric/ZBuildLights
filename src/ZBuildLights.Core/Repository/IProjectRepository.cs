@@ -1,6 +1,6 @@
 ﻿using ZBuildLights.Core.Models;
 
-namespace ZBuildLights.Core.Services
+namespace ZBuildLights.Core.Repository
 {
     public interface IProjectRepository
     {

@@ -1,6 +1,6 @@
 ﻿using System;
-using BuildLightControl;
 using ZBuildLights.Core.Enumerations;
+using ZBuildLights.Core.Models;
 
 namespace ZBuildLights.Web.Models.Admin
 {

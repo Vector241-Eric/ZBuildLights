@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text.RegularExpressions;
-using BuildLightControl;
 using ZBuildLights.Core.Enumerations;
 
 namespace ZBuildLights.Core.Models.JsonSerialization
@@ -32,8 +30,8 @@ namespace ZBuildLights.Core.Models.JsonSerialization
         {
             var project = new Project
             {
-                Name = Name, 
-                StatusMode = StatusMode.Parse(StatusModeValue), 
+                Name = Name,
+                StatusMode = StatusMode.Parse(StatusModeValue),
                 Id = Id,
             };
             project.AddGroups(Groups.Select(x => x.ToDomainObject()));
@@ -46,13 +44,13 @@ namespace ZBuildLights.Core.Models.JsonSerialization
         public string Name { get; set; }
         public Guid Id { get; set; }
         public JsonLight[] Lights { get; set; }
+
         public LightGroup ToDomainObject()
         {
             var group = new LightGroup
             {
                 Id = Id,
                 Name = Name,
-        
             };
             group.AddLights(Lights.Select(x => x.ToDomainObject()));
             return group;
@@ -70,7 +68,7 @@ namespace ZBuildLights.Core.Models.JsonSerialization
         {
             var light = new Light(ZWaveHomeId, ZWaveDeviceId)
             {
-                Id = Id, 
+                Id = Id,
                 Color = LightColor.FromValue(ColorValue)
             };
             return light;

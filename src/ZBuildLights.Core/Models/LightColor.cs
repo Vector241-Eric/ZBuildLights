@@ -1,6 +1,6 @@
 ﻿using Headspring;
 
-namespace BuildLightControl
+namespace ZBuildLights.Core.Models
 {
     public class LightColor : Enumeration<LightColor>
     {

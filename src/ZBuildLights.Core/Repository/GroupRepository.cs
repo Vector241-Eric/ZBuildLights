@@ -1,4 +1,6 @@
-﻿namespace ZBuildLights.Core.Services
+﻿using ZBuildLights.Core.Services;
+
+namespace ZBuildLights.Core.Repository
 {
     public class GroupRepository : IGroupRepository
     {

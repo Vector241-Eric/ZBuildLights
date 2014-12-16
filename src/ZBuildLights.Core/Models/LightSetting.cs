@@ -1,6 +1,4 @@
-﻿using BuildLightControl;
-
-namespace ZBuildLights.Core.Models
+﻿namespace ZBuildLights.Core.Models
 {
     public class LightSetting
     {

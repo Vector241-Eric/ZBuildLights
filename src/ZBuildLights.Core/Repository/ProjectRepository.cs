@@ -1,6 +1,7 @@
 ﻿using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Services;
 
-namespace ZBuildLights.Core.Services
+namespace ZBuildLights.Core.Repository
 {
     public class ProjectRepository : IProjectRepository
     {
