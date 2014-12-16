@@ -1,6 +1,4 @@
-﻿using ZBuildLights.Core.Models;
-
-namespace ZBuildLights.Core.Validation
+﻿namespace ZBuildLights.Core.Validation
 {
     public class CreationResult<T>
     {
@@ -18,7 +16,7 @@ namespace ZBuildLights.Core.Validation
 
         public static CreationResult<T> Fail<T>(string message)
         {
-            return new CreationResult<T>{WasSuccessful = false, Message = message};
+            return new CreationResult<T> {WasSuccessful = false, Message = message};
         }
     }
 }

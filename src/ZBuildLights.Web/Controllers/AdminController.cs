@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Web.Mvc;
 using ZBuildLights.Core.Builders;
 using ZBuildLights.Web.Services.ViewModelProviders;
@@ -35,8 +36,11 @@ namespace ZBuildLights.Web.Controllers
         [HttpPost]
         public ActionResult AddProject(string projectName)
         {
-            _projectManager.CreateProject(projectName);
-            return RedirectToAction("Index");
+            var result = _projectManager.CreateProject(projectName);
+            if (result.WasSuccessful)
+                return RedirectToAction("Index");
+            Response.StatusCode = (int) HttpStatusCode.Conflict;
+            return Json(result);
         }
 
         [HttpPost]
@@ -44,6 +48,16 @@ namespace ZBuildLights.Web.Controllers
         {
             _projectManager.DeleteProject(projectId);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult UpdateProject(Guid projectId, string name)
+        {
+            var result = _projectManager.UpdateProject(projectId, name);
+            if (result.WasSuccessful)
+                return RedirectToAction("Index");
+            Response.StatusCode = (int)HttpStatusCode.Conflict;
+            return Json(result);
         }
     }
 }

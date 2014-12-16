@@ -82,6 +82,7 @@
     <Compile Include="Services\LightAssignmentService.cs" />
     <Compile Include="Services\StubStatusProvider.cs" />
     <Compile Include="Services\SystemClock.cs" />
+    <Compile Include="Validation\EditResult.cs" />
     <Compile Include="Validation\ValidationResult.cs" />
     <Compile Include="Wrappers\FileSystem.cs" />
     <Compile Include="Wrappers\IFileSystem.cs" />

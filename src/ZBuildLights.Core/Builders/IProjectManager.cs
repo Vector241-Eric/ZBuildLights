@@ -7,6 +7,7 @@ namespace ZBuildLights.Core.Builders
     public interface IProjectManager
     {
         CreationResult<Project> CreateProject(string name);
-        void DeleteProject(Guid id);
+        EditResult<Project> DeleteProject(Guid id);
+        EditResult<Project> UpdateProject(Guid id, string name);
     }
 }

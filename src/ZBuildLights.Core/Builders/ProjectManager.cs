@@ -19,7 +19,7 @@ namespace ZBuildLights.Core.Builders
         {
             var currentModel = _masterModelRepository.GetCurrent();
             if (IsProjectNameAlreadyUsed(name, currentModel))
-                return CreationResult.Fail<Project>(string.Format("There is already a project named '{0}'", name));
+                return CreationResult.Fail<Project>(NameCollisionMessage(name));
 
             var project = InitializeProject(name);
             currentModel.AddProject(project);
@@ -29,11 +29,45 @@ namespace ZBuildLights.Core.Builders
             return CreationResult.Success(project);
         }
 
-        public void DeleteProject(Guid id)
+        private static string NameCollisionMessage(string name)
+        {
+            return string.Format("There is already a project named '{0}'", name);
+        }
+
+        public EditResult<Project> DeleteProject(Guid id)
         {
             var currentModel = _masterModelRepository.GetCurrent();
+            if (!currentModel.ProjectExists(id))
+                return CouldNotLocateProject(id);
+
             currentModel.RemoveProject(id);
             _masterModelRepository.Save(currentModel);
+            return EditResult.Success<Project>(null);
+        }
+
+        private static EditResult<Project> CouldNotLocateProject(Guid id)
+        {
+            return EditResult.Fail<Project>(string.Format("Could not locate a project with Id '{0}'", id));
+        }
+
+        public EditResult<Project> UpdateProject(Guid id, string name)
+        {
+            var currentModel = _masterModelRepository.GetCurrent();
+            var project = currentModel.Projects.SingleOrDefault(x => x.Id.Equals(id));
+            
+            if (project == null)
+                return CouldNotLocateProject(id);
+
+            if (project.Name.Equals(name))
+                return EditResult.Success(project);
+
+            if (currentModel.Projects.Any(x => x.Name.Equals(name)))
+                return EditResult.Fail<Project>(NameCollisionMessage(name));
+
+            project.Name = name;
+            _masterModelRepository.Save(currentModel);
+
+            return EditResult.Success(project);
         }
 
         private bool IsProjectNameAlreadyUsed(string name, MasterModel currentModel)

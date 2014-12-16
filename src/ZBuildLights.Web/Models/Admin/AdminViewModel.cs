@@ -1,6 +1,7 @@
 ﻿using System;
 using ZBuildLights.Core.Enumerations;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Web.Extensions;
 
 namespace ZBuildLights.Web.Models.Admin
 {
@@ -26,12 +27,12 @@ namespace ZBuildLights.Web.Models.Admin
 
         public string HeaderId  
         {
-            get { return string.Format("panel-header-{0}", Name); }
+            get { return string.Format("panel-header-{0}", Name.ToSafeId()); }
         }
 
         public string PanelId
         {
-            get { return string.Format("panel-body-{0}", Name); }
+            get { return string.Format("panel-body-{0}", Name.ToSafeId()); }
         }
     }
 

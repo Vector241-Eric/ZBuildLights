@@ -6,5 +6,10 @@
         {
             return string.Format("#{0}", s);
         }
+
+        public static string ToSafeId(this string s)
+        {
+            return s.ToLowerInvariant().Replace(" ", "_");
+        }
     }
 }

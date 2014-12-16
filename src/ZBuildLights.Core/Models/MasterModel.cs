@@ -19,6 +19,11 @@ namespace ZBuildLights.Core.Models
             Projects = Projects.AddToEnd(project);
         }
 
+        public bool ProjectExists(Guid id)
+        {
+            return Projects.Any(x => x.Id.Equals(id));
+        }
+
         public void RemoveProject(Guid projectId)
         {
             Projects = Projects.Except(Projects.Where(x => x.Id.Equals(projectId))).ToArray();
