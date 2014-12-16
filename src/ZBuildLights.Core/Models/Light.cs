@@ -7,14 +7,12 @@ namespace ZBuildLights.Core.Models
     [Serializable]
     public class Light
     {
-        public byte ZWaveDeviceId { get; private set; }
-        public uint ZWaveHomeId { get; private set; }
+        public byte ZWaveDeviceId { get; set; }
+        public uint ZWaveHomeId { get; set; }
         public Guid Id { get; internal set; }
 
-        public Light(uint zwaveHomeId, byte zWaveDeviceId)
+        public Light()
         {
-            ZWaveHomeId = zwaveHomeId;
-            ZWaveDeviceId = zWaveDeviceId;
             SwitchState = SwitchState.Unknown;
             Color = LightColor.Unknown;
         }
