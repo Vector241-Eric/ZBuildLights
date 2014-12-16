@@ -8,7 +8,7 @@ using ZBuildLights.Core.Services;
 using ZBuildLights.Web;
 using ZBuildLights.Web.DependencyResolution;
 
-namespace IntegrationTests.ZBuildLights.Core.Wrappers
+namespace IntegrationTests.ZBuildLights.Core.Services
 {
     public class JsonSerializerServiceTests
     {
@@ -31,7 +31,7 @@ namespace IntegrationTests.ZBuildLights.Core.Wrappers
 
                 var deserialized = serializer.DeserializeMasterModel(json);
 
-                var comparer = new CompareLogic(new ComparisonConfig{MembersToIgnore = new List<string>{"SwitchState"}});
+                var comparer = new CompareLogic(new ComparisonConfig{MembersToIgnore = new List<string>{"SwitchState", "StatusMode"}});
                 var result = comparer.Compare(testData, deserialized);
 
                 if (!result.AreEqual)

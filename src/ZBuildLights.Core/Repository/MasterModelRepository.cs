@@ -3,7 +3,7 @@ using ZBuildLights.Core.Services;
 
 namespace ZBuildLights.Core.Repository
 {
-    public class MasterModelRepository
+    public class MasterModelRepository : IMasterModelRepository
     {
         private readonly IFileSystemStorage _fileStorage;
 

@@ -12,10 +12,6 @@ namespace ZBuildLights.Core.Repository
             _statusProvider = statusProvider;
         }
 
-        public void CreateProject(string name)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public Project[] GetAllProjects()
         {

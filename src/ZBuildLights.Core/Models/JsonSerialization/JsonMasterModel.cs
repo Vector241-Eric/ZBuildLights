@@ -22,7 +22,6 @@ namespace ZBuildLights.Core.Models.JsonSerialization
     public class JsonProject
     {
         public string Name { get; set; }
-        public string StatusModeValue { get; set; }
         public Guid Id { get; set; }
         public JsonLightGroup[] Groups { get; set; }
 
@@ -31,7 +30,6 @@ namespace ZBuildLights.Core.Models.JsonSerialization
             var project = new Project
             {
                 Name = Name,
-                StatusMode = StatusMode.Parse(StatusModeValue),
                 Id = Id,
             };
             project.AddGroups(Groups.Select(x => x.ToDomainObject()));

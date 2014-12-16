@@ -1,20 +1,20 @@
 ﻿using System.Web.Mvc;
+using ZBuildLights.Core.Builders;
 using ZBuildLights.Core.Repository;
-using ZBuildLights.Core.Services;
 using ZBuildLights.Web.Services.ViewModelProviders;
 
 namespace ZBuildLights.Web.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IProjectRepository _projectRepository;
+        private readonly IProjectCreator _projectCreator;
         private readonly IGroupRepository _groupRepository;
         private readonly IAdminViewModelProvider _viewModelProvider;
 
-        public AdminController(IProjectRepository projectRepository, IGroupRepository groupRepository,
+        public AdminController(IProjectCreator projectCreator, IGroupRepository groupRepository,
             IAdminViewModelProvider viewModelProvider)
         {
-            _projectRepository = projectRepository;
+            _projectCreator = projectCreator;
             _groupRepository = groupRepository;
             _viewModelProvider = viewModelProvider;
         }
@@ -34,7 +34,7 @@ namespace ZBuildLights.Web.Controllers
         [HttpPost]
         public ActionResult AddProject(string projectName)
         {
-            _projectRepository.CreateProject(projectName);
+            _projectCreator.CreateProject(projectName);
             return Json(new {Success = true});
         }
     }
