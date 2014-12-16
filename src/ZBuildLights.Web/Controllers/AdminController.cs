@@ -36,7 +36,8 @@ namespace ZBuildLights.Web.Controllers
         public ActionResult AddProject(string projectName)
         {
             _projectCreator.CreateProject(projectName);
-            return Json(new {Success = true});
+            return RedirectToAction("Index");
+//            return Json(new {Success = true});
         }
     }
 }

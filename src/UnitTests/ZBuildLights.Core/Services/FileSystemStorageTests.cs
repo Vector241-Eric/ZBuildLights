@@ -12,29 +12,74 @@ namespace UnitTests.ZBuildLights.Core.Services
     public class FileSystemStorageTests
     {
         [TestFixture]
-        public class When_saving_model : TestBase
+        public class When_saving_model_and_directory_exists : TestBase
         {
             private string _result;
             private string _stubbedJson;
+            private FileSystemStub _fileSystem;
 
             [SetUp]
             public void ContextSetup()
             {
-                var filePath = @"C:\some\dir";
+                var filePath = @"C:\some\dir\myCoolFile.json";
                 _stubbedJson = "I am some json, I promise (just kidding)";
                 var model = new MasterModel();
 
-                var fileSystem = new FileSystemStub();
+                _fileSystem = new FileSystemStub();
+                _fileSystem.AssumeDirectoryExists(@"C:\some\dir");
                 var jsonSerializer = S<IJsonSerializerService>();
                 jsonSerializer.Stub(x => x.SerializeMasterModel(model)).Return(_stubbedJson);
                 var configuration = new StubApplicationConfiguration {StorageFilePath = filePath};
 
-                var storage = new FileSystemStorage(fileSystem, jsonSerializer, configuration);
+                var storage = new FileSystemStorage(_fileSystem, jsonSerializer, configuration);
                 storage.Save(model);
 
-                _result = fileSystem.GetLastWriteTo(filePath);
+                _result = _fileSystem.GetLastWriteTo(filePath);
             }
 
+            [Test]
+            public void Should_not_create_the_parent_directory_because_it_exists()
+            {
+                _fileSystem.CreatedDirectories.Length.ShouldEqual(0);
+            }
+
+            [Test]
+            public void Should_save_json_serialized_file_to_the_configured_file_path()
+            {
+                _result.ShouldEqual(_stubbedJson);
+            }
+        }
+
+        [TestFixture]
+        public class When_saving_model_and_path_does_not_exist : TestBase
+        {
+            private string _result;
+            private string _stubbedJson;
+            private FileSystemStub _fileSystem;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var filePath = @"C:\some\dir\myfile.json";
+                _stubbedJson = "I am some json, I promise (just kidding)";
+                var model = new MasterModel();
+
+                _fileSystem = new FileSystemStub();
+                var jsonSerializer = S<IJsonSerializerService>();
+                jsonSerializer.Stub(x => x.SerializeMasterModel(model)).Return(_stubbedJson);
+                var configuration = new StubApplicationConfiguration {StorageFilePath = filePath};
+
+                var storage = new FileSystemStorage(_fileSystem, jsonSerializer, configuration);
+                storage.Save(model);
+
+                _result = _fileSystem.GetLastWriteTo(filePath);
+            }
+
+            [Test]
+            public void Should_create_parent_directory()
+            {
+                _fileSystem.CreatedDirectories.ShouldContain(@"C:\some\dir");
+            }
 
             [Test]
             public void Should_save_json_serialized_file_to_the_configured_file_path()

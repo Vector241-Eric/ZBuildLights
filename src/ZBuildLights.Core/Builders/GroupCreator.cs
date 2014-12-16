@@ -1,6 +1,4 @@
-﻿using ZBuildLights.Core.Services;
-
-namespace ZBuildLights.Core.Repository
+﻿namespace ZBuildLights.Core.Builders
 {
     public class GroupCreator : IGroupCreator
     {

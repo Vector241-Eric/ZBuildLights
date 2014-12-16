@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using ZBuildLights.Core.Configuration;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Wrappers;
@@ -21,7 +22,11 @@ namespace ZBuildLights.Core.Services
         public void Save(MasterModel model)
         {
             var json = _jsonSerializer.SerializeMasterModel(model);
-            _fileSystem.WriteAllText(_configuration.StorageFilePath, json);
+            var storageFilePath = _configuration.StorageFilePath;
+            var storageDirectory = Path.GetDirectoryName(storageFilePath);
+            if (!_fileSystem.DirectoryExists(storageDirectory))
+                _fileSystem.CreateDirectory(storageDirectory);
+            _fileSystem.WriteAllText(storageFilePath, json);
         }
 
         public MasterModel ReadMasterModel()

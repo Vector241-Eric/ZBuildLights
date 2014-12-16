@@ -28,7 +28,7 @@ namespace ZBuildLights.Web.Services.ViewModelProviders
             return new AdminViewModel
             {
                 Projects = _mapper.Map<Project[], AdminProjectViewModel[]>(projects),
-                Unassigned = _mapper.Map<LightGroup, AdminLightGroupViewModel>(unassigned)
+                Unassigned = _mapper.Map<LightGroup, AdminLightGroupViewModel>(unassigned),
             };
         }
     }

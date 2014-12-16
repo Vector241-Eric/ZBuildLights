@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.IO;
 
 namespace ZBuildLights.Core.Configuration
 {
@@ -6,7 +7,12 @@ namespace ZBuildLights.Core.Configuration
     {
         public string StorageFilePath
         {
-            get { return Required("StorageFilePath"); }
+            get
+            {
+                var value = Required("StorageFilePath");
+                var fullPath = Path.GetFullPath(value);
+                return fullPath;
+            }
         }
 
         private string Required(string key)

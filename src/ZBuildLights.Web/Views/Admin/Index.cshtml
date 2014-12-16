@@ -5,11 +5,14 @@
     ViewBag.Title = "ZBuildLights Admin";
     var projects = Model.Projects;
     var unassigned = Model.Unassigned;
+    var addProjectUrl = Url.Action("AddProject");
 }
 
 @section scripts {
     <script>
-        $(function () {
+        var addGroupUrl = '@addProjectUrl';
+
+        $(function() {
             //Expand / Collapse
             $('.collapse').on('show.bs.collapse', function() {
                 var headingId = $(this).attr('data-panelheading');
@@ -20,15 +23,44 @@
                 $('#' + headingId + ' .heading-icon').removeClass('fa-minus-circle').addClass('fa-plus-circle');
             });
 
+            function showAlert(message) {
+                var template = $(document.getElementById('alert-template').innerHTML);
+                template.find('[data-purpose="error-message"]').text(message);
+                $('#alert-container').append(template);
+            }
+
+            function closeAlerts() {
+                $('#alert-container').find('[data-purpose="error-alert"]').remove();
+            }
+
             //New Project Modal
-            $('#save-new-project').click(function() {
-                $('#add-project-modal .wait-spinner').show();
-                //Replace with the work to POST a new project, then reload the page on success
-                setTimeout(function () {
-                    location.reload();
-                }, 3000);
+            $('#save-new-project').click(function () {
+                closeAlerts();
+                var spinner = $('#add-project-modal .wait-spinner');
+                spinner.show();
+                var input = $('#project-name-input').val();
+                var data = { projectName: input };
+                $.post(addGroupUrl, data)
+                    .always(function() {
+                        $('#add-project-modal').modal('hide');
+                        spinner.hide();
+                    })
+                    .success(function() {
+                        location.reload();
+                    })
+                    .fail(function(data) {
+                        console.log('Failed');
+                        showAlert(data.statusText);
+                    });
             });
         });
+    </script>
+    
+    <script type="text/html" id="alert-template">
+        <div class="alert alert-dismissable alert-danger" data-purpose="error-alert">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <span data-purpose="error-message"></span>
+        </div>
     </script>
     
     <div class="modal fade" id="add-project-modal">
@@ -55,6 +87,8 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->        
 }
+<div class="row" id="alert-container">
+</div>
 <div class="row">
     <h2>Admin</h2>
     <p class="lead">Modify existing projects or add new lights</p>
@@ -89,8 +123,8 @@
                 </div>
                 <div id="@project.PanelId" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@project.HeaderId" data-panelheading="@project.HeaderId">
                     <div class="panel-body">
-                        @foreach(var group in project.Groups)
-                        { 
+                        @foreach (var group in project.Groups)
+                        {
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
