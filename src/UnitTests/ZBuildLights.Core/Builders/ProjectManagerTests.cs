@@ -9,7 +9,7 @@ using ZBuildLights.Core.Validation;
 
 namespace UnitTests.ZBuildLights.Core.Builders
 {
-    public class ProjectCreatorTests
+    public class ProjectManagerTests
     {
         [TestFixture]
         public class When_creating_new_project_with_unique_name
@@ -74,7 +74,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
             public void ContextSetup()
             {
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(new Project { Name = "Existing Project" });
+                existingMasterModel.AddProject(new Project {Name = "Existing Project"});
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -101,6 +101,48 @@ namespace UnitTests.ZBuildLights.Core.Builders
             public void Should_include_a_reasonable_failure_message()
             {
                 _result.Message.ShouldEqual("There is already a project named 'Existing Project'");
+            }
+        }
+
+        [TestFixture]
+        public class When_deleting_project_that_exists
+        {
+            private CreationResult<Project> _result;
+            private MasterModel _savedModel;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var project1 = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var project2 = new Project {Name = "Existing Project 2", Id = Guid.NewGuid()};
+                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
+
+                var existingMasterModel = new MasterModel();
+                existingMasterModel.AddProject(project1);
+                existingMasterModel.AddProject(project2);
+                existingMasterModel.AddProject(project3);
+
+                var repository = new StubMasterModelRepository();
+                repository.UseCurrentModel(existingMasterModel);
+
+                var manager = new ProjectManager(repository);
+                manager.DeleteProject(project2.Id);
+
+                _savedModel = repository.LastSaved;
+            }
+
+            [Test]
+            public void Should_save_the_updated_model()
+            {
+                _savedModel.ShouldNotBeNull();
+            }
+
+            [Test]
+            public void Should_remove_project_from_the_model()
+            {
+                _savedModel.Projects.Length.ShouldEqual(2);
+                _savedModel.Projects.Count(x => x.Name == "Existing Project").ShouldEqual(1);
+                _savedModel.Projects.Count(x => x.Name == "Existing Project 3").ShouldEqual(1);
             }
         }
     }

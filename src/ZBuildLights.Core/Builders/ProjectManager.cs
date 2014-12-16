@@ -29,9 +29,11 @@ namespace ZBuildLights.Core.Builders
             return CreationResult.Success(project);
         }
 
-        public void DeleteProject(string id)
+        public void DeleteProject(Guid id)
         {
-            //TODO: TBD
+            var currentModel = _masterModelRepository.GetCurrent();
+            currentModel.RemoveProject(id);
+            _masterModelRepository.Save(currentModel);
         }
 
         private bool IsProjectNameAlreadyUsed(string name, MasterModel currentModel)

@@ -57,6 +57,7 @@
     <Compile Include="Configuration\IApplicationConfiguration.cs" />
     <Compile Include="CoreMarkerType.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Headspring\Enumeration.cs" />
     <Compile Include="Models\JsonSerialization\JsonMasterModel.cs" />
     <Compile Include="Models\JsonSerialization\JsonSerializationProfile.cs" />

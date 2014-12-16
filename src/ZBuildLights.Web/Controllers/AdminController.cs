@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using ZBuildLights.Core.Builders;
 using ZBuildLights.Web.Services.ViewModelProviders;
 
@@ -39,7 +40,7 @@ namespace ZBuildLights.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteProject(string projectId)
+        public ActionResult DeleteProject(Guid projectId)
         {
             _projectManager.DeleteProject(projectId);
             return RedirectToAction("Index");
