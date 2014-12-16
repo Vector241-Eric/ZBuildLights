@@ -1,5 +1,6 @@
 ﻿using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Wrappers;
 using ZBuildLights.Web.Models.Admin;
 
 namespace ZBuildLights.Web.Services.ViewModelProviders
@@ -10,7 +11,8 @@ namespace ZBuildLights.Web.Services.ViewModelProviders
         private readonly ILightAssignmentService _lightAssignmentService;
         private readonly IMapper _mapper;
 
-        public AdminViewModelProvider(IProjectRepository projectRepo, ILightAssignmentService lightAssignmentService, IMapper mapper)
+        public AdminViewModelProvider(IProjectRepository projectRepo, ILightAssignmentService lightAssignmentService,
+            IMapper mapper)
         {
             _projectRepo = projectRepo;
             _lightAssignmentService = lightAssignmentService;

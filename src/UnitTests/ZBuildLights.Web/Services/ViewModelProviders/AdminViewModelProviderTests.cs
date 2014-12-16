@@ -5,6 +5,7 @@ using Should;
 using UnitTests._Bases;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Wrappers;
 using ZBuildLights.Web.Models.Admin;
 using ZBuildLights.Web.Services;
 using ZBuildLights.Web.Services.ViewModelProviders;

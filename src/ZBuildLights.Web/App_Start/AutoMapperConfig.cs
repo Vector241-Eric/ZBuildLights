@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ZBuildLights.Core.Models.JsonSerialization;
 using ZBuildLights.Web.Mapping;
 
 namespace ZBuildLights.Web
@@ -10,6 +11,7 @@ namespace ZBuildLights.Web
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile<ViewModelProfile>();
+                cfg.AddProfile<JsonSerializationProfile>();
             });
         }
     }

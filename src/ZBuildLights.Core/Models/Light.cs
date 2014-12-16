@@ -1,24 +1,23 @@
 using System;
-using System.Web.Script.Serialization;
 using BuildLightControl;
 
 namespace ZBuildLights.Core.Models
 {
-    [Serializable]
     public class Light
     {
-        public byte ZWaveDeviceId { get; set; }
-        public uint ZWaveHomeId { get; set; }
+        public byte ZWaveDeviceId { get; private set; }
+        public uint ZWaveHomeId { get; private set; }
         public Guid Id { get; internal set; }
 
-        public Light()
+        public Light(uint zwaveHomeId, byte zWaveDeviceId)
         {
+            ZWaveHomeId = zwaveHomeId;
+            ZWaveDeviceId = zWaveDeviceId;
             SwitchState = SwitchState.Unknown;
             Color = LightColor.Unknown;
         }
 
         public LightColor Color { get; set; }
-        [ScriptIgnore]
         public SwitchState SwitchState { get; set; }
 
         public override string ToString()

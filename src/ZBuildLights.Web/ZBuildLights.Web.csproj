@@ -153,8 +153,6 @@
     <Compile Include="Models\Admin\AdminViewModel.cs" />
     <Compile Include="Models\Home\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IMapper.cs" />
-    <Compile Include="Services\Mapper.cs" />
     <Compile Include="Services\ViewModelProviders\AdminViewModelProvider.cs" />
     <Compile Include="Services\ViewModelProviders\IAdminViewModelProvider.cs" />
   </ItemGroup>
