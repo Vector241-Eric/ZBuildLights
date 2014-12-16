@@ -2,7 +2,7 @@
 
 namespace ZBuildLights.Core.Repository
 {
-    public class GroupRepository : IGroupRepository
+    public class GroupCreator : IGroupCreator
     {
         public void CreateGroup(string name)
         {

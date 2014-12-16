@@ -13,5 +13,10 @@ namespace ZBuildLights.Core.Wrappers
         {
             return File.ReadAllText(path);
         }
+
+        public bool FileExists(string path)
+        {
+            return File.Exists(path);
+        }
     }
 }

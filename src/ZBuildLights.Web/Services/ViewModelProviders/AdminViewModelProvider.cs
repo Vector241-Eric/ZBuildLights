@@ -8,21 +8,21 @@ namespace ZBuildLights.Web.Services.ViewModelProviders
 {
     public class AdminViewModelProvider : IAdminViewModelProvider
     {
-        private readonly IProjectRepository _projectRepo;
+        private readonly IMasterModelRepository _masterModelRepository;
         private readonly ILightAssignmentService _lightAssignmentService;
         private readonly IMapper _mapper;
 
-        public AdminViewModelProvider(IProjectRepository projectRepo, ILightAssignmentService lightAssignmentService,
+        public AdminViewModelProvider(IMasterModelRepository masterModelRepository, ILightAssignmentService lightAssignmentService,
             IMapper mapper)
         {
-            _projectRepo = projectRepo;
+            _masterModelRepository = masterModelRepository;
             _lightAssignmentService = lightAssignmentService;
             _mapper = mapper;
         }
 
         public AdminViewModel GetIndexViewModel()
         {
-            var projects = _projectRepo.GetAllProjects();
+            var projects = _masterModelRepository.GetCurrent().Projects;
             var unassigned = _lightAssignmentService.GetUnassignedLights();
 
             return new AdminViewModel

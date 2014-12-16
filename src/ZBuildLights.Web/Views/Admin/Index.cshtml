@@ -60,6 +60,10 @@
     <p class="lead">Modify existing projects or add new lights</p>
 </div>
 <div class="row">
+    @if (Model.NoProjects)
+    {
+        <h4>No Projects Added</h4>
+    }
     <div class="panel-group" id="projects-panel" role="tablist" aria-multiselectable="true">
         @foreach (var project in projects)
         {

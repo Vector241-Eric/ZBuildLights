@@ -27,6 +27,8 @@ namespace ZBuildLights.Core.Services
         public MasterModel ReadMasterModel()
         {
             var path = _configuration.StorageFilePath;
+            if (!_fileSystem.FileExists(path))
+                return null;
             var json = _fileSystem.ReadAllText(path);
             return _jsonSerializer.DeserializeMasterModel(json);
         }

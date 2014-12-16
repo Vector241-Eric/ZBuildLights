@@ -29,8 +29,8 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 var lightAssignmentService = S<ILightAssignmentService>();
                 lightAssignmentService.Stub(x => x.GetUnassignedLights()).Return(unassignedGroup);
 
-                var projectRepo = S<IProjectRepository>();
-                projectRepo.Stub(x => x.GetAllProjects()).Return(projects);
+                var repo = S<IMasterModelRepository>();
+                repo.Stub(x => x.GetCurrent()).Return(new MasterModel(){Projects = projects});
 
                 var mapper = S<IMapper>();
                 mapper.Stub(x => x.Map<Project[], AdminProjectViewModel[]>(projects))
@@ -38,7 +38,7 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 mapper.Stub(x => x.Map<LightGroup, AdminLightGroupViewModel>(unassignedGroup))
                     .Return(new AdminLightGroupViewModel {Name = "bar"});
 
-                var provider = new AdminViewModelProvider(projectRepo, lightAssignmentService, mapper);
+                var provider = new AdminViewModelProvider(repo, lightAssignmentService, mapper);
                 _result = provider.GetIndexViewModel();
             }
 

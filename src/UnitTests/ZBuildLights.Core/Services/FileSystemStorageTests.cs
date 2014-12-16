@@ -5,6 +5,7 @@ using UnitTests._Bases;
 using UnitTests._Stubs;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Wrappers;
 
 namespace UnitTests.ZBuildLights.Core.Services
 {
@@ -43,7 +44,7 @@ namespace UnitTests.ZBuildLights.Core.Services
         }
 
         [TestFixture]
-        public class When_reading_model : TestBase
+        public class When_reading_model_and_file_exists : TestBase
         {
             private MasterModel _result;
             private MasterModel _stubbedModel;
@@ -68,9 +69,38 @@ namespace UnitTests.ZBuildLights.Core.Services
 
 
             [Test]
-            public void Should_save_json_serialized_file_to_the_configured_file_path()
+            public void Should_deserialize_json_from_the_configured_file_path()
             {
                 _result.ShouldBeSameAs(_stubbedModel);
+            }
+        }
+        
+        [TestFixture]
+        public class When_reading_model_and_file_does_not_exist : TestBase
+        {
+            private MasterModel _result;
+            private MasterModel _stubbedModel;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                const string filePath = @"C:\some\dir";
+                var configuration = new StubApplicationConfiguration { StorageFilePath = filePath };
+                _stubbedModel = new MasterModel();
+
+                var fileSystem = S<IFileSystem>();
+                fileSystem.Stub(x => x.FileExists(filePath)).Return(false);
+
+                IJsonSerializerService doNotUseJsonSerializer = null;
+
+                var storage = new FileSystemStorage(fileSystem, doNotUseJsonSerializer, configuration);
+                _result = storage.ReadMasterModel();
+            }
+
+            [Test]
+            public void Should_return_null_result()
+            {
+                _result.ShouldBeNull();
             }
         }
     }

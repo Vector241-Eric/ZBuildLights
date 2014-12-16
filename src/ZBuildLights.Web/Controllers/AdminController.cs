@@ -8,26 +8,27 @@ namespace ZBuildLights.Web.Controllers
     public class AdminController : Controller
     {
         private readonly IProjectCreator _projectCreator;
-        private readonly IGroupRepository _groupRepository;
+        private readonly IGroupCreator _groupCreator;
         private readonly IAdminViewModelProvider _viewModelProvider;
 
-        public AdminController(IProjectCreator projectCreator, IGroupRepository groupRepository,
+        public AdminController(IProjectCreator projectCreator, IGroupCreator groupCreator,
             IAdminViewModelProvider viewModelProvider)
         {
             _projectCreator = projectCreator;
-            _groupRepository = groupRepository;
+            _groupCreator = groupCreator;
             _viewModelProvider = viewModelProvider;
         }
 
         public ActionResult Index()
         {
-            return View(_viewModelProvider.GetIndexViewModel());
+            var model = _viewModelProvider.GetIndexViewModel();
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult AddGroup(string groupName)
         {
-            _groupRepository.CreateGroup(groupName);
+            _groupCreator.CreateGroup(groupName);
             return Json(new {Success = true});
         }
 

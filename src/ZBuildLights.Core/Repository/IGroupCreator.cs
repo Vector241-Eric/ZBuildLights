@@ -1,6 +1,6 @@
 ﻿namespace ZBuildLights.Core.Repository
 {
-    public interface IGroupRepository
+    public interface IGroupCreator
     {
         void CreateGroup(string name);
     }

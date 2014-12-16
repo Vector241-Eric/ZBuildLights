@@ -73,14 +73,12 @@
     <Compile Include="Repository\IMasterModelRepository.cs" />
     <Compile Include="Repository\MasterModelRepository.cs" />
     <Compile Include="Services\FileSystemStorage.cs" />
-    <Compile Include="Repository\GroupRepository.cs" />
+    <Compile Include="Repository\GroupCreator.cs" />
     <Compile Include="Services\IFileSystemStorage.cs" />
-    <Compile Include="Repository\IGroupRepository.cs" />
+    <Compile Include="Repository\IGroupCreator.cs" />
     <Compile Include="Services\ILightAssignmentService.cs" />
-    <Compile Include="Repository\IProjectRepository.cs" />
     <Compile Include="Services\IStatusProvider.cs" />
     <Compile Include="Services\LightAssignmentService.cs" />
-    <Compile Include="Repository\ProjectRepository.cs" />
     <Compile Include="Services\StubStatusProvider.cs" />
     <Compile Include="Services\SystemClock.cs" />
     <Compile Include="Validation\ValidationResult.cs" />

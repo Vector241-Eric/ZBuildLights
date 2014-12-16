@@ -28,5 +28,10 @@ namespace UnitTests._Stubs
         {
             return _stubbedContent[path];
         }
+
+        public bool FileExists(string path)
+        {
+            return _stubbedContent.ContainsKey(path);
+        }
     }
 }

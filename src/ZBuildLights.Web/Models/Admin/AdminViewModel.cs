@@ -6,8 +6,14 @@ namespace ZBuildLights.Web.Models.Admin
 {
     public class AdminViewModel
     {
+        public AdminViewModel()
+        {
+            Projects = new AdminProjectViewModel[0];
+        }
+
         public AdminProjectViewModel[] Projects { get; set; }
         public AdminLightGroupViewModel Unassigned { get; set; }
+        public bool NoProjects { get { return Projects.Length == 0; } }
     }
 
     public class AdminProjectViewModel
