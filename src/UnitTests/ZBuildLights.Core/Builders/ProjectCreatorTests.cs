@@ -26,7 +26,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new ProjectCreator(repository);
+                var creator = new ProjectManager(repository);
                 _result = creator.CreateProject("My New Project");
 
                 _savedModel = repository.LastSaved;
@@ -79,7 +79,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new ProjectCreator(repository);
+                var creator = new ProjectManager(repository);
                 _result = creator.CreateProject("Existing Project");
 
                 _savedModel = repository.LastSaved;

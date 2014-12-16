@@ -6,14 +6,14 @@ namespace ZBuildLights.Web.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IProjectCreator _projectCreator;
+        private readonly IProjectManager _projectManager;
         private readonly IGroupCreator _groupCreator;
         private readonly IAdminViewModelProvider _viewModelProvider;
 
-        public AdminController(IProjectCreator projectCreator, IGroupCreator groupCreator,
+        public AdminController(IProjectManager projectManager, IGroupCreator groupCreator,
             IAdminViewModelProvider viewModelProvider)
         {
-            _projectCreator = projectCreator;
+            _projectManager = projectManager;
             _groupCreator = groupCreator;
             _viewModelProvider = viewModelProvider;
         }
@@ -34,9 +34,15 @@ namespace ZBuildLights.Web.Controllers
         [HttpPost]
         public ActionResult AddProject(string projectName)
         {
-            _projectCreator.CreateProject(projectName);
+            _projectManager.CreateProject(projectName);
             return RedirectToAction("Index");
-//            return Json(new {Success = true});
+        }
+
+        [HttpPost]
+        public ActionResult DeleteProject(string projectId)
+        {
+            _projectManager.DeleteProject(projectId);
+            return RedirectToAction("Index");
         }
     }
 }

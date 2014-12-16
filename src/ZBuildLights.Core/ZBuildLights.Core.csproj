@@ -51,8 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\IProjectCreator.cs" />
-    <Compile Include="Builders\ProjectCreator.cs" />
+    <Compile Include="Builders\IProjectManager.cs" />
+    <Compile Include="Builders\ProjectManager.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\IApplicationConfiguration.cs" />
     <Compile Include="CoreMarkerType.cs" />
