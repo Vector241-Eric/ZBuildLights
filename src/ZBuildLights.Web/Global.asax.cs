@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using ZBuildLights.Core.Services;
 
 namespace ZBuildLights.Web
 {
@@ -14,6 +15,11 @@ namespace ZBuildLights.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        private void InitializeStaticFactories()
+        {
+            SystemClock.UseCurrentTime();
         }
     }
 }

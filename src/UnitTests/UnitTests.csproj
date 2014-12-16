@@ -49,8 +49,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZBuildLights.Core\Repository\MasterModelRepositoryTests.cs" />
+    <Compile Include="ZBuildLights.Core\Services\FileSystemStorageTests.cs" />
     <Compile Include="ZBuildLights.Web\Services\ViewModelProviders\AdminViewModelProviderTests.cs" />
     <Compile Include="_Bases\TestBase.cs" />
+    <Compile Include="_Stubs\FileSystemStub.cs" />
+    <Compile Include="_Stubs\StorageStub.cs" />
+    <Compile Include="_Stubs\StubApplicationConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,4 +1,6 @@
-﻿using Rhino.Mocks;
+﻿using System;
+using Rhino.Mocks;
+using ZBuildLights.Core.Services;
 
 namespace UnitTests._Bases
 {
@@ -7,6 +9,11 @@ namespace UnitTests._Bases
         protected T S<T>() where T : class
         {
             return MockRepository.GenerateStub<T>();
+        }
+
+        protected void SetSystemClock(DateTime now)
+        {
+            SystemClock.Now = () => now;
         }
     }
 }
