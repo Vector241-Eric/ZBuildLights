@@ -7,8 +7,15 @@ namespace ZBuildLights.Core.Models
     public class LightGroup
     {
         private readonly List<Light> _lights = new List<Light>();
+
+        public LightGroup()
+        {
+            Name = string.Empty;
+        }
+
         public string Name { get; set; }
         public Guid Id { get; internal set; }
+        public Project ParentProject { get; set; }
 
         public Light[] Lights
         {

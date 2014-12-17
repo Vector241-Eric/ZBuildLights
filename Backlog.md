@@ -8,12 +8,7 @@ Model
 
 Admin Comp
 ==
-* Edit Project
-  * Name (Simple edit dialog, possibly reusing the add dialog)
-  * Add Group (Simple button on the bottom of the project pane -- dialog much like the add project dialog)
-  * Delete Group (A button on the edit dialog -- closes the existing dialog and shows the confirmation diaglog for the group to be deleted)
-  * Delete Project (A button on the edit dialog -- closes the existing dialog and shows the confirmation diaglog for the project to be deleted)
-* Edit Light
+* Edit Light (All via a single modal)
   * Assign to group via dropdown (includes unassigned)
   * Change color via dropdown
   * Toggle on/off in edit window
@@ -21,5 +16,10 @@ Admin Comp
 
 Validation
 ==
-* Project names must be unique
+* Add Group
+* Assign Light to Group
+* Remove Light from Group
+* Remove Group (Unassigns all lights)
+* Ignore light
+* Show ignored lights
 

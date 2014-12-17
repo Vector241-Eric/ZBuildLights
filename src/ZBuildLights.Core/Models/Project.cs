@@ -20,6 +20,7 @@ namespace ZBuildLights.Core.Models
         public LightGroup AddGroup(LightGroup group)
         {
             _groups.Add(group);
+            group.ParentProject = this;
             return group;
         }
 
@@ -27,6 +28,11 @@ namespace ZBuildLights.Core.Models
         {
             foreach (var group in groups)
                 this.AddGroup(group);
+        }
+
+        public void RemoveGroup(LightGroup lightGroup)
+        {
+            _groups.Remove(lightGroup);
         }
     }
 }

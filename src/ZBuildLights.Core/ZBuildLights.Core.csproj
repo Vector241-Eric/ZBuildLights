@@ -74,9 +74,9 @@
     <Compile Include="Repository\IMasterModelRepository.cs" />
     <Compile Include="Repository\MasterModelRepository.cs" />
     <Compile Include="Services\FileSystemStorage.cs" />
-    <Compile Include="Builders\GroupCreator.cs" />
+    <Compile Include="Builders\LightLightGroupManager.cs" />
     <Compile Include="Services\IFileSystemStorage.cs" />
-    <Compile Include="Builders\IGroupCreator.cs" />
+    <Compile Include="Builders\ILightGroupManager.cs" />
     <Compile Include="Services\ILightAssignmentService.cs" />
     <Compile Include="Services\IStatusProvider.cs" />
     <Compile Include="Services\LightAssignmentService.cs" />
