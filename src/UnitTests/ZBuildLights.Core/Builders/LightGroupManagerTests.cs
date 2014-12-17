@@ -29,7 +29,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new LightLightGroupManager(repository);
+                var creator = new LightGroupManager(repository);
                 _result = creator.CreateLightGroup(project.Id, "My New Group");
 
                 _savedModel = repository.LastSaved;
@@ -88,7 +88,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new LightLightGroupManager(repository);
+                var creator = new LightGroupManager(repository);
                 _result = creator.CreateLightGroup(_projectIdDoesntExist, "My New Group");
 
                 _savedModel = repository.LastSaved;
@@ -131,7 +131,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new LightLightGroupManager(repository);
+                var creator = new LightGroupManager(repository);
                 _result = creator.CreateLightGroup(project.Id, "Existing Group");
 
                 _savedModel = repository.LastSaved;
@@ -176,7 +176,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new LightLightGroupManager(repository);
+                var creator = new LightGroupManager(repository);
                 _result = creator.UpdateLightGroup(existingGroup.Id, "My New Name");
 
                 _savedModel = repository.LastSaved;
@@ -237,7 +237,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new LightLightGroupManager(repository);
+                var creator = new LightGroupManager(repository);
                 _result = creator.UpdateLightGroup(existingGroup.Id, "Name Collision");
 
                 _savedModel = repository.LastSaved;
@@ -282,7 +282,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new LightLightGroupManager(repository);
+                var creator = new LightGroupManager(repository);
                 _result = creator.UpdateLightGroup(existingGroup.Id, "Existing Group");
 
                 _savedModel = repository.LastSaved;
@@ -326,7 +326,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new LightLightGroupManager(repository);
+                var creator = new LightGroupManager(repository);
                 _result = creator.UpdateLightGroup(_groupIdDoesntExist, "My New Name");
 
                 _savedModel = repository.LastSaved;
@@ -374,7 +374,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new LightLightGroupManager(repository);
+                var creator = new LightGroupManager(repository);
                 _result = creator.DeleteLightGroup(existingGroup.Id);
 
                 _savedModel = repository.LastSaved;
@@ -383,7 +383,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [Test]
             public void Should_save_the_updated_model()
             {
-                _savedModel.ShouldBeSameAs(_result.Entity);
+                _savedModel.ShouldNotBeNull();
             }
 
             [Test]
@@ -418,7 +418,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var creator = new LightLightGroupManager(repository);
+                var creator = new LightGroupManager(repository);
                 _result = creator.DeleteLightGroup(_idDoesNotExist);
 
                 _savedModel = repository.LastSaved;

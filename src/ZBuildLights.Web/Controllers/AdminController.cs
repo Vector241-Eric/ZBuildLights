@@ -26,13 +26,7 @@ namespace ZBuildLights.Web.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public ActionResult AddGroup(Guid projectId, string groupName)
-        {
-            _lightGroupManager.CreateLightGroup(projectId, groupName);
-            return RedirectToAction("Index");
-        }
-
+        //Projects
         [HttpPost]
         public ActionResult AddProject(string projectName)
         {
@@ -58,6 +52,31 @@ namespace ZBuildLights.Web.Controllers
                 return RedirectToAction("Index");
             Response.StatusCode = (int)HttpStatusCode.Conflict;
             return Json(result);
+        }
+
+        //Groups
+        [HttpPost]
+        public ActionResult AddGroup(Guid projectId, string groupName)
+        {
+            _lightGroupManager.CreateLightGroup(projectId, groupName);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult UpdateGroup(Guid groupId, string name)
+        {
+            var result = _lightGroupManager.UpdateLightGroup(groupId, name);
+            if (result.WasSuccessful)
+                return RedirectToAction("Index");
+            Response.StatusCode = (int)HttpStatusCode.Conflict;
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteGroup(Guid groupId)
+        {
+            _lightGroupManager.DeleteLightGroup(groupId);
+            return RedirectToAction("Index");
         }
     }
 }

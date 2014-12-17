@@ -14,12 +14,10 @@ Admin Comp
   * Toggle on/off in edit window
   * Remove from group button in edit window?
 
-Validation
+Full Stack
 ==
-* Add Group
 * Assign Light to Group
 * Remove Light from Group
-* Remove Group (Unassigns all lights)
 * Ignore light
 * Show ignored lights
 

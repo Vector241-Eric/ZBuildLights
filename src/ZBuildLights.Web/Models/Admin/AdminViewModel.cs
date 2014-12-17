@@ -40,6 +40,7 @@ namespace ZBuildLights.Web.Models.Admin
     {
         public string Name { get; set; }
         public AdminLightViewModel[] Lights { get; set; }
+        public Guid Id { get; set; }
     }
 
     public class AdminLightViewModel

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using ZBuildLights.Core.Extensions;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Repository;
@@ -8,11 +7,11 @@ using ZBuildLights.Core.Validation;
 
 namespace ZBuildLights.Core.Builders
 {
-    public class LightLightGroupManager : ILightGroupManager
+    public class LightGroupManager : ILightGroupManager
     {
         private readonly IMasterModelRepository _masterModelRepository;
 
-        public LightLightGroupManager(IMasterModelRepository masterModelRepository)
+        public LightGroupManager(IMasterModelRepository masterModelRepository)
         {
             _masterModelRepository = masterModelRepository;
         }
@@ -21,7 +20,9 @@ namespace ZBuildLights.Core.Builders
         {
             var masterModel = _masterModelRepository.GetCurrent();
             if (masterModel.Projects.None(x => x.Id.Equals(projectId)))
-                return CreationResult.Fail<LightGroup>(string.Format("Cannot create group for project '{0}' that doesn't exist", projectId));
+                return
+                    CreationResult.Fail<LightGroup>(
+                        string.Format("Cannot create group for project '{0}' that doesn't exist", projectId));
 
             var project = masterModel.Projects.Single(x => x.Id.Equals(projectId));
             if (project.Groups.Any(x => x.Name.Equals(name)))
@@ -46,7 +47,9 @@ namespace ZBuildLights.Core.Builders
 
             var parentProject = group.ParentProject;
             if (parentProject.Groups.Any(x => x.Name.Equals(name)))
-                return EditResult.Fail<LightGroup>(string.Format("There is already a group named '{0}' in project '{1}'", name, parentProject.Name));
+                return
+                    EditResult.Fail<LightGroup>(string.Format("There is already a group named '{0}' in project '{1}'",
+                        name, parentProject.Name));
 
             group.Name = name;
             _masterModelRepository.Save(masterModel);
@@ -70,6 +73,7 @@ namespace ZBuildLights.Core.Builders
             var parent = group.ParentProject;
             parent.RemoveGroup(group);
 
+            _masterModelRepository.Save(masterModel);
             return EditResult.Success<LightGroup>(null);
         }
     }

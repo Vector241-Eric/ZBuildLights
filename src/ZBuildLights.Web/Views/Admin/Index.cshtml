@@ -14,6 +14,8 @@
             deleteProject: '@Url.Action("DeleteProject")',
             updateProject: '@Url.Action("UpdateProject")',
             addGroup: '@Url.Action("AddGroup")',
+            updateGroup: '@Url.Action("UpdateGroup")',
+            deleteGroup: '@Url.Action("DeleteGroup")',
         };
 
         $(function() {
@@ -71,21 +73,21 @@
 
                 $('#edit-project-id').val(projectId);
                 $('#edit-project-name-input').val(projectName);
-                $('#delete-confirm').hide();
+                $('#edit-project-modal .delete-confirm').hide();
                 $('#edit-project-modal .wait-spinner').hide();
 
                 $('#edit-project-modal').modal('show');
             });
 
-            $('#delete-project-link').click(function() {
-                $('#delete-confirm').show();
+            $('.delete-item-link').click(function () {
+                $('.delete-confirm').show();
             });
 
-            $('#delete-reject-button').click(function() {
-                $('#delete-confirm').hide();
+            $('.delete-reject-button').click(function() {
+                $('.delete-confirm').hide();
             });
 
-            $('#delete-confirm-link').click(function() {
+            $('#edit-project-modal .delete-confirm-link').click(function () {
                 var spinner = $('#edit-project-modal .wait-spinner');
                 spinner.show();
                 var projectId = $('#edit-project-id').val();
@@ -116,7 +118,7 @@
                     .fail(handleError);
             });
 
-            //Add project
+            //Add group
             $('.add-group-button').click(function() {
                 var projectId = $(this).attr('data-projectId');
                 var projectPanel = $('.admin-project-panel[data-projectId="' + projectId + '"]');
@@ -132,12 +134,57 @@
                 var groupName = $('#group-name-input').val();
                 var projectId = $(this).attr('data-projectId');
                 var spinner = $('#add-group-modal .wait-spinner');
+                spinner.show();
                 $.post(urls.addGroup, { groupName: groupName, projectId: projectId })
                     .always(function() {
                         $('#add-group-modal').modal('hide');
                         spinner.hide();
                     })
                     .success(function() {
+                        location.reload();
+                    })
+                    .fail(handleError);
+            });
+
+            //Edit group
+            $('.btn-edit-group').click(function() {
+                var groupId = $(this).data('groupid');
+                var groupName = $(this).data('groupname');
+
+                $('#edit-group-id').val(groupId);
+                $('#edit-group-name-input').val(groupName);
+                $('#edit-group-modal .delete-confirm').hide();
+                $('#edit-group-modal .wait-spinner').hide();
+
+                $('#edit-group-modal').modal('show');
+            });
+
+            $('#save-edit-group').click(function () {
+                var groupId = $('#edit-group-id').val();
+                var name = $('#edit-group-name-input').val();
+                var spinner = $('#edit-group-modal .wait-spinner');
+                spinner.show();
+                $.post(urls.updateGroup, { groupId: groupId, name: name })
+                    .always(function () {
+                        $('#edit-group-modal').modal('hide');
+                        spinner.hide();
+                    })
+                    .success(function () {
+                        location.reload();
+                    })
+                    .fail(handleError);
+            });
+
+            $('#edit-group-modal .delete-confirm-link').click(function () {
+                var spinner = $('#edit-group-modal .wait-spinner');
+                spinner.show();
+                var groupId = $('#edit-group-id').val();
+                $.post(urls.deleteGroup, { groupId: groupId })
+                    .always(function () {
+                        $('#edit-group-modal').modal('hide');
+                        spinner.hide();
+                    })
+                    .success(function () {
                         location.reload();
                     })
                     .fail(handleError);
@@ -193,11 +240,11 @@
                             <input type="text" class="form-control" id="edit-project-name-input" placeholder="My Awesome Project"/>
                         </div>
                     </form>
-                    <div><a href="javascript:void(0)" id="delete-project-link"><p class="text-danger text-right">Delete Project</p></a></div>
-                    <div id="delete-confirm" style="display: none;" class="well">
-                        <button class="btn btn-primary btn-block" id="delete-reject-button">Noooooooooo.... Don't Delete</button>
+                    <div><a href="javascript:void(0)" class="delete-item-link"><p class="text-danger text-right">Delete Project</p></a></div>
+                    <div style="display: none;" class="well delete-confirm">
+                        <button class="btn btn-primary btn-block delete-reject-button">Noooooooooo.... Don't Delete</button>
                         <div style="padding-top: 10px" class="text-right">
-                            <a href="javascript:void(0)" id="delete-confirm-link"><p class="text-danger">Yes, Delete Forever</p></a>
+                            <a href="javascript:void(0)" class="delete-confirm-link"><p class="text-danger">Yes, Delete Forever</p></a>
                         </div>
                     </div>
                 </div>
@@ -231,6 +278,39 @@
                     <h3 class="wait-spinner" style="position: absolute; bottom: 10px; display: none"><i class="fa fa-spinner fa-spin"></i></h3>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
                     <button id="save-new-group" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Edit Group Modal -->
+    <div class="modal fade" id="edit-group-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Edit Group</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <input type="hidden" id="edit-group-id" />
+                        <div class="form-group">
+                            <label for="edit-group-name-input">Group Name</label>
+                            <input type="text" class="form-control" id="edit-group-name-input" placeholder="My Awesome Group" />
+                        </div>
+                    </form>
+                    <div><a href="javascript:void(0)" class="delete-item-link"><p class="text-danger text-right">Delete Group</p></a></div>
+                    <div style="display: none;" class="well delete-confirm">
+                        <button class="btn btn-primary btn-block delete-reject-button">Noooooooooo.... Don't Delete</button>
+                        <div style="padding-top: 10px" class="text-right">
+                            <a href="javascript:void(0)" class="delete-confirm-link"><p class="text-danger">Yes, Delete Forever</p></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <h3 class="wait-spinner" style="position: absolute; bottom: 10px; display: none"><i class="fa fa-spinner fa-spin"></i></h3>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                    <button id="save-edit-group" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -278,7 +358,11 @@
                                 <thead>
                                     <tr>
                                         <td colspan="2" class="lead">@group.Name</td>
-                                        <td class="lead text-right"><button class="btn btn-default"><i class="fa fa-pencil"></i></button></td>
+                                        <td class="lead text-right">
+                                            <button class="btn btn-default btn-edit-group" data-groupid="@group.Id" data-groupname="@group.Name">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Color</th>
