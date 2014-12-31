@@ -419,7 +419,7 @@
                         <tbody>
                             @foreach (var light in unassigned.Lights)
                             {
-                                <tr>
+                                <tr class="zwaveLight" data-homeid="@light.ZWaveHomeId" data-deviceid="@light.ZWaveDeviceId">
                                     <td class="@light.Color.DisplayClass()">@light.Color.DisplayName</td>
                                     <td><a href="javascript:void(0)">Toggle Status (@light.SwitchState.ToString())</a></td>
                                     <td><a href="javascript:void(0)">Edit</a></td>
