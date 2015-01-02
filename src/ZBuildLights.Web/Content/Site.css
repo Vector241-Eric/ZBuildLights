@@ -1,3 +1,23 @@
 ﻿@media (min-width: 980px) {
     body { padding-top: 50px; }
+
+    .light-option-unknown {
+        background-color: #ffffff;
+        color: #888888;
+    }
+
+    .light-option-green {
+        background-color: green;
+        color: green;
+    }
+
+    .light-option-red {
+        background-color: red;
+        color: red;
+    }
+
+    .light-option-yellow {
+        background-color: yellow;
+        color: yellow;
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ZBuildLights.Core.Enumerations;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Web.Extensions;
@@ -14,7 +15,16 @@ namespace ZBuildLights.Web.Models.Admin
 
         public AdminProjectViewModel[] Projects { get; set; }
         public AdminLightGroupViewModel Unassigned { get; set; }
-        public bool NoProjects { get { return Projects.Length == 0; } }
+
+        public bool NoProjects
+        {
+            get { return Projects.Length == 0; }
+        }
+
+        public AdminLightGroupViewModel[] AllGroups
+        {
+            get { return Projects.SelectMany(x => x.Groups).OrderBy(x => x.FullName).ToArray(); }
+        }
     }
 
     public class AdminProjectViewModel
@@ -25,7 +35,7 @@ namespace ZBuildLights.Web.Models.Admin
 
         public AdminLightGroupViewModel[] Groups { get; set; }
 
-        public string HeaderId  
+        public string HeaderId
         {
             get { return string.Format("panel-header-{0}", Name.ToSafeId()); }
         }
@@ -41,6 +51,12 @@ namespace ZBuildLights.Web.Models.Admin
         public string Name { get; set; }
         public AdminLightViewModel[] Lights { get; set; }
         public Guid Id { get; set; }
+        public string ParentProjectName { get; set; }
+
+        public string FullName
+        {
+            get { return string.Format("{0}.{1}", ParentProjectName, Name); }
+        }
     }
 
     public class AdminLightViewModel
@@ -50,6 +66,5 @@ namespace ZBuildLights.Web.Models.Admin
         public SwitchState SwitchState { get; set; }
         public byte ZWaveDeviceId { get; private set; }
         public uint ZWaveHomeId { get; private set; }
-
     }
 }

@@ -151,6 +151,7 @@
     </Compile>
     <Compile Include="Mapping\ViewModelProfile.cs" />
     <Compile Include="Models\Admin\AdminViewModel.cs" />
+    <Compile Include="Models\Admin\LightColorOption.cs" />
     <Compile Include="Models\Home\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ViewModelProviders\AdminViewModelProvider.cs" />
@@ -165,7 +166,8 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\Admin.js" />
+    <Content Include="Scripts\App\Admin.js" />
+    <Content Include="Scripts\App\namespace.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\fontawesome-webfont.woff" />

@@ -1,4 +1,6 @@
-﻿@using ZBuildLights.Web.Extensions
+﻿@using ZBuildLights.Core.Models
+@using ZBuildLights.Web.Extensions
+@using ZBuildLights.Web.Models.Admin
 @model ZBuildLights.Web.Models.Admin.AdminViewModel
 
 @{
@@ -8,18 +10,19 @@
 }
 
 @section scripts {
-    <script>
-        var Admin = Admin || {};
-        Admin.urls = {
-            addProject: '@Url.Action("AddProject")',
-            deleteProject: '@Url.Action("DeleteProject")',
-            updateProject: '@Url.Action("UpdateProject")',
-            addGroup: '@Url.Action("AddGroup")',
-            updateGroup: '@Url.Action("UpdateGroup")',
-            deleteGroup: '@Url.Action("DeleteGroup")',
-        };
-    </script>
     @Scripts.Render("~/bundles/admin")
+    <script>
+        ZBuildLights.createNamespace('Admin.Urls');
+        ZBuildLights.Admin.Urls.addProject = '@Url.Action("AddProject")';
+        ZBuildLights.Admin.Urls.deleteProject = '@Url.Action("DeleteProject")';
+        ZBuildLights.Admin.Urls.updateProject = '@Url.Action("UpdateProject")';
+        ZBuildLights.Admin.Urls.addGroup = '@Url.Action("AddGroup")';
+        ZBuildLights.Admin.Urls.updateGroup = '@Url.Action("UpdateGroup")';
+        ZBuildLights.Admin.Urls.deleteGroup = '@Url.Action("DeleteGroup")';
+
+        ZBuildLights.createNamespace('Admin.Constants');
+        ZBuildLights.Admin.Constants.lightOptionPrefix = '@LightColorOption.CssClassPrefix';
+    </script>
 }
 
 <div class="row" id="alert-container">
@@ -128,7 +131,7 @@
                                 <tr class="zwaveLight" data-homeid="@light.ZWaveHomeId" data-deviceid="@light.ZWaveDeviceId">
                                     <td class="@light.Color.DisplayClass()">@light.Color.DisplayName</td>
                                     <td><a href="javascript:void(0)">Toggle Status (@light.SwitchState.ToString())</a></td>
-                                    <td><a href="javascript:void(0)">Edit</a></td>
+                                    <td><a href="javascript:void(0)" class="edit-light-link">Edit</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -252,6 +255,49 @@
                     <h3 class="wait-spinner" style="position: absolute; bottom: 10px; display: none"><i class="fa fa-spinner fa-spin"></i></h3>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
                     <button id="save-edit-group" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->    
+    <!-- Edit Light Modal -->
+    <div class="modal fade" id="edit-light-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Edit light</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <input type="hidden" id="edit-light-homeid"/>
+                        <input type="hidden" id="edit-light-deviceid"/>
+                            <div class="form-group">
+                                <label for="select-light-group" class="control-label">Group</label>
+                                    <select class="form-control" id="select-light-group">
+                                        <option value="@Guid.Empty">Unassigned</option>
+                                        @foreach (var group in Model.AllGroups)
+                                        {
+                                            <option value="@group.Id">@group.FullName</option>
+                                        }
+                                    </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="select-light-color" class="control-label">Color</label>
+
+                                    <select class="form-control" id="select-light-color">
+                                        @foreach (var color in LightColorOption.GetAll())
+                                        {
+                                            <option value="@color.Id" class="@color.CssClass" data-optioncss="@color.CssClass">@color.Text</option>
+                                        }
+                                    </select>
+                            </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <h3 class="wait-spinner" style="position: absolute; bottom: 10px; display: none"><i class="fa fa-spinner fa-spin"></i></h3>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                    <button id="save-light" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
