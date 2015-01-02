@@ -8,6 +8,17 @@
 }
 
 @section scripts {
+    <script>
+        var Admin = Admin || {};
+        Admin.urls = {
+            addProject: '@Url.Action("AddProject")',
+            deleteProject: '@Url.Action("DeleteProject")',
+            updateProject: '@Url.Action("UpdateProject")',
+            addGroup: '@Url.Action("AddGroup")',
+            updateGroup: '@Url.Action("UpdateGroup")',
+            deleteGroup: '@Url.Action("DeleteGroup")',
+        };
+    </script>
     @Scripts.Render("~/bundles/admin")
 }
 
@@ -172,9 +183,9 @@
                             <input type="text" class="form-control" id="edit-project-name-input" placeholder="My Awesome Project" />
                         </div>
                     </form>
-                    <div><a href="javascript:void(0)" class="delete-item-link"><p class="text-danger text-right">Delete Project</p></a></div>
-                    <div style="display: none;" class="well delete-confirm">
-                        <button class="btn btn-primary btn-block delete-reject-button">Noooooooooo.... Don't Delete</button>
+                    <div><a href="javascript:void(0)" class="delete-project-link"><p class="text-danger text-right">Delete Project</p></a></div>
+                    <div style="display: none;" class="well delete-project-confirm">
+                        <button class="btn btn-primary btn-block delete-project-reject-button">Noooooooooo.... Don't Delete</button>
                         <div style="padding-top: 10px" class="text-right">
                             <a href="javascript:void(0)" class="delete-confirm-link"><p class="text-danger">Yes, Delete Forever</p></a>
                         </div>
@@ -229,9 +240,9 @@
                             <input type="text" class="form-control" id="edit-group-name-input" placeholder="My Awesome Group" />
                         </div>
                     </form>
-                    <div><a href="javascript:void(0)" class="delete-item-link"><p class="text-danger text-right">Delete Group</p></a></div>
-                    <div style="display: none;" class="well delete-confirm">
-                        <button class="btn btn-primary btn-block delete-reject-button">Noooooooooo.... Don't Delete</button>
+                    <div><a href="javascript:void(0)" class="delete-group-link"><p class="text-danger text-right">Delete Group</p></a></div>
+                    <div style="display: none;" class="well delete-group-confirm">
+                        <button class="btn btn-primary btn-block delete-group-reject-button">Noooooooooo.... Don't Delete</button>
                         <div style="padding-top: 10px" class="text-right">
                             <a href="javascript:void(0)" class="delete-confirm-link"><p class="text-danger">Yes, Delete Forever</p></a>
                         </div>

@@ -1,14 +1,5 @@
 ﻿var Admin = Admin || {};
 
-Admin.urls = {
-    addProject: '@Url.Action("AddProject")',
-    deleteProject: '@Url.Action("DeleteProject")',
-    updateProject: '@Url.Action("UpdateProject")',
-    addGroup: '@Url.Action("AddGroup")',
-    updateGroup: '@Url.Action("UpdateGroup")',
-    deleteGroup: '@Url.Action("DeleteGroup")',
-};
-
 Admin.alert = {
     show: function(message) {
         var template = $(document.getElementById('alert-template').innerHTML);
@@ -34,15 +25,12 @@ Admin.collapse = {
 
     attachHandlers: function() {
         $('.collapse').on('show.bs.collapse', Admin.collapse.onShow);
-
         $('.collapse').on('hide.bs.collapse', Admin.collapse.onCollapse);
     }
 }
 
-$(function () {
-    Admin.collapse.attachHandlers();
-
-    function handleError(data) {
+Admin.networkState = {
+    handleError: function (data) {
         if (data.status == 500) {
             console.log(data.statusText);
             Admin.alert.show('Failed to add project. Please try again later.');
@@ -50,26 +38,10 @@ $(function () {
         }
         Admin.alert.show(data.responseJSON.Message);
     }
+}
 
-    //New Project Modal
-    $('#save-new-project').click(function () {
-        Admin.alert.close();
-        var spinner = $('#add-project-modal .wait-spinner');
-        spinner.show();
-        var input = $('#project-name-input').val();
-        $.post(Admin.urls.addProject, { projectName: input })
-            .always(function () {
-                $('#add-project-modal').modal('hide');
-                spinner.hide();
-            })
-            .success(function () {
-                location.reload();
-            })
-            .fail(handleError);
-    });
-
-    //Edit Project
-    $('.btn-edit-project').click(function () {
+Admin.project = {
+    edit: function () {
         var projectId = $(this).attr('data-projectId');
         var projectPanel = $('.admin-project-panel[data-projectId="' + projectId + '"]');
         var projectName = projectPanel.attr('data-projectName');
@@ -80,17 +52,25 @@ $(function () {
         $('#edit-project-modal .wait-spinner').hide();
 
         $('#edit-project-modal').modal('show');
-    });
+    },
 
-    $('.delete-item-link').click(function () {
-        $('.delete-confirm').show();
-    });
+    saveNew: function() {
+        Admin.alert.close();
+        var spinner = $('#add-project-modal .wait-spinner');
+        spinner.show();
+        var input = $('#project-name-input').val();
+        $.post(Admin.urls.addProject, { projectName: input })
+            .always(function() {
+                $('#add-project-modal').modal('hide');
+                spinner.hide();
+            })
+            .success(function() {
+                location.reload();
+            })
+            .fail(Admin.networkState.handleError);
+    },
 
-    $('.delete-reject-button').click(function () {
-        $('.delete-confirm').hide();
-    });
-
-    $('#edit-project-modal .delete-confirm-link').click(function () {
+    postDelete: function () {
         var spinner = $('#edit-project-modal .wait-spinner');
         spinner.show();
         var projectId = $('#edit-project-id').val();
@@ -102,10 +82,10 @@ $(function () {
             .success(function () {
                 location.reload();
             })
-            .fail(handleError);
-    });
+            .fail(Admin.networkState.handleError);
+    },
 
-    $('#save-edit-project').click(function () {
+    postEdits: function () {
         var projectId = $('#edit-project-id').val();
         var name = $('#edit-project-name-input').val();
         var spinner = $('#edit-project-modal .wait-spinner');
@@ -118,11 +98,39 @@ $(function () {
             .success(function () {
                 location.reload();
             })
-            .fail(handleError);
-    });
+            .fail(Admin.networkState.handleError);
+    },
 
-    //Add group
-    $('.add-group-button').click(function () {
+    deleteConfirmation: {
+        show: function () {
+            $('.delete-project-confirm').show();
+        },
+        hide: function() {
+            $('.delete-project-confirm').hide();
+        }
+    },
+
+    attachHandlers: function() {
+        $('#save-new-project').click(saveNew);
+        $('.btn-edit-project').click(edit);
+        $('.delete-project-link').click(deleteConfirmation.show);
+        $('.delete-project-reject-button').click(deleteConfirmation.hide);
+        $('#edit-project-modal .delete-confirm-link').click(postDelete);
+        $('#save-edit-project').click(postEdits);
+    }
+};
+
+Admin.group = {
+    deleteConfirmation: {
+        show: function () {
+            $('.delete-group-confirm').show();
+        },
+        hide: function () {
+            $('.delete-group-confirm').hide();
+        }
+    },
+
+    add: function () {
         var projectId = $(this).attr('data-projectId');
         var projectPanel = $('.admin-project-panel[data-projectId="' + projectId + '"]');
         var projectName = projectPanel.attr('data-projectName');
@@ -131,9 +139,9 @@ $(function () {
         $('#save-new-group').attr('data-projectid', projectId);
 
         $('#add-group-modal').modal('show');
-    });
+    },
 
-    $('#save-new-group').click(function () {
+    saveNew: function () {
         var groupName = $('#group-name-input').val();
         var projectId = $(this).attr('data-projectId');
         var spinner = $('#add-group-modal .wait-spinner');
@@ -146,11 +154,10 @@ $(function () {
             .success(function () {
                 location.reload();
             })
-            .fail(handleError);
-    });
+            .fail(Admin.networkState.handleError);
+    },
 
-    //Edit group
-    $('.btn-edit-group').click(function () {
+    edit: function () {
         var groupId = $(this).data('groupid');
         var groupName = $(this).data('groupname');
 
@@ -160,9 +167,9 @@ $(function () {
         $('#edit-group-modal .wait-spinner').hide();
 
         $('#edit-group-modal').modal('show');
-    });
+    },
 
-    $('#save-edit-group').click(function () {
+    postEdit: function () {
         var groupId = $('#edit-group-id').val();
         var name = $('#edit-group-name-input').val();
         var spinner = $('#edit-group-modal .wait-spinner');
@@ -175,10 +182,10 @@ $(function () {
             .success(function () {
                 location.reload();
             })
-            .fail(handleError);
-    });
+            .fail(Admin.networkState.handleError);
+    },
 
-    $('#edit-group-modal .delete-confirm-link').click(function () {
+    postDelete: function () {
         var spinner = $('#edit-group-modal .wait-spinner');
         spinner.show();
         var groupId = $('#edit-group-id').val();
@@ -190,6 +197,22 @@ $(function () {
             .success(function () {
                 location.reload();
             })
-            .fail(handleError);
-    });
+            .fail(Admin.networkState.handleError);
+    },
+
+    attachHandlers: function() {
+        $('.delete-group-reject-button').click(deleteConfirmation.hide);
+        $('.delete-group-link').click(deleteConfirmation.show);
+        $('.add-group-button').click(add);
+        $('#save-new-group').click(saveNew);
+        $('.btn-edit-group').click(edit);
+        $('#save-edit-group').click(postEdit);
+        $('#edit-group-modal .delete-confirm-link').click(postDelete);
+    }
+};
+
+$(function() {
+    Admin.collapse.attachHandlers();
+    Admin.project.attachHandlers();
+    Admin.group.attachHandlers();
 });
