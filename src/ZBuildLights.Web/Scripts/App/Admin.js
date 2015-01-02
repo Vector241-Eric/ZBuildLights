@@ -252,20 +252,29 @@
         };
 
         var editLight = function() {
-            var el = $(this);
-            var container = el.parents('.zwaveLight');
+            var container = $(this).parents('.zwaveLight');
+
             var homeId = container.data('homeid');
             var deviceId = container.data('deviceid');
+            var group = container.data('group');
+            var color = container.data('color');
+
             $('#edit-light-homeid').val(homeId);
             $('#edit-light-deviceid').val(deviceId);
-
+            selectColor(color);
+            $('#select-light-group').val(group);
             $('#edit-light-modal').modal('show');
         };
 
-        var setSelectColor = function () {
+        function selectColor(colorId) {
+            $('#select-light-color').val(colorId);
+            adjustColorSelectStylesBasedOnValue();
+        }
+
+        var adjustColorSelectStylesBasedOnValue = function () {
             var prefix = ZBuildLights.Admin.Constants.lightOptionPrefix;
 
-            var el = $(this);
+            var el = $('#select-light-color');
             var selectElement = el[0];
             var selectedOption = selectElement[selectElement.selectedIndex];
             var cssToAdd = selectedOption.getAttribute('data-optioncss');
@@ -287,7 +296,7 @@
         var attachHandlers = function() {
             $('#save-light').click(postEdit);
             $('.edit-light-link').click(editLight);
-            $('#select-light-color').change(setSelectColor);
+            $('#select-light-color').change(adjustColorSelectStylesBasedOnValue);
         };
 
         return {
