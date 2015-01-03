@@ -1,0 +1,38 @@
+﻿@using ZBuildLights.Web.Extensions
+@using ZBuildLights.Web.Models.Admin
+@model dynamic
+@{
+    AdminLightGroupViewModel group = Model.Group;
+    bool showTitle = Model.showTitle;
+}
+
+<table class="table table-hover">
+    <thead>
+        @if (showTitle)
+        {
+            <tr>
+                <td colspan="2" class="lead">@group.Name</td>
+                <td class="lead text-right">
+                    <button class="btn btn-default btn-edit-group" data-groupid="@group.Id" data-groupname="@group.Name">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+        <tr>
+            <th>Color</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var light in group.Lights)
+        {
+            <tr class="zwaveLight" data-homeid="@light.ZWaveHomeId" data-deviceid="@light.ZWaveDeviceId" data-color="@light.Color.Value" data-group="@group.Id">
+                <td class="@light.Color.DisplayClass()">@light.Color.DisplayName</td>
+                <td><a href="javascript:void(0)">Toggle Status (@light.SwitchState.ToString())</a></td>
+                <td><a href="javascript:void(0)" class="edit-light-link">Edit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

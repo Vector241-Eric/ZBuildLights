@@ -1,5 +1,4 @@
-﻿using System;
-using ZBuildLights.Core.Models;
+﻿using ZBuildLights.Core.Models;
 
 namespace ZBuildLights.Web.Extensions
 {
@@ -14,19 +13,7 @@ namespace ZBuildLights.Web.Extensions
 
         public static string DisplayClass(this LightColor color)
         {
-            if (color.Equals(LightColor.Green))
-                return "success";
-
-            if (color.Equals(LightColor.Yellow))
-                return "warning";
-
-            if (color.Equals(LightColor.Red))
-                return "danger";
-
-            if (color.Equals(LightColor.Unknown))
-                return string.Empty;
-
-            throw new Exception(string.Format("light color {0} is not handled.", color.DisplayName));
+            return string.Format("light-display-{0}", color.DisplayName.ToLowerInvariant());
         }
     }
 }

@@ -63,33 +63,8 @@
                     <div class="panel-body">
                         @foreach (var group in project.Groups)
                         {
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <td colspan="2" class="lead">@group.Name</td>
-                                        <td class="lead text-right">
-                                            <button class="btn btn-default btn-edit-group" data-groupid="@group.Id" data-groupname="@group.Name">
-                                                <i class="fa fa-pencil"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Color</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var light in group.Lights)
-                                    {
-                                        <tr class="zwaveLight" data-homeid="@light.ZWaveHomeId" data-deviceid="@light.ZWaveDeviceId" data-color="@light.Color.Value" data-group="@group.Id">
-                                            <td class="@light.Color.DisplayClass()">@light.Color.DisplayName</td>
-                                            <td><a href="javascript:void(0)">Toggle Status (@light.SwitchState.ToString())</a></td>
-                                            <td><a href="javascript:void(0)">Edit</a></td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                            Html.RenderPartial("LightGroup", new{Group = group, showTitle = true});
+                                
                         }
                         <div class="row text-right" style="padding-right: 15px; padding-bottom: 15px;">
                             <button class="btn btn-default add-group-button" data-projectId="@project.Id"><i class="fa fa-plus"></i> Add Group</button>
@@ -117,25 +92,7 @@
             </div>
             <div id="collapse-unassigned" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="panel-heading-unassigned" data-panelheading="panel-heading-unassigned">
                 <div class="panel-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Color</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var light in unassigned.Lights)
-                            {
-                                <tr class="zwaveLight" data-homeid="@light.ZWaveHomeId" data-deviceid="@light.ZWaveDeviceId" data-color="@light.Color.Value" data-group="@Guid.Empty">
-                                    <td class="@light.Color.DisplayClass()">@light.Color.DisplayName</td>
-                                    <td><a href="javascript:void(0)">Toggle Status (@light.SwitchState.ToString())</a></td>
-                                    <td><a href="javascript:void(0)" class="edit-light-link">Edit</a></td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                    @Html.Partial("LightGroup", new {Group = unassigned, showTitle = false})
                 </div>
             </div>
         </div>
@@ -146,6 +103,7 @@
 </div>
 
 @section modals {
+    @Html.Partial("EditProjectModal", new {ShowDelete = true})
     <!-- Add Project Modal -->
     <div class="modal fade" id="add-project-modal">
         <div class="modal-dialog">
@@ -166,38 +124,6 @@
                     <h3 class="wait-spinner" style="position: absolute; bottom: 10px; display: none"><i class="fa fa-spinner fa-spin"></i></h3>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
                     <button id="save-new-project" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <!-- Edit Project Modal -->
-    <div class="modal fade" id="edit-project-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Edit Project</h4>
-                </div>
-                <div class="modal-body">
-                    <form role="form">
-                        <input type="hidden" id="edit-project-id" />
-                        <div class="form-group">
-                            <label for="edit-project-name-input">Project Name</label>
-                            <input type="text" class="form-control" id="edit-project-name-input" placeholder="My Awesome Project" />
-                        </div>
-                    </form>
-                    <div><a href="javascript:void(0)" class="delete-project-link"><p class="text-danger text-right">Delete Project</p></a></div>
-                    <div style="display: none;" class="well delete-project-confirm">
-                        <button class="btn btn-primary btn-block delete-project-reject-button">Noooooooooo.... Don't Delete</button>
-                        <div style="padding-top: 10px" class="text-right">
-                            <a href="javascript:void(0)" class="delete-confirm-link"><p class="text-danger">Yes, Delete Forever</p></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <h3 class="wait-spinner" style="position: absolute; bottom: 10px; display: none"><i class="fa fa-spinner fa-spin"></i></h3>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
-                    <button id="save-edit-project" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

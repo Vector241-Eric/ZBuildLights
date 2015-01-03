@@ -47,17 +47,25 @@
     })();
 
     Admin.Error = (function() {
-        var handle = function(data) {
+        var handle = function(data, message) {
             if (data.status == 500) {
                 console.log(data.statusText);
-                Admin.Alert.show('Failed to add project. Please try again later.');
+                Admin.Alert.show('500 error: ' + message);
                 return;
             }
             Admin.Alert.show(data.responseJSON.Message);
         };
+        
+        var handleWrapper = function(failureMessage) {
+            var handleCore = function(data) {
+                handle(data, failureMessage);
+            }
+
+            return handleCore;
+        }
 
         return {
-            handle: handle
+            handle: handleWrapper
         }
     })();
 
@@ -88,7 +96,7 @@
                 .success(function() {
                     location.reload();
                 })
-                .fail(Admin.Error.handle);
+                .fail(Admin.Error.handle('Failed to save new project.'));
         };
 
         var postDelete = function() {
@@ -103,7 +111,7 @@
                 .success(function() {
                     location.reload();
                 })
-                .fail(Admin.Error.handle);
+                .fail(Admin.Error.handle('Failed to delete project.'));
         };
 
         var postEdits = function() {
@@ -119,7 +127,7 @@
                 .success(function() {
                     location.reload();
                 })
-                .fail(Admin.Error.handle);
+                .fail(Admin.Error.handle('Failed to edit project.'));
         };
 
         var deleteConfirmation = {
@@ -179,7 +187,7 @@
                 .success(function() {
                     location.reload();
                 })
-                .fail(Admin.Error.handle);
+                .fail(Admin.Error.handle('Failed to create new light group.'));
         };
 
         var edit = function() {
@@ -207,7 +215,7 @@
                 .success(function() {
                     location.reload();
                 })
-                .fail(Admin.Error.handle);
+                .fail(Admin.Error.handle('Failed to edit light group.'));
         };
 
         var postDelete = function() {
@@ -222,7 +230,7 @@
                 .success(function() {
                     location.reload();
                 })
-                .fail(Admin.Error.handle);
+                .fail(Admin.Error.handle('Failed to delete light group.'));
         };
 
         var attachHandlers = function() {
@@ -248,8 +256,6 @@
 
             var homeId = $('#edit-light-homeid').val();
             var deviceId = $('#edit-light-deviceid').val();
-//            var selectGroup = document.getElementById('select-light-group');
-            //            var groupId = selectGroup[selectGroup.selectedIndex].value;
             var groupId = $('#select-light-group').val();
             var colorId = $('#select-light-color').val();
 
@@ -261,7 +267,7 @@
                 .success(function () {
                     location.reload();
                 })
-                .fail(Admin.Error.handle);
+                .fail(Admin.Error.handle('Failed to edit light.'));
         };
 
         var editLight = function() {

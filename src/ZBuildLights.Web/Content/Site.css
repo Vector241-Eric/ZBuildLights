@@ -6,18 +6,30 @@
         color: #888888;
     }
 
-    .light-option-green {
+    .light-option-green, .light-display-green {
         background-color: green;
+        color: white;
+    }
+
+    .light-option-yellow, .light-display-yellow {
+        background-color: yellow;
+        color: black;
+    }
+
+    .light-option-red, .light-display-red {
+        background-color: red;
+        color: white;
+    }
+
+    .light-option-green {
         color: green;
     }
 
-    .light-option-red {
-        background-color: red;
-        color: red;
+    .light-option-yellow {
+        color: yellow;
     }
 
-    .light-option-yellow {
-        background-color: yellow;
-        color: yellow;
+    .light-option-red {
+        color: red;
     }
 }

@@ -19,9 +19,14 @@ namespace ZBuildLights.Web.Models.Admin
                 {
                     Text = x.DisplayName,
                     Id = x.Value,
-                    CssClass = string.Format("{0}{1}", CssClassPrefix, x.DisplayName.ToLowerInvariant().Replace("<", string.Empty).Replace(">", string.Empty))
+                    CssClass = string.Format("{0}{1}", CssClassPrefix, MakeDisplayClass(x))
                 })
                 .ToArray();
+        }
+
+        private static string MakeDisplayClass(LightColor x)
+        {
+            return x.DisplayName.ToLowerInvariant().Replace("<", string.Empty).Replace(">", string.Empty);
         }
     }
 }
