@@ -53,6 +53,7 @@
     <Compile Include="ZBuildLights.Core\Builders\LightGroupManagerTests.cs" />
     <Compile Include="ZBuildLights.Core\Builders\LightUpdaterTests.cs" />
     <Compile Include="ZBuildLights.Core\Builders\ProjectManagerTests.cs" />
+    <Compile Include="ZBuildLights.Core\Builders\SystemStatusProviderTests.cs" />
     <Compile Include="ZBuildLights.Core\Models\LightGroupTests.cs" />
     <Compile Include="ZBuildLights.Core\Models\LightTests.cs" />
     <Compile Include="ZBuildLights.Core\Models\MasterModelTests.cs" />

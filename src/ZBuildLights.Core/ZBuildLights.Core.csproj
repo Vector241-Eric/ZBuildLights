@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Models\ZWaveSwitch.cs" />
     <Compile Include="Services\IProjectManager.cs" />
+    <Compile Include="Services\ISystemStatusProvider.cs" />
     <Compile Include="Services\IZWaveNetwork.cs" />
     <Compile Include="Services\LightUpdater.cs" />
     <Compile Include="Services\ProjectManager.cs" />
