@@ -242,13 +242,26 @@
 
     Admin.Light = (function () {
 
-        var postEdit = function() {
+        var postEdit = function () {
+            var spinner = $('#edit-light-modal .wait-spinner');
+            spinner.show();
+
             var homeId = $('#edit-light-homeid').val();
             var deviceId = $('#edit-light-deviceid').val();
-            var selectGroup = document.getElementById('select-light-group');
-            var selectGroupValue = selectGroup[selectGroup.selectedIndex].value;
+//            var selectGroup = document.getElementById('select-light-group');
+            //            var groupId = selectGroup[selectGroup.selectedIndex].value;
+            var groupId = $('#select-light-group').val();
+            var colorId = $('#select-light-color').val();
 
-            throw "Not yet implemented: need to post changes";
+            $.post(Admin.Urls.editLight, { homeId: homeId, deviceId: deviceId, groupId: groupId, colorId: colorId })
+                .always(function () {
+                    $('#edit-light-modal').modal('hide');
+                    spinner.hide();
+                })
+                .success(function () {
+                    location.reload();
+                })
+                .fail(Admin.Error.handle);
         };
 
         var editLight = function() {

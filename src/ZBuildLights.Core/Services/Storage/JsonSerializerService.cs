@@ -3,7 +3,7 @@ using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Models.JsonSerialization;
 using ZBuildLights.Core.Wrappers;
 
-namespace ZBuildLights.Core.Services
+namespace ZBuildLights.Core.Services.Storage
 {
     public class JsonSerializerService : IJsonSerializerService
     {

@@ -18,6 +18,7 @@
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 using ZBuildLights.Core;
+using ZBuildLights.Core.Builders;
 using ZBuildLights.Core.Services;
 
 namespace ZBuildLights.Web.DependencyResolution

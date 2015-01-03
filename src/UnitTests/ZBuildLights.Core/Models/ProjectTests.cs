@@ -17,7 +17,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 project.AddGroup(group);
 
                 group.ParentProject.ShouldBeSameAs(project);
-            } 
-        } 
+            }
+        }
     }
 }

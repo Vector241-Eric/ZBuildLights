@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Web.Mvc;
-using ZBuildLights.Core.Builders;
+using ZBuildLights.Core.Services;
 using ZBuildLights.Web.Services.ViewModelProviders;
 
 namespace ZBuildLights.Web.Controllers
@@ -11,13 +11,15 @@ namespace ZBuildLights.Web.Controllers
         private readonly IProjectManager _projectManager;
         private readonly ILightGroupManager _lightGroupManager;
         private readonly IAdminViewModelProvider _viewModelProvider;
+        private readonly ILightUpdater _lightUpdater;
 
         public AdminController(IProjectManager projectManager, ILightGroupManager lightGroupManager,
-            IAdminViewModelProvider viewModelProvider)
+            IAdminViewModelProvider viewModelProvider, ILightUpdater lightUpdater)
         {
             _projectManager = projectManager;
             _lightGroupManager = lightGroupManager;
             _viewModelProvider = viewModelProvider;
+            _lightUpdater = lightUpdater;
         }
 
         public ActionResult Index()
@@ -50,7 +52,7 @@ namespace ZBuildLights.Web.Controllers
             var result = _projectManager.UpdateProject(projectId, name);
             if (result.WasSuccessful)
                 return RedirectToAction("Index");
-            Response.StatusCode = (int)HttpStatusCode.Conflict;
+            Response.StatusCode = (int) HttpStatusCode.Conflict;
             return Json(result);
         }
 
@@ -68,7 +70,7 @@ namespace ZBuildLights.Web.Controllers
             var result = _lightGroupManager.UpdateLightGroup(groupId, name);
             if (result.WasSuccessful)
                 return RedirectToAction("Index");
-            Response.StatusCode = (int)HttpStatusCode.Conflict;
+            Response.StatusCode = (int) HttpStatusCode.Conflict;
             return Json(result);
         }
 
@@ -76,6 +78,13 @@ namespace ZBuildLights.Web.Controllers
         public ActionResult DeleteGroup(Guid groupId)
         {
             _lightGroupManager.DeleteLightGroup(groupId);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult EditLight(uint homeId, byte deviceId, Guid groupId, int colorId)
+        {
+            _lightUpdater.Update(homeId, deviceId, groupId, colorId);
             return RedirectToAction("Index");
         }
     }

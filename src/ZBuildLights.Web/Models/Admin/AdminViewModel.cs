@@ -53,10 +53,7 @@ namespace ZBuildLights.Web.Models.Admin
         public Guid Id { get; set; }
         public string ParentProjectName { get; set; }
 
-        public string FullName
-        {
-            get { return string.Format("{0}.{1}", ParentProjectName, Name); }
-        }
+        public string FullName { get; set; }
     }
 
     public class AdminLightViewModel

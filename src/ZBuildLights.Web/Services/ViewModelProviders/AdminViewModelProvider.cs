@@ -12,7 +12,8 @@ namespace ZBuildLights.Web.Services.ViewModelProviders
         private readonly ILightAssignmentService _lightAssignmentService;
         private readonly IMapper _mapper;
 
-        public AdminViewModelProvider(IMasterModelRepository masterModelRepository, ILightAssignmentService lightAssignmentService,
+        public AdminViewModelProvider(IMasterModelRepository masterModelRepository,
+            ILightAssignmentService lightAssignmentService,
             IMapper mapper)
         {
             _masterModelRepository = masterModelRepository;

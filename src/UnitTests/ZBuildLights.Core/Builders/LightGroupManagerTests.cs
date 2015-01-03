@@ -3,8 +3,8 @@ using System.Linq;
 using NUnit.Framework;
 using Should;
 using UnitTests._Stubs;
-using ZBuildLights.Core.Builders;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Validation;
 
 namespace UnitTests.ZBuildLights.Core.Builders
@@ -20,7 +20,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
+                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
                 project.AddGroup(new LightGroup {Name = "Existing Group"});
 
                 var existingMasterModel = new MasterModel();
@@ -77,8 +77,8 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                project.AddGroup(new LightGroup { Name = "Existing Group" });
+                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                project.AddGroup(new LightGroup {Name = "Existing Group"});
 
                 _projectIdDoesntExist = Guid.NewGuid();
 
@@ -103,7 +103,8 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [Test]
             public void Should_have_a_reasonable_failure_message()
             {
-                _result.Message.ShouldEqual(string.Format("Cannot create group for project '{0}' that doesn't exist", _projectIdDoesntExist));
+                _result.Message.ShouldEqual(string.Format("Cannot create group for project '{0}' that doesn't exist",
+                    _projectIdDoesntExist));
             }
 
             [Test]
@@ -122,8 +123,8 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                project.AddGroup(new LightGroup { Name = "Existing Group" });
+                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                project.AddGroup(new LightGroup {Name = "Existing Group"});
 
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.AddProject(project);
@@ -165,10 +166,10 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                var existingGroup = new LightGroup { Name = "Existing Group" , Id = Guid.NewGuid()};
+                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 project.AddGroup(existingGroup);
-                project.AddGroup(new LightGroup{Id = Guid.NewGuid()});
+                project.AddGroup(new LightGroup {Id = Guid.NewGuid()});
 
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.AddProject(project);
@@ -226,10 +227,10 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                var existingGroup = new LightGroup { Name = "Existing Group", Id = Guid.NewGuid() };
+                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 project.AddGroup(existingGroup);
-                project.AddGroup(new LightGroup { Id = Guid.NewGuid(), Name = "Name Collision"});
+                project.AddGroup(new LightGroup {Id = Guid.NewGuid(), Name = "Name Collision"});
 
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.AddProject(project);
@@ -258,7 +259,8 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [Test]
             public void Should_include_a_reasonable_failure_message()
             {
-                _result.Message.ShouldEqual("There is already a group named 'Name Collision' in project 'Existing Project'");
+                _result.Message.ShouldEqual(
+                    "There is already a group named 'Name Collision' in project 'Existing Project'");
             }
         }
 
@@ -271,10 +273,10 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                var existingGroup = new LightGroup { Name = "Existing Group", Id = Guid.NewGuid() };
+                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 project.AddGroup(existingGroup);
-                project.AddGroup(new LightGroup { Id = Guid.NewGuid() });
+                project.AddGroup(new LightGroup {Id = Guid.NewGuid()});
 
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.AddProject(project);
@@ -313,10 +315,10 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                var existingGroup = new LightGroup { Name = "Existing Group", Id = Guid.NewGuid() };
+                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 project.AddGroup(existingGroup);
-                project.AddGroup(new LightGroup { Id = Guid.NewGuid() });
+                project.AddGroup(new LightGroup {Id = Guid.NewGuid()});
 
                 _groupIdDoesntExist = Guid.NewGuid();
 
@@ -341,7 +343,8 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [Test]
             public void Should_have_a_reasonable_failure_message()
             {
-                _result.Message.ShouldEqual(string.Format("Could not locate a light group with ID '{0}'", _groupIdDoesntExist));
+                _result.Message.ShouldEqual(string.Format("Could not locate a light group with ID '{0}'",
+                    _groupIdDoesntExist));
             }
 
             [Test]
@@ -362,10 +365,10 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                _parentProject = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                var existingGroup = new LightGroup { Name = "Existing Group", Id = Guid.NewGuid() };
+                _parentProject = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 _parentProject.AddGroup(existingGroup);
-                _remainingGroup = new LightGroup { Id = Guid.NewGuid() };
+                _remainingGroup = new LightGroup {Id = Guid.NewGuid()};
                 _parentProject.AddGroup(_remainingGroup);
 
                 var existingMasterModel = new MasterModel();
@@ -406,8 +409,8 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var parentProject = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                var existingGroup = new LightGroup { Name = "Existing Group", Id = Guid.NewGuid() };
+                var parentProject = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 parentProject.AddGroup(existingGroup);
 
                 _idDoesNotExist = Guid.NewGuid();
@@ -433,7 +436,8 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [Test]
             public void Should_have_a_reasonable_failure_message()
             {
-                _result.Message.ShouldEqual(string.Format("Could not locate a light group with ID '{0}'", _idDoesNotExist));
+                _result.Message.ShouldEqual(string.Format("Could not locate a light group with ID '{0}'",
+                    _idDoesNotExist));
             }
 
             [Test]

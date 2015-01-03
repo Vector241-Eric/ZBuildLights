@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using KellermanSoftware.CompareNetObjects;
 using NUnit.Framework;
 using Should;
+using ZBuildLights.Core.Builders;
 using ZBuildLights.Core.Models;
-using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Services.Storage;
 using ZBuildLights.Web;
 using ZBuildLights.Web.DependencyResolution;
 
@@ -31,7 +32,11 @@ namespace IntegrationTests.ZBuildLights.Core.Services
 
                 var deserialized = serializer.DeserializeMasterModel(json);
 
-                var comparer = new CompareLogic(new ComparisonConfig{MembersToIgnore = new List<string>{"SwitchState", "StatusMode"}});
+                var comparer =
+                    new CompareLogic(new ComparisonConfig
+                    {
+                        MembersToIgnore = new List<string> {"SwitchState", "StatusMode"}
+                    });
                 var result = comparer.Compare(testData, deserialized);
 
                 if (!result.AreEqual)

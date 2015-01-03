@@ -1,6 +1,6 @@
 ﻿@using ZBuildLights.Web.Extensions
 @using ZBuildLights.Web.Models.Admin
-@model ZBuildLights.Web.Models.Admin.AdminViewModel
+@model AdminViewModel
 
 @{
     ViewBag.Title = "ZBuildLights Admin";
@@ -18,6 +18,7 @@
         ZBuildLights.Admin.Urls.addGroup = '@Url.Action("AddGroup")';
         ZBuildLights.Admin.Urls.updateGroup = '@Url.Action("UpdateGroup")';
         ZBuildLights.Admin.Urls.deleteGroup = '@Url.Action("DeleteGroup")';
+        ZBuildLights.Admin.Urls.editLight = '@Url.Action("EditLight")';
 
         ZBuildLights.createNamespace('Admin.Constants');
         ZBuildLights.Admin.Constants.lightOptionPrefix = '@LightColorOption.CssClassPrefix';
@@ -49,7 +50,7 @@
                                    aria-expanded="true"
                                    aria-controls="@project.PanelId"
                                    class="collapsed">
-                                    <i class="fa fa-plus-circle heading-icon"></i> <span class="project-name">@project.Name</span>
+                                    <i class="fa fa-minus-circle heading-icon"></i> <span class="project-name">@project.Name</span>
                                 </a>
                             </h4>
                         </div>
@@ -58,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="@project.PanelId" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@project.HeaderId" data-panelheading="@project.HeaderId">
+                <div id="@project.PanelId" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="@project.HeaderId" data-panelheading="@project.HeaderId">
                     <div class="panel-body">
                         @foreach (var group in project.Groups)
                         {
@@ -108,13 +109,13 @@
                                aria-expanded="true"
                                aria-controls="collapse-unassigned"
                                class="collapsed">
-                                <i class="fa fa-plus-circle heading-icon"></i> @unassigned.Name
+                                <i class="fa fa-minus-circle heading-icon"></i> @unassigned.Name
                             </a>
                         </h4>
                     </div>
                 </div>
             </div>
-            <div id="collapse-unassigned" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel-heading-unassigned" data-panelheading="panel-heading-unassigned">
+            <div id="collapse-unassigned" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="panel-heading-unassigned" data-panelheading="panel-heading-unassigned">
                 <div class="panel-body">
                     <table class="table table-hover">
                         <thead>

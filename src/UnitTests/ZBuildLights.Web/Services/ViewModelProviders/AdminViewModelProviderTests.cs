@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Rhino.Mocks;
 using Should;
 using UnitTests._Bases;
@@ -8,7 +7,6 @@ using ZBuildLights.Core.Repository;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Wrappers;
 using ZBuildLights.Web.Models.Admin;
-using ZBuildLights.Web.Services;
 using ZBuildLights.Web.Services.ViewModelProviders;
 
 namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
@@ -30,7 +28,7 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 lightAssignmentService.Stub(x => x.GetUnassignedLights()).Return(unassignedGroup);
 
                 var repo = S<IMasterModelRepository>();
-                repo.Stub(x => x.GetCurrent()).Return(new MasterModel(){Projects = projects});
+                repo.Stub(x => x.GetCurrent()).Return(new MasterModel {Projects = projects});
 
                 var mapper = S<IMapper>();
                 mapper.Stub(x => x.Map<Project[], AdminProjectViewModel[]>(projects))

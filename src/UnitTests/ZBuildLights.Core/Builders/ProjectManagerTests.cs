@@ -3,8 +3,8 @@ using System.Linq;
 using NUnit.Framework;
 using Should;
 using UnitTests._Stubs;
-using ZBuildLights.Core.Builders;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Validation;
 
 namespace UnitTests.ZBuildLights.Core.Builders
@@ -113,9 +113,9 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var projectToEdit = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                var project2 = new Project { Name = "Existing Project 2", Id = Guid.NewGuid() };
-                var project3 = new Project { Name = "Existing Project 3", Id = Guid.NewGuid() };
+                var projectToEdit = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var project2 = new Project {Name = "Existing Project 2", Id = Guid.NewGuid()};
+                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
 
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.AddProject(projectToEdit);
@@ -172,9 +172,9 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project1 = new Project { Name = "Name Collision", Id = Guid.NewGuid() };
-                var projectToEdit = new Project { Name = "Existing Project 2", Id = Guid.NewGuid() };
-                var project3 = new Project { Name = "Existing Project 3", Id = Guid.NewGuid() };
+                var project1 = new Project {Name = "Name Collision", Id = Guid.NewGuid()};
+                var projectToEdit = new Project {Name = "Existing Project 2", Id = Guid.NewGuid()};
+                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
 
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.AddProject(project1);
@@ -218,9 +218,9 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project1 = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                var projectToEdit = new Project { Name = "Keep This", Id = Guid.NewGuid() };
-                var project3 = new Project { Name = "Existing Project 3", Id = Guid.NewGuid() };
+                var project1 = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var projectToEdit = new Project {Name = "Keep This", Id = Guid.NewGuid()};
+                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
 
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.AddProject(project1);
@@ -254,9 +254,9 @@ namespace UnitTests.ZBuildLights.Core.Builders
             [SetUp]
             public void ContextSetup()
             {
-                var project1 = new Project { Name = "Existing Project", Id = Guid.NewGuid() };
-                var project2 = new Project { Name = "Existing Project 2", Id = Guid.NewGuid() };
-                var project3 = new Project { Name = "Existing Project 3", Id = Guid.NewGuid() };
+                var project1 = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var project2 = new Project {Name = "Existing Project 2", Id = Guid.NewGuid()};
+                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
 
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.AddProject(project1);

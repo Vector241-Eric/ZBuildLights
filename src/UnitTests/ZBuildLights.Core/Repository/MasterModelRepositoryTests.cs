@@ -6,7 +6,7 @@ using UnitTests._Bases;
 using UnitTests._Stubs;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Repository;
-using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Services.Storage;
 
 namespace UnitTests.ZBuildLights.Core.Repository
 {

@@ -1,10 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using ZBuildLights.Core.Configuration;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Wrappers;
 
-namespace ZBuildLights.Core.Services
+namespace ZBuildLights.Core.Services.Storage
 {
     public class FileSystemStorage : IFileSystemStorage
     {

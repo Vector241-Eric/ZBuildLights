@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using ZBuildLights.Core.Enumerations;
 
 namespace ZBuildLights.Core.Models.JsonSerialization
 {
@@ -59,14 +58,12 @@ namespace ZBuildLights.Core.Models.JsonSerialization
     {
         public byte ZWaveDeviceId { get; set; }
         public uint ZWaveHomeId { get; set; }
-        public Guid Id { get; set; }
         public int ColorValue { get; set; }
 
         public Light ToDomainObject()
         {
             var light = new Light(ZWaveHomeId, ZWaveDeviceId)
             {
-                Id = Id,
                 Color = LightColor.FromValue(ColorValue)
             };
             return light;

@@ -1,9 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace ZBuildLights.Core.Configuration
+﻿namespace ZBuildLights.Core.Configuration
 {
     public interface IApplicationConfiguration
     {
-        string StorageFilePath { get; } 
+        string StorageFilePath { get; }
     }
 }

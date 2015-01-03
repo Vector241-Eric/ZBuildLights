@@ -4,7 +4,7 @@ using Should;
 using UnitTests._Bases;
 using UnitTests._Stubs;
 using ZBuildLights.Core.Models;
-using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Services.Storage;
 using ZBuildLights.Core.Wrappers;
 
 namespace UnitTests.ZBuildLights.Core.Services
@@ -119,7 +119,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _result.ShouldBeSameAs(_stubbedModel);
             }
         }
-        
+
         [TestFixture]
         public class When_reading_model_and_file_does_not_exist : TestBase
         {
@@ -130,7 +130,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             public void ContextSetup()
             {
                 const string filePath = @"C:\some\dir";
-                var configuration = new StubApplicationConfiguration { StorageFilePath = filePath };
+                var configuration = new StubApplicationConfiguration {StorageFilePath = filePath};
                 _stubbedModel = new MasterModel();
 
                 var fileSystem = S<IFileSystem>();

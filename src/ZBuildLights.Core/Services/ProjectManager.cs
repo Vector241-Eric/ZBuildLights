@@ -4,7 +4,7 @@ using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Repository;
 using ZBuildLights.Core.Validation;
 
-namespace ZBuildLights.Core.Builders
+namespace ZBuildLights.Core.Services
 {
     public class ProjectManager : IProjectManager
     {
