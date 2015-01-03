@@ -12,20 +12,21 @@ namespace UnitTests.ZBuildLights.Core.Services
     public class UnassignedLightServiceTests
     {
         [TestFixture]
-        public class
-            When_some_lights_in_the_master_model_are_missing_from_the_network_and_some_lights_are_new_in_the_network :
+        public class When_some_lights_in_the_master_model_are_missing_from_the_network_and_some_lights_are_new_in_the_network :
                 TestBase
         {
-            private LightGroup _result;
+            private MasterModel _masterModel;
 
             [SetUp]
             public void ContextSetup()
             {
-                var masterModel = new MasterModel();
-                var group = masterModel.AddProject(new Project()).AddGroup(new LightGroup());
+                _masterModel = new MasterModel();
+                var group = _masterModel.AddProject(new Project()).AddGroup(new LightGroup());
                 group.AddLight(new Light(1, 11));
                 group.AddLight(new Light(1, 22));
                 group.AddLight(new Light(1, 33));
+
+                _masterModel.AddUnassignedLight(new Light(1, 44){Color = LightColor.Red});
 
                 var allSwitches = new[]
                 {
@@ -42,26 +43,28 @@ namespace UnitTests.ZBuildLights.Core.Services
                 network.Stub(x => x.GetAllSwitches()).Return(allSwitches);
 
                 var repository = S<IMasterModelRepository>();
-                repository.Stub(x => x.GetCurrent()).Return(masterModel);
+                repository.Stub(x => x.GetCurrent()).Return(_masterModel);
 
-                var service = new UnassignedLightService(repository, network);
-                _result = service.GetUnassignedLights();
+                var service = new UnassignedLightService(network);
+                service.SetUnassignedLights(_masterModel);
             }
 
             [Test]
             public void Should_find_the_new_lights_in_the_network()
             {
-                _result.Lights.Length.ShouldEqual(4);
-                _result.Lights.Any(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(15)).ShouldBeTrue();
-                _result.Lights.Any(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(16)).ShouldBeTrue();
-                _result.Lights.Any(x => x.ZWaveHomeId.Equals(2) && x.ZWaveDeviceId.Equals(11)).ShouldBeTrue();
-                _result.Lights.Any(x => x.ZWaveHomeId.Equals(2) && x.ZWaveDeviceId.Equals(22)).ShouldBeTrue();
+                _masterModel.UnassignedLights.Length.ShouldEqual(5);
+                _masterModel.UnassignedLights.Any(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(15)).ShouldBeTrue();
+                _masterModel.UnassignedLights.Any(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(16)).ShouldBeTrue();
+                _masterModel.UnassignedLights.Any(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(44)).ShouldBeTrue();
+                _masterModel.UnassignedLights.Any(x => x.ZWaveHomeId.Equals(2) && x.ZWaveDeviceId.Equals(11)).ShouldBeTrue();
+                _masterModel.UnassignedLights.Any(x => x.ZWaveHomeId.Equals(2) && x.ZWaveDeviceId.Equals(22)).ShouldBeTrue();
             }
 
             [Test]
-            public void Should_set_the_name_of_the_unassigned_group()
+            public void Should_add_the_new_lights_without_overwriting_the_state_on_the_existing_lights()
             {
-                _result.Name.ShouldEqual("Unassigned");
+                var light = _masterModel.UnassignedLights.Single(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(44));
+                light.Color.ShouldEqual(LightColor.Red);
             }
         }
     }

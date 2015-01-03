@@ -60,6 +60,7 @@
     <Compile Include="ZBuildLights.Core\Models\ProjectTests.cs" />
     <Compile Include="ZBuildLights.Core\Repository\MasterModelRepositoryTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\FileSystemStorageTests.cs" />
+    <Compile Include="ZBuildLights.Core\Services\SystemStatusProviderTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\UnassignedLightServiceTests.cs" />
     <Compile Include="ZBuildLights.Web\Services\ViewModelProviders\AdminViewModelProviderTests.cs" />
     <Compile Include="_Bases\TestBase.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="_Stubs\StubApplicationConfiguration.cs" />
     <Compile Include="_Stubs\StubLightStatusSetter.cs" />
     <Compile Include="_Stubs\StubMasterModelRepository.cs" />
+    <Compile Include="_Stubs\StubUnassignedLightService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

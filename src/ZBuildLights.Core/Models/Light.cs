@@ -29,11 +29,6 @@ namespace ZBuildLights.Core.Models
             group.AddLight(this);
         }
 
-        public void RemoveFromGroup()
-        {
-            ParentGroup.RemoveLight(this);
-        }
-
         protected bool Equals(Light other)
         {
             return ZWaveDeviceId == other.ZWaveDeviceId && ZWaveHomeId == other.ZWaveHomeId;
@@ -53,6 +48,12 @@ namespace ZBuildLights.Core.Models
             {
                 return (ZWaveDeviceId.GetHashCode()*397) ^ (int) ZWaveHomeId;
             }
+        }
+
+        public void Unassign()
+        {
+            ParentGroup.RemoveLight(this);
+            ParentGroup = null;
         }
     }
 }

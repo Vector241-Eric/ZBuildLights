@@ -68,11 +68,11 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                var group = new LightGroup {Name = "Foo", ParentProject = new Project {Name = "FooDaddy"}};
+                var group = new LightGroup {Id = Guid.NewGuid(), Name = "Foo", ParentProject = new Project {Name = "FooDaddy"}};
                 var light = new Light(1, 2);
                 group.AddLight(light);
 
-                var newGroup = new LightGroup {Name = "Bar", ParentProject = new Project {Name = "BarDaddy"}};
+                var newGroup = new LightGroup { Id = Guid.NewGuid(), Name = "Bar", ParentProject = new Project { Name = "BarDaddy" } };
                 try
                 {
                     newGroup.AddLight(light);
@@ -119,6 +119,31 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_remove_the_parent_reference_to_the_group()
             {
                 _light.ParentGroup.ShouldBeNull();
+            }
+        }
+
+        [TestFixture]
+        public class When_adding_a_light_that_is_already_in_the_same_group
+        {
+            private LightGroup _group;
+            private Light _light;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _group = new LightGroup();
+                _light = new Light(1, 2);
+
+                _group.AddLight(_light);
+                _group.AddLight(_light);
+            }
+
+            [Test]
+            public void Should_keep_the_light_in_the_group_without_creating_a_duplicate()
+            {
+                _group.Lights.Length.ShouldEqual(1);
+                _group.Lights[0].ZWaveHomeId.ShouldEqual((uint)1);
+                _group.Lights[0].ZWaveDeviceId.ShouldEqual((byte)2);
             }
         }
 

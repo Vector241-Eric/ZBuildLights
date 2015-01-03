@@ -7,16 +7,20 @@ namespace ZBuildLights.Core.Repository
     public class MasterModelRepository : IMasterModelRepository
     {
         private readonly IFileSystemStorage _fileStorage;
+        private readonly IUnassignedLightService _unassignedLightService;
 
-        public MasterModelRepository(IFileSystemStorage fileStorage)
+        public MasterModelRepository(IFileSystemStorage fileStorage, IUnassignedLightService unassignedLightService)
         {
             _fileStorage = fileStorage;
+            _unassignedLightService = unassignedLightService;
         }
 
         public MasterModel GetCurrent()
         {
             var fromDisk = _fileStorage.ReadMasterModel();
-            return fromDisk ?? InitializeMasterModel();
+            var masterModel = fromDisk ?? InitializeMasterModel();
+            _unassignedLightService.SetUnassignedLights(masterModel);
+            return masterModel;
         }
 
         private static MasterModel InitializeMasterModel()

@@ -71,6 +71,35 @@ namespace UnitTests.ZBuildLights.Core.Models
         }
 
         [TestFixture]
+        public class When_unassigning_a_light
+        {
+            private LightGroup _group;
+            private Light _light;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _group = new LightGroup {Name = "Foo", ParentProject = new Project {Name = "FooDaddy"}};
+                _light = new Light(1, 2);
+                _group.AddLight(_light);
+
+                _light.Unassign();
+            }
+
+            [Test]
+            public void Should_remove_the_light_from_the_original_group()
+            {
+                _group.Lights.Length.ShouldEqual(0);
+            }
+
+            [Test]
+            public void Should_clear_the_parent_group_reference()
+            {
+                _light.ParentGroup.ShouldBeNull();
+            }
+        }
+
+        [TestFixture]
         public class When_moving_a_light_that_is_not_already_in_a_group
         {
             private LightGroup _barGroup;

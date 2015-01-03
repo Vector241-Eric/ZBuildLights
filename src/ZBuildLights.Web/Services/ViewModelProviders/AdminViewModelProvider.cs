@@ -19,14 +19,12 @@ namespace ZBuildLights.Web.Services.ViewModelProviders
 
         public AdminViewModel GetIndexViewModel()
         {
-            var systemStatus = _systemStatusProvider.GetSystemStatus();
-            var projects = systemStatus.MasterModel.Projects;
-            var unassigned = systemStatus.UnassignedLights;
+            var masterModel = _systemStatusProvider.GetSystemStatus();
 
             return new AdminViewModel
             {
-                Projects = _mapper.Map<Project[], AdminProjectViewModel[]>(projects),
-                Unassigned = _mapper.Map<LightGroup, AdminLightGroupViewModel>(unassigned),
+                Projects = _mapper.Map<Project[], AdminProjectViewModel[]>(masterModel.Projects),
+                Unassigned = _mapper.Map<LightGroup, AdminLightGroupViewModel>(masterModel.GetUnassignedGroup()),
             };
         }
     }

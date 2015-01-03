@@ -47,10 +47,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var unassignedLightService = S<IUnassignedLightService>();
-                unassignedLightService.Stub(x => x.GetUnassignedLights()).Return(new LightGroup());
-
-                var updater = new LightUpdater(repository, unassignedLightService);
+                var updater = new LightUpdater(repository);
                 updater.Update(_zwaveHomeId, _zWaveDeviceId, _destinationGroup, LightColor.Red.Value);
 
                 _saved = repository.LastSaved;
@@ -93,18 +90,19 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var project = _masterModel.AddProject(new Project {Name = "Existing Project"});
                 project.AddGroup(new LightGroup {Id = groupId}).AddLight(new Light(1, 11)).AddLight(new Light(1, 12));
 
-                var unassignedGroup = new LightGroup();
-                unassignedGroup.AddLight(new Light(1, 51));
-                unassignedGroup.AddLight(new Light(_zwaveHomeId, _zWaveDeviceId));
-                unassignedGroup.AddLight(new Light(1, 53));
+                var unassignedLights = new[]
+                {
+                    new Light(1, 51),
+                    new Light(_zwaveHomeId, _zWaveDeviceId),
+                    new Light(1, 53),
+                };
+
+                _masterModel.AddUnassignedLights(unassignedLights);
 
                 var repository = S<IMasterModelRepository>();
                 repository.Stub(x => x.GetCurrent()).Return(_masterModel);
 
-                var unassignedLightService = S<IUnassignedLightService>();
-                unassignedLightService.Stub(x => x.GetUnassignedLights()).Return(unassignedGroup);
-
-                var updater = new LightUpdater(repository, unassignedLightService);
+                var updater = new LightUpdater(repository);
                 updater.Update(_zwaveHomeId, _zWaveDeviceId, groupId, LightColor.Red.Value);
             }
 
@@ -114,6 +112,40 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _masterModel.AllGroups.Single()
                     .Lights.Any(x => x.ZWaveHomeId.Equals(_zwaveHomeId) && x.ZWaveDeviceId.Equals(_zWaveDeviceId))
                     .ShouldBeTrue();
+            }
+        }
+
+        [TestFixture]
+        public class When_unassigning_an_assigned_light : TestBase
+        {
+            private MasterModel _lastSaved;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                const uint zwaveHomeId = 1;
+                const byte zWaveDeviceId = 11;
+
+                var masterModel = new MasterModel();
+                var project = masterModel.AddProject(new Project {Name = "Existing Project"});
+
+                var existingGroup = new LightGroup {Id = Guid.NewGuid()};
+                project.AddGroup(existingGroup).AddLight(new Light(zwaveHomeId, zWaveDeviceId){Color = LightColor.Yellow});
+
+                var repository = new StubMasterModelRepository();
+                repository.UseCurrentModel(masterModel);
+
+                var updater = new LightUpdater(repository);
+                updater.Update(zwaveHomeId, zWaveDeviceId, Guid.Empty, LightColor.Red.Value);
+
+                _lastSaved = repository.LastSaved;
+            }
+
+            [Test]
+            public void Should_unassign_the_light()
+            {
+                _lastSaved.UnassignedLights.Length.ShouldEqual(1);
+                _lastSaved.UnassignedLights[0].Color.ShouldEqual(LightColor.Red);
             }
         }
 
@@ -131,15 +163,10 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var project = _masterModel.AddProject(new Project {Name = "Existing Project"});
                 project.AddGroup(new LightGroup {Id = groupId});
 
-                var unassignedGroup = new LightGroup();
-
                 var repository = S<IMasterModelRepository>();
                 repository.Stub(x => x.GetCurrent()).Return(_masterModel);
 
-                var unassignedLightService = S<IUnassignedLightService>();
-                unassignedLightService.Stub(x => x.GetUnassignedLights()).Return(unassignedGroup);
-                
-                var updater = new LightUpdater(repository, unassignedLightService);
+                var updater = new LightUpdater(repository);
                 try
                 {
                     updater.Update(12, 42, groupId, LightColor.Red.Value);
