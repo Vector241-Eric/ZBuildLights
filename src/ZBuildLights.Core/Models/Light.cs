@@ -52,6 +52,9 @@ namespace ZBuildLights.Core.Models
 
         public void Unassign()
         {
+            if (ParentGroup == null)
+                return;
+
             ParentGroup.RemoveLight(this);
             ParentGroup = null;
         }

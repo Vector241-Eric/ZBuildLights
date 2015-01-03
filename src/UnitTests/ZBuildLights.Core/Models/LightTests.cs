@@ -100,6 +100,22 @@ namespace UnitTests.ZBuildLights.Core.Models
         }
 
         [TestFixture]
+        public class When_unassigning_a_light_that_is_not_already_assigned_to_a_group
+        {
+            [SetUp]
+            public void ContextSetup()
+            {
+                new Light(1, 2).Unassign();
+            }
+
+            [Test]
+            public void Should_not_throw_an_exception()
+            {
+                Assert.Pass("If we made it this far, we passed.");
+            }
+        }
+
+        [TestFixture]
         public class When_moving_a_light_that_is_not_already_in_a_group
         {
             private LightGroup _barGroup;

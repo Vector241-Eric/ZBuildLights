@@ -7,14 +7,19 @@ namespace ZBuildLights.Core.Models.JsonSerialization
     {
         public JsonProject[] Projects { get; set; }
         public DateTime LastUpdatedDate { get; set; }
+        public JsonLight[] UnassignedLights { get; set; }
 
         public MasterModel ToDomainObject()
         {
-            return new MasterModel
+            var masterModel = new MasterModel
             {
                 LastUpdatedDate = LastUpdatedDate,
-                Projects = Projects.Select(x => x.ToDomainObject()).ToArray()
+                Projects = Projects.Select(x => x.ToDomainObject()).ToArray(),
             };
+            var unassignedLights = UnassignedLights ?? new JsonLight[0];
+
+            masterModel.AddUnassignedLights(unassignedLights.Select(x => x.ToDomainObject()));
+            return masterModel;
         }
     }
 

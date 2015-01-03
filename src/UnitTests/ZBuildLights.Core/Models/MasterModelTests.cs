@@ -173,5 +173,27 @@ namespace UnitTests.ZBuildLights.Core.Models
                 thrown.Message.ShouldEqual(string.Format("Could not find group with id: {0}", id));
             }
         }
+
+        [TestFixture]
+        public class When_assigning_an_unassigned_light
+        {
+            [Test]
+            public void Should_set_the_parent_group()
+            {
+                throw new System.NotImplementedException("Not yet implemented");
+            }
+
+            [Test]
+            public void Should_add_the_light_to_the_parent_group()
+            {
+                throw new System.NotImplementedException("Not yet implemented");
+            }
+
+            [Test]
+            public void Should_remove_the_light_from_the_unassigned_collection()
+            {
+                throw new System.NotImplementedException("Not yet implemented");
+            }
+        }
     }
 }
