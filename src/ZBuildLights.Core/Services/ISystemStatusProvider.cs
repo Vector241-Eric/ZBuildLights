@@ -7,12 +7,4 @@ namespace ZBuildLights.Core.Services
     {
         void SetLightStatus(IEnumerable<Light> lights);
     }
-
-    public class SystemStatusProvider : ISystemStatusProvider
-    {
-        public void SetLightStatus(IEnumerable<Light> lights)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
 }
