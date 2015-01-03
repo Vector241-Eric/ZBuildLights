@@ -2,7 +2,7 @@
 
 namespace ZBuildLights.Core.Services
 {
-    public interface ILightAssignmentService
+    public interface IUnassignedLightService
     {
         LightGroup GetUnassignedLights();
     }

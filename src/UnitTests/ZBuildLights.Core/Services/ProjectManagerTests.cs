@@ -7,7 +7,7 @@ using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Validation;
 
-namespace UnitTests.ZBuildLights.Core.Builders
+namespace UnitTests.ZBuildLights.Core.Services
 {
     public class ProjectManagerTests
     {

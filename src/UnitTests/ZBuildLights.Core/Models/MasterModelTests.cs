@@ -85,25 +85,6 @@ namespace UnitTests.ZBuildLights.Core.Models
         [TestFixture]
         public class When_model_is_empty
         {
-            [Test]
-            public void Should_throw_an_exception_when_searching_for_a_light()
-            {
-                var model = new MasterModel();
-
-                Exception thrown = null;
-
-                try
-                {
-                    model.FindLight(1, 2);
-                }
-                catch (Exception e)
-                {
-                    thrown = e;
-                }
-
-                thrown.GetType().ShouldEqual(typeof(InvalidOperationException));
-                thrown.Message.ShouldEqual("Could not find light with homeId: 1 and deviceId: 2");
-            }
 
             [Test]
             public void Should_throw_an_exception_when_searching_for_a_group()

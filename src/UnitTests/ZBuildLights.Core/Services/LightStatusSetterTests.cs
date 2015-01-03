@@ -3,12 +3,70 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Should;
 using UnitTests._Bases;
+using UnitTests._Stubs;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Repository;
 using ZBuildLights.Core.Services;
 
-namespace UnitTests.ZBuildLights.Core.Builders
+namespace UnitTests.ZBuildLights.Core.Services
 {
     public class SystemStatusProviderTests
+    {
+        [TestFixture]
+        public class Always : TestBase
+        {
+            private MasterModel _model;
+            private SystemStatusModel _result;
+            private StubLightStatusSetter _lightStatusSetter;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var repo = S<IMasterModelRepository>();
+                _model = new MasterModel();
+                var group = _model.AddProject(new Project()).AddGroup(new LightGroup());
+                group.AddLight(new Light(3, 11));
+                group.AddLight(new Light(3, 22));
+                group.AddLight(new Light(3, 33));
+                group.AddLight(new Light(3, 44));
+                repo.Stub(x => x.GetCurrent()).Return(_model);
+
+                _lightStatusSetter = new StubLightStatusSetter().StubStatus(SwitchState.On);
+
+                var lightAssignmentService = S<IUnassignedLightService>();
+                lightAssignmentService.Stub(x => x.GetUnassignedLights())
+                    .Return(new LightGroup {Name = "Look Ma! New lights."});
+
+                var statusProvider = new SystemStatusProvider(repo, _lightStatusSetter, lightAssignmentService);
+                _result = statusProvider.GetSystemStatus();
+            }
+
+            [Test]
+            public void Should_provide_the_persisted_master_model()
+            {
+                _result.MasterModel.ShouldEqual(_model);
+            }
+
+            [Test]
+            public void Should_set_light_status_from_the_network()
+            {
+                _result.MasterModel.AllLights.All(x => x.SwitchState.Equals(SwitchState.On)).ShouldBeTrue();
+                _lightStatusSetter.LightsThatHadStatusSet.Length.ShouldEqual(4);
+                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveDeviceId.Equals(11)).ShouldBeTrue();
+                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveDeviceId.Equals(22)).ShouldBeTrue();
+                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveDeviceId.Equals(33)).ShouldBeTrue();
+                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveDeviceId.Equals(44)).ShouldBeTrue();
+            }
+
+            [Test]
+            public void Should_provide_unassigned_lights()
+            {
+                _result.UnassignedLights.Name.ShouldEqual("Look Ma! New lights.");
+            }
+        }
+    }
+
+    public class LightStatusSetterTests
     {
         [TestFixture]
         public class When_updating_light_status_and_all_lights_are_in_the_network : TestBase
@@ -39,7 +97,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 _network = S<IZWaveNetwork>();
                 _network.Stub(x => x.GetAllSwitches()).Return(switches);
 
-                var statusProvider = new SystemStatusProvider(_network);
+                var statusProvider = new LightStatusSetter(_network);
                 statusProvider.SetLightStatus(_lights);
             }
 
@@ -85,7 +143,7 @@ namespace UnitTests.ZBuildLights.Core.Builders
                 var network = S<IZWaveNetwork>();
                 network.Stub(x => x.GetAllSwitches()).Return(switches);
 
-                var statusProvider = new SystemStatusProvider(network);
+                var statusProvider = new LightStatusSetter(network);
                 statusProvider.SetLightStatus(_lights);
             }
 

@@ -40,6 +40,7 @@ namespace ZBuildLights.Web.DependencyResolution
 
 
             For<IStatusProvider>().Use<StubStatusProvider>();
+            For<IZWaveNetwork>().Use<StubZWaveNetwork>();
         }
 
         #endregion

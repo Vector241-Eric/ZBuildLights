@@ -3,7 +3,6 @@ using Rhino.Mocks;
 using Should;
 using UnitTests._Bases;
 using ZBuildLights.Core.Models;
-using ZBuildLights.Core.Repository;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Wrappers;
 using ZBuildLights.Web.Models.Admin;
@@ -24,11 +23,11 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 var unassignedGroup = new LightGroup {Name = "foo"};
                 var projects = new Project[5];
 
-                var lightAssignmentService = S<ILightAssignmentService>();
-                lightAssignmentService.Stub(x => x.GetUnassignedLights()).Return(unassignedGroup);
+                var masterModel = new MasterModel {Projects = projects};
 
-                var repo = S<IMasterModelRepository>();
-                repo.Stub(x => x.GetCurrent()).Return(new MasterModel {Projects = projects});
+                var statusProvider = S<ISystemStatusProvider>();
+                statusProvider.Stub(x => x.GetSystemStatus())
+                    .Return(new SystemStatusModel {MasterModel = masterModel, UnassignedLights = unassignedGroup});
 
                 var mapper = S<IMapper>();
                 mapper.Stub(x => x.Map<Project[], AdminProjectViewModel[]>(projects))
@@ -36,7 +35,7 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 mapper.Stub(x => x.Map<LightGroup, AdminLightGroupViewModel>(unassignedGroup))
                     .Return(new AdminLightGroupViewModel {Name = "bar"});
 
-                var provider = new AdminViewModelProvider(repo, lightAssignmentService, mapper);
+                var provider = new AdminViewModelProvider(statusProvider, mapper);
                 _result = provider.GetIndexViewModel();
             }
 

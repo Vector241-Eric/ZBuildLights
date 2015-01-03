@@ -50,21 +50,23 @@
   <ItemGroup>
     <Compile Include="Extensions\ArrayExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZBuildLights.Core\Builders\LightGroupManagerTests.cs" />
-    <Compile Include="ZBuildLights.Core\Builders\LightUpdaterTests.cs" />
-    <Compile Include="ZBuildLights.Core\Builders\ProjectManagerTests.cs" />
-    <Compile Include="ZBuildLights.Core\Builders\SystemStatusProviderTests.cs" />
+    <Compile Include="ZBuildLights.Core\Services\LightGroupManagerTests.cs" />
+    <Compile Include="ZBuildLights.Core\Services\LightUpdaterTests.cs" />
+    <Compile Include="ZBuildLights.Core\Services\ProjectManagerTests.cs" />
+    <Compile Include="ZBuildLights.Core\Services\LightStatusSetterTests.cs" />
     <Compile Include="ZBuildLights.Core\Models\LightGroupTests.cs" />
     <Compile Include="ZBuildLights.Core\Models\LightTests.cs" />
     <Compile Include="ZBuildLights.Core\Models\MasterModelTests.cs" />
     <Compile Include="ZBuildLights.Core\Models\ProjectTests.cs" />
     <Compile Include="ZBuildLights.Core\Repository\MasterModelRepositoryTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\FileSystemStorageTests.cs" />
+    <Compile Include="ZBuildLights.Core\Services\UnassignedLightServiceTests.cs" />
     <Compile Include="ZBuildLights.Web\Services\ViewModelProviders\AdminViewModelProviderTests.cs" />
     <Compile Include="_Bases\TestBase.cs" />
     <Compile Include="_Stubs\FileSystemStub.cs" />
     <Compile Include="_Stubs\StorageStub.cs" />
     <Compile Include="_Stubs\StubApplicationConfiguration.cs" />
+    <Compile Include="_Stubs\StubLightStatusSetter.cs" />
     <Compile Include="_Stubs\StubMasterModelRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +82,9 @@
       <Project>{67cd3bfd-169d-43ab-8660-ffc466a25a8f}</Project>
       <Name>ZBuildLights.Web</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ZBuildLights.Core\Builders\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

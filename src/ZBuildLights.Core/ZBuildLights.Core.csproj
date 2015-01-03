@@ -51,8 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\SystemStatusModel.cs" />
     <Compile Include="Models\ZWaveSwitch.cs" />
     <Compile Include="Services\IProjectManager.cs" />
+    <Compile Include="Services\ILightStatusSetter.cs" />
     <Compile Include="Services\ISystemStatusProvider.cs" />
     <Compile Include="Services\IZWaveNetwork.cs" />
     <Compile Include="Services\LightUpdater.cs" />
@@ -81,12 +83,13 @@
     <Compile Include="Services\LightGroupManager.cs" />
     <Compile Include="Services\Storage\IFileSystemStorage.cs" />
     <Compile Include="Services\ILightGroupManager.cs" />
-    <Compile Include="Services\ILightAssignmentService.cs" />
+    <Compile Include="Services\IUnassignedLightService.cs" />
     <Compile Include="Services\ILightUpdater.cs" />
     <Compile Include="Services\IStatusProvider.cs" />
-    <Compile Include="Services\LightAssignmentService.cs" />
+    <Compile Include="Services\UnassignedLightService.cs" />
     <Compile Include="Builders\StubStatusProvider.cs" />
     <Compile Include="Services\SystemClock.cs" />
+    <Compile Include="Services\LightStatusSetter.cs" />
     <Compile Include="Services\SystemStatusProvider.cs" />
     <Compile Include="Validation\EditResult.cs" />
     <Compile Include="Validation\ValidationResult.cs" />
