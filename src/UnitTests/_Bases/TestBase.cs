@@ -15,5 +15,19 @@ namespace UnitTests._Bases
         {
             SystemClock.Now = () => now;
         }
+
+        protected Exception ExpectException(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                return e;
+            }
+
+            return null;
+        }
     }
 }

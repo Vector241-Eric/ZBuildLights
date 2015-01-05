@@ -34,6 +34,9 @@ namespace ZBuildLights.Core.Models
 
         public LightGroup AddLight(Light light)
         {
+            if (this.Equals(light.ParentGroup))
+                return this;
+
             if (light.ParentGroup != null)
                 throw new InvalidOperationException(
                     string.Format("Cannot add light to group {0} because it already belongs to group {1}",
@@ -43,10 +46,11 @@ namespace ZBuildLights.Core.Models
             return this;
         }
 
-        public void AddLights(IEnumerable<Light> lights)
+        public LightGroup AddLights(IEnumerable<Light> lights)
         {
             foreach (var light in lights)
                 AddLight(light);
+            return this;
         }
 
         public void RemoveLight(Light light)
@@ -57,6 +61,26 @@ namespace ZBuildLights.Core.Models
                         light.ParentGroup.FullName));
             _lights.Remove(light);
             light.ParentGroup = null;
+        }
+
+        protected bool Equals(LightGroup other)
+        {
+            if (other == null)
+                return false;
+            return Id.Equals(other.Id);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((LightGroup) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
         }
     }
 }

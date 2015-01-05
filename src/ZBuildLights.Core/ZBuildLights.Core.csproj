@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\SystemStatusModel.cs" />
     <Compile Include="Models\ZWaveSwitch.cs" />
     <Compile Include="Services\IProjectManager.cs" />
     <Compile Include="Services\ILightStatusSetter.cs" />

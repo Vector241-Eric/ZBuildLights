@@ -6,12 +6,14 @@ namespace UnitTests._Stubs
 {
     public class StubLightStatusSetter : ILightStatusSetter
     {
-        private List<Light> _lights = new List<Light>();
-        private SwitchState _stubState;
+        private readonly List<Light> _lights = new List<Light>();
+        private SwitchState _defaultState;
 
-        public StubLightStatusSetter StubStatus(SwitchState stubState)
+        private readonly Dictionary<string, SwitchState> _stubStates = new Dictionary<string, SwitchState>();
+
+        public StubLightStatusSetter DefaultStatus(SwitchState stubState)
         {
-            _stubState = stubState;
+            _defaultState = stubState;
             return this;
         }
 
@@ -20,10 +22,29 @@ namespace UnitTests._Stubs
             foreach (var light in lights)
             {
                 _lights.Add(light);
-                light.SwitchState = _stubState;
+                var key = MakeKey(light.ZWaveHomeId, light.ZWaveDeviceId);
+                if (_stubStates.ContainsKey(key))
+                    light.SwitchState = _stubStates[key];
+                else
+                    light.SwitchState = _defaultState;
             }
         }
 
-        public Light[] LightsThatHadStatusSet { get { return _lights.ToArray(); } }
+        public Light[] LightsThatHadStatusSet
+        {
+            get { return _lights.ToArray(); }
+        }
+
+        public StubLightStatusSetter StubStatus(uint homeId, byte deviceId, SwitchState switchState)
+        {
+            var key = MakeKey(homeId, deviceId);
+            _stubStates[key] = switchState;
+            return this;
+        }
+
+        private static string MakeKey(uint homeId, byte deviceId)
+        {
+            return string.Format("{0}-{1}", homeId, deviceId);
+        }
     }
 }

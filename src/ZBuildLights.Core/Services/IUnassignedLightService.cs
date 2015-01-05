@@ -4,6 +4,6 @@ namespace ZBuildLights.Core.Services
 {
     public interface IUnassignedLightService
     {
-        LightGroup GetUnassignedLights();
+        void SetUnassignedLights(MasterModel masterModel);
     }
 }

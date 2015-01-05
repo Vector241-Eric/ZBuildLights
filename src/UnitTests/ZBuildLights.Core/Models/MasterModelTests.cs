@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Should;
 using ZBuildLights.Core.Models;
@@ -61,6 +62,71 @@ namespace UnitTests.ZBuildLights.Core.Models
         }
 
         [TestFixture]
+        public class When_getting_all_lights
+        {
+            private Light[] _result;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var model = new MasterModel();
+                var group = model.AddProject(new Project()).AddGroup(new LightGroup());
+                group.AddLight(new Light(1, 11)).AddLight(new Light(2, 22));
+                model.AddUnassignedLights(new[] {new Light(3, 33), new Light(4, 44),});
+
+                _result = model.AllLights;
+            }
+
+            [Test]
+            public void Should_include_lights_in_groups()
+            {
+                _result.Any(x => x.ZWaveHomeId.Equals(1)).ShouldBeTrue();
+                _result.Any(x => x.ZWaveHomeId.Equals(2)).ShouldBeTrue();
+            }
+
+            [Test]
+            public void Should_include_lights_that_are_unassigned()
+            {
+                _result.Any(x => x.ZWaveHomeId.Equals(3)).ShouldBeTrue();
+                _result.Any(x => x.ZWaveHomeId.Equals(4)).ShouldBeTrue();
+            }
+
+            [Test]
+            public void Should_not_include_duplicates()
+            {
+                _result.Length.ShouldEqual(4);
+            }
+        }
+
+        [TestFixture]
+        public class When_model_has_some_unassigned_lights_and_we_get_the_unassigned_group
+        {
+            private LightGroup _results;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var model = new MasterModel();
+                model.AddUnassignedLights(new[] {new Light(1, 1), new Light(2, 2),});
+                _results = model.GetUnassignedGroup();
+            }
+
+            [Test]
+            public void Should_set_the_group_name()
+            {
+                _results.Name.ShouldEqual("Unassigned");
+            }
+
+            [Test]
+            public void Should_contain_the_unassigned_lights()
+            {
+                _results.Lights.Length.ShouldEqual(2);
+                _results.Lights.Any(x => x.ZWaveDeviceId.Equals(1) && x.ZWaveHomeId.Equals(1)).ShouldBeTrue();
+                _results.Lights.Any(x => x.ZWaveDeviceId.Equals(2) && x.ZWaveHomeId.Equals(2)).ShouldBeTrue();
+            }
+        }
+
+        [TestFixture]
         public class When_model_has_multiple_projects_with_multiple_groups
         {
             [Test]
@@ -107,5 +173,81 @@ namespace UnitTests.ZBuildLights.Core.Models
                 thrown.Message.ShouldEqual(string.Format("Could not find group with id: {0}", id));
             }
         }
+
+        [TestFixture]
+        public class When_assigning_an_unassigned_light
+        {
+            private MasterModel _model;
+            private Light _light;
+            private LightGroup _destinationGroup;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var groupId = Guid.NewGuid();
+                _light = new Light(11, 23);
+                _model = new MasterModel();
+                _destinationGroup = new LightGroup{Id = groupId};
+
+                _model.AddProject(new Project()).AddGroup(_destinationGroup);
+                _model.AddUnassignedLight(_light);
+
+                _model.AssignLightToGroup(11, 23, groupId);
+            }
+
+            [Test]
+            public void Should_set_the_parent_group()
+            {
+                _light.ParentGroup.ShouldBeSameAs(_destinationGroup);
+            }
+
+            [Test]
+            public void Should_add_the_light_to_the_parent_group()
+            {
+                _destinationGroup.Lights.ShouldContain(_light);
+            }
+
+            [Test]
+            public void Should_remove_the_light_from_the_unassigned_collection()
+            {
+                _model.GetUnassignedGroup().Lights.Length.ShouldEqual(0);
+                _model.UnassignedLights.Length.ShouldEqual(0);
+            }
+        }
+        [TestFixture]
+        public class When_moving_a_light_from_one_group_to_another
+        {
+            private LightGroup _fooGroup;
+            private LightGroup _barGroup;
+            private Light _light;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var model = new MasterModel();
+                _fooGroup = model.AddProject(new Project()).AddGroup(new LightGroup {Id = Guid.NewGuid()});
+                _barGroup = model.AddProject(new Project()).AddGroup(new LightGroup {Id = Guid.NewGuid()});
+
+                _light = new Light(1, 2);
+                _fooGroup.AddLight(_light);
+
+                model.AssignLightToGroup(1, 2, _barGroup.Id);
+            }
+
+            [Test]
+            public void Should_remove_the_light_from_the_original_group()
+            {
+                _fooGroup.Lights.Length.ShouldEqual(0);
+            }
+
+            [Test]
+            public void Should_add_the_light_to_the_new_group()
+            {
+                _barGroup.Lights.Length.ShouldEqual(1);
+                _barGroup.Lights[0].ZWaveHomeId.ShouldEqual((uint)1);
+                _light.ParentGroup.ShouldBeSameAs(_barGroup);
+            }
+        }
+
     }
 }

@@ -38,58 +38,85 @@ namespace UnitTests.ZBuildLights.Core.Models
         }
 
         [TestFixture]
-        public class When_moving_a_light_from_one_group_to_another
+        public class When_unassigning_a_light
         {
-            private LightGroup _fooGroup;
-            private LightGroup _barGroup;
+            private LightGroup _group;
             private Light _light;
 
             [SetUp]
             public void ContextSetup()
             {
-                _fooGroup = new LightGroup {Name = "Foo", ParentProject = new Project {Name = "FooDaddy"}};
+                _group = new LightGroup {Name = "Foo", ParentProject = new Project {Name = "FooDaddy"}};
                 _light = new Light(1, 2);
-                _fooGroup.AddLight(_light);
+                _group.AddLight(_light);
 
-                _barGroup = new LightGroup {Name = "Bar", ParentProject = new Project {Name = "BarDaddy"}};
-                _light.MoveTo(_barGroup);
+                _light.Unassign();
             }
 
             [Test]
             public void Should_remove_the_light_from_the_original_group()
             {
-                _fooGroup.Lights.Length.ShouldEqual(0);
+                _group.Lights.Length.ShouldEqual(0);
             }
 
             [Test]
-            public void Should_add_the_light_to_the_new_group()
+            public void Should_clear_the_parent_group_reference()
             {
-                _barGroup.Lights.Length.ShouldEqual(1);
-                _barGroup.Lights[0].ZWaveHomeId.ShouldEqual((uint) 1);
-                _light.ParentGroup.ShouldBeSameAs(_barGroup);
+                _light.ParentGroup.ShouldBeNull();
             }
         }
 
         [TestFixture]
-        public class When_moving_a_light_that_is_not_already_in_a_group
+        public class When_unassigning_a_light_that_is_not_already_assigned_to_a_group
         {
-            private LightGroup _barGroup;
+            [SetUp]
+            public void ContextSetup()
+            {
+                new Light(1, 2).Unassign();
+            }
+
+            [Test]
+            public void Should_not_throw_an_exception()
+            {
+                Assert.Pass("If we made it this far, we passed.");
+            }
+        }
+
+        [TestFixture]
+        public class When_light_has_been_assigned_to_a_group
+        {
             private Light _light;
 
             [SetUp]
             public void ContextSetup()
             {
-                _light = new Light(1, 2);
-
-                _barGroup = new LightGroup {Name = "Bar", ParentProject = new Project {Name = "BarDaddy"}};
-                _light.MoveTo(_barGroup);
+                _light = new Light(43, 55);
+                new LightGroup().AddLight(_light);
             }
 
             [Test]
-            public void Should_gracefully_add_the_light_to_the_new_group()
+            public void Should_indicate_it_is_in_a_group()
             {
-                _light.ParentGroup.ShouldBeSameAs(_barGroup);
+                _light.IsInGroup.ShouldBeTrue();
+            } 
+        }
+
+        [TestFixture]
+        public class When_light_has_not_been_assigned_to_a_group
+        {
+            private Light _light;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _light = new Light(43, 55);
             }
+
+            [Test]
+            public void Should_indicate_it_is_in_a_group()
+            {
+                _light.IsInGroup.ShouldBeFalse();
+            } 
         }
     }
 }

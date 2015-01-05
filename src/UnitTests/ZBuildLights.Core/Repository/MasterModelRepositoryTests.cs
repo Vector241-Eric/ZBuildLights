@@ -6,6 +6,7 @@ using UnitTests._Bases;
 using UnitTests._Stubs;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Repository;
+using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Services.Storage;
 
 namespace UnitTests.ZBuildLights.Core.Repository
@@ -27,7 +28,9 @@ namespace UnitTests.ZBuildLights.Core.Repository
                 var fileStorage = S<IFileSystemStorage>();
                 fileStorage.Stub(x => x.ReadMasterModel()).Return(null);
 
-                var repository = new MasterModelRepository(fileStorage);
+                var unassignedLightService = new StubUnassignedLightService().WithZeroUnassignedLights();
+
+                var repository = new MasterModelRepository(fileStorage, unassignedLightService);
                 _result = repository.GetCurrent();
             }
 
@@ -60,7 +63,10 @@ namespace UnitTests.ZBuildLights.Core.Repository
                 var fileStorage = S<IFileSystemStorage>();
                 fileStorage.Stub(x => x.ReadMasterModel()).Return(_existingModel);
 
-                var repository = new MasterModelRepository(fileStorage);
+                var unassignedLightService = new StubUnassignedLightService()
+                    .WithUnassignedLight(new Light(1, 3));
+
+                var repository = new MasterModelRepository(fileStorage, unassignedLightService);
                 _result = repository.GetCurrent();
             }
 
@@ -68,6 +74,14 @@ namespace UnitTests.ZBuildLights.Core.Repository
             public void Should_return_the_model_from_disk()
             {
                 _result.ShouldBeSameAs(_existingModel);
+            }
+
+            [Test]
+            public void Should_add_the_unassigned_lights_from_the_network()
+            {
+                _result.UnassignedLights.Length.ShouldEqual(1);
+                _result.UnassignedLights[0].ZWaveHomeId.ShouldEqual((uint)1);
+                _result.UnassignedLights[0].ZWaveDeviceId.ShouldEqual((byte)3);
             }
         }
 
@@ -86,8 +100,10 @@ namespace UnitTests.ZBuildLights.Core.Repository
 
                 SetSystemClock(_now);
 
+                IUnassignedLightService doNotUseUnassignedLightService = null;
+
                 var fileStorage = new StorageStub();
-                var respository = new MasterModelRepository(fileStorage);
+                var respository = new MasterModelRepository(fileStorage, doNotUseUnassignedLightService);
                 respository.Save(_model);
 
                 _lastSaved = fileStorage.LastSaved;

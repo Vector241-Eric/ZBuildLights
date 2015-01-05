@@ -7,22 +7,18 @@ namespace ZBuildLights.Core.Services
     {
         private readonly IMasterModelRepository _masterModelRepository;
         private readonly ILightStatusSetter _lightStatusSetter;
-        private readonly IUnassignedLightService _unassignedLightService;
 
-        public SystemStatusProvider(IMasterModelRepository masterModelRepository, ILightStatusSetter lightStatusSetter,
-            IUnassignedLightService unassignedLightService)
+        public SystemStatusProvider(IMasterModelRepository masterModelRepository, ILightStatusSetter lightStatusSetter)
         {
             _masterModelRepository = masterModelRepository;
             _lightStatusSetter = lightStatusSetter;
-            _unassignedLightService = unassignedLightService;
         }
 
-        public SystemStatusModel GetSystemStatus()
+        public MasterModel GetSystemStatus()
         {
-            var unassignedGroup = _unassignedLightService.GetUnassignedLights();
             var masterModel = _masterModelRepository.GetCurrent();
             _lightStatusSetter.SetLightStatus(masterModel.AllLights);
-            return new SystemStatusModel {MasterModel = masterModel, UnassignedLights = unassignedGroup};
+            return masterModel;
         }
     }
 }

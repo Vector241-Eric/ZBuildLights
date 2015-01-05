@@ -4,6 +4,6 @@ namespace ZBuildLights.Core.Services
 {
     public interface ISystemStatusProvider
     {
-        SystemStatusModel GetSystemStatus();
+        MasterModel GetSystemStatus();
     }
 }

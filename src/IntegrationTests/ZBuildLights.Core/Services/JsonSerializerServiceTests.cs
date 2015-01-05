@@ -24,6 +24,7 @@ namespace IntegrationTests.ZBuildLights.Core.Services
 
                 var projects = new StubStatusProvider().GetCurrentProjects();
                 var testData = new MasterModel {LastUpdatedDate = DateTime.Now, Projects = projects};
+                testData.AddUnassignedLight(new Light(3333, 3));
 
                 var serializer = container.GetInstance<IJsonSerializerService>();
                 var json = serializer.SerializeMasterModel(testData);

@@ -8,29 +8,38 @@ namespace ZBuildLights.Core.Services
     public class LightUpdater : ILightUpdater
     {
         private readonly IMasterModelRepository _masterModelRepository;
-        private readonly IUnassignedLightService _unassignedLightService;
 
-        public LightUpdater(IMasterModelRepository masterModelRepository, IUnassignedLightService unassignedLightService)
+        public LightUpdater(IMasterModelRepository masterModelRepository)
         {
             _masterModelRepository = masterModelRepository;
-            _unassignedLightService = unassignedLightService;
         }
 
         public void Update(uint homeId, byte deviceId, Guid groupId, int colorId)
         {
             var masterModel = _masterModelRepository.GetCurrent();
-
             var light = FindLight(homeId, deviceId, masterModel);
+
+            //Set color
             light.Color = LightColor.FromValue(colorId);
-            light.MoveTo(masterModel.FindGroup(groupId));
+            
+            //Set group
+            if (groupId == Guid.Empty)
+            {
+                light.Unassign();
+                masterModel.AddUnassignedLight(light);
+            }
+            else
+            {
+                masterModel.AssignLightToGroup(light.ZWaveHomeId, light.ZWaveDeviceId, groupId);
+            }
+
+            //Save
             _masterModelRepository.Save(masterModel);
         }
 
         private Light FindLight(uint homeId, byte deviceId, MasterModel masterModel)
         {
-            var allLights = masterModel.AllLights.Union(_unassignedLightService.GetUnassignedLights().Lights);
-
-            var light = allLights
+            var light = masterModel.AllLights
                 .SingleOrDefault(x => x.ZWaveHomeId.Equals(homeId) && x.ZWaveDeviceId.Equals(deviceId));
             if (light == null)
                 throw new InvalidOperationException(
