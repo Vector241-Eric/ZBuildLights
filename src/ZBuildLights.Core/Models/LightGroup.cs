@@ -85,5 +85,15 @@ namespace ZBuildLights.Core.Models
         {
             return Id.GetHashCode();
         }
+
+        public void UnassignAllLights()
+        {
+            var lights = Lights;
+            foreach (var light in lights)
+            {
+                RemoveLight(light);
+                MasterModel.AddUnassignedLight(light);
+            }
+        }
     }
 }

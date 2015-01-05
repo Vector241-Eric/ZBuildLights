@@ -15,36 +15,36 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_find_a_light_by_homeId_and_deviceId()
             {
                 var model = new MasterModel();
-                
+
                 var project1 = model.CreateProject(x => x.Name = "1");
-                
+
                 var group1_1 = project1.CreateGroup(x => x.Name = "1.1");
                 var light1_1_1 = group1_1.AddLight(new Light(11, 1));
                 var light1_1_2 = group1_1.AddLight(new Light(11, 2));
                 var light1_1_3 = group1_1.AddLight(new Light(11, 3));
-                
+
                 var group1_2 = project1.CreateGroup(x => x.Name = "1.2");
                 var light1_2_1 = group1_2.AddLight(new Light(12, 1));
                 var light1_2_2 = group1_2.AddLight(new Light(12, 2));
                 var light1_2_3 = group1_2.AddLight(new Light(12, 3));
-                
+
                 var group1_3 = project1.CreateGroup(x => x.Name = "1.3");
                 var light1_3_1 = group1_3.AddLight(new Light(13, 1));
                 var light1_3_2 = group1_3.AddLight(new Light(13, 2));
                 var light1_3_3 = group1_3.AddLight(new Light(13, 3));
 
                 var project2 = model.CreateProject(x => x.Name = "1");
-                
+
                 var group2_1 = project2.CreateGroup(x => x.Name = "2.1");
                 var light2_1_1 = group2_1.AddLight(new Light(21, 1));
                 var light2_1_2 = group2_1.AddLight(new Light(21, 2));
                 var light2_1_3 = group2_1.AddLight(new Light(21, 3));
-                
+
                 var group2_2 = project2.CreateGroup(x => x.Name = "2.2");
                 var light2_2_1 = group2_2.AddLight(new Light(22, 1));
                 var light2_2_2 = group2_2.AddLight(new Light(22, 2));
                 var light2_2_3 = group2_2.AddLight(new Light(22, 3));
-                
+
                 var group2_3 = project2.CreateGroup(x => x.Name = "2.3");
                 var light2_3_1 = group2_3.AddLight(new Light(23, 1));
                 var light2_3_2 = group2_3.AddLight(new Light(23, 2));
@@ -72,7 +72,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 var model = new MasterModel();
                 var group = model.CreateProject().CreateGroup();
                 group.AddLight(new Light(1, 11)).AddLight(new Light(2, 22));
-                model.AddUnassignedLights(new[] {new Light(3, 33), new Light(4, 44),});
+                model.AddUnassignedLights(new[] {new Light(3, 33), new Light(4, 44)});
 
                 _result = model.AllLights;
             }
@@ -105,7 +105,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_find_a_group_by_Id()
             {
                 var model = new MasterModel();
-                
+
                 var project1 = model.CreateProject(x => x.Name = "1");
                 var group1_1 = project1.CreateGroup(x => x.Name = "1.1");
                 var group1_2 = project1.CreateGroup(x => x.Name = "1.2");
@@ -123,7 +123,6 @@ namespace UnitTests.ZBuildLights.Core.Models
         [TestFixture]
         public class When_model_is_empty
         {
-
             [Test]
             public void Should_throw_an_exception_when_searching_for_a_group()
             {
@@ -141,7 +140,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                     thrown = e;
                 }
 
-                thrown.GetType().ShouldEqual(typeof(InvalidOperationException));
+                thrown.GetType().ShouldEqual(typeof (InvalidOperationException));
                 thrown.Message.ShouldEqual(string.Format("Could not find group with id: {0}", id));
             }
         }
@@ -184,6 +183,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 _model.UnassignedLights.Length.ShouldEqual(0);
             }
         }
+
         [TestFixture]
         public class When_moving_a_light_from_one_group_to_another
         {
@@ -214,7 +214,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_add_the_light_to_the_new_group()
             {
                 _barGroup.Lights.Length.ShouldEqual(1);
-                _barGroup.Lights[0].ZWaveHomeId.ShouldEqual((uint)1);
+                _barGroup.Lights[0].ZWaveHomeId.ShouldEqual((uint) 1);
                 _light.ParentGroup.ShouldBeSameAs(_barGroup);
             }
         }
@@ -302,6 +302,56 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_keep_the_existing_id()
             {
                 _project.Id.ShouldEqual(_expectedId);
+            }
+        }
+
+        [TestFixture]
+        public class When_removing_project_from_master_model
+        {
+            private MasterModel _masterModel;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _masterModel = new MasterModel();
+                var notDeleted = _masterModel.CreateProject(x => x.Name = "Not Deleted");
+                notDeleted.CreateGroup().AddLight(new Light(1, 11)).AddLight(new Light(1,12));
+                notDeleted.CreateGroup().AddLight(new Light(1, 13)).AddLight(new Light(1,14));
+                var toBeDeleted = _masterModel.CreateProject(x => x.Name = "To Be Deleted");
+                toBeDeleted.CreateGroup().AddLight(new Light(1, 21)).AddLight(new Light(1, 22));
+                toBeDeleted.CreateGroup().AddLight(new Light(1, 23)).AddLight(new Light(1, 24));
+
+                _masterModel.RemoveProject(toBeDeleted.Id);
+            }
+
+            [Test]
+            public void Should_reassign_all_lights_under_that_project_to_the_unassigned_group()
+            {
+                var unassignedLights = _masterModel.UnassignedLights;
+                unassignedLights.Length.ShouldEqual(4);
+                unassignedLights.Any(x => x.ZWaveDeviceId == (byte)21).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveDeviceId == (byte)22).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveDeviceId == (byte)23).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveDeviceId == (byte)24).ShouldBeTrue();
+            }
+
+            [Test]
+            public void Should_not_remove_other_projects()
+            {
+                _masterModel.Projects.Any(x => x.Name == "Not Deleted").ShouldBeTrue();
+                var undeletedProject = _masterModel.Projects.Single(x => x.Name == "Not Deleted");
+                var assignedLights = undeletedProject.Groups.SelectMany(x => x.Lights).ToArray();
+                assignedLights.Length.ShouldEqual(4);
+                assignedLights.Any(x => x.ZWaveDeviceId == (byte)11).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveDeviceId == (byte)12).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveDeviceId == (byte)13).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveDeviceId == (byte)14).ShouldBeTrue();
+            }
+
+            [Test]
+            public void Should_remove_the_requested_project()
+            {
+                _masterModel.Projects.Length.ShouldEqual(1);
             }
         }
     }

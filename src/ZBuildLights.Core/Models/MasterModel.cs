@@ -31,7 +31,13 @@ namespace ZBuildLights.Core.Models
 
         public void RemoveProject(Guid projectId)
         {
-            _projects.RemoveAll(x => x.Id.Equals(projectId));
+            var toRemove = _projects.SingleOrDefault(x => x.Id.Equals(projectId));
+            if (toRemove == null)
+                return;
+
+            foreach(var group in toRemove.Groups)
+                group.UnassignAllLights();
+            _projects.Remove(toRemove);
         }
 
         public Light[] AllLights
