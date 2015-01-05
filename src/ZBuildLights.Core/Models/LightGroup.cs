@@ -8,14 +8,15 @@ namespace ZBuildLights.Core.Models
     {
         private readonly List<Light> _lights = new List<Light>();
 
-        public LightGroup()
+        internal LightGroup(Project parentProject)
         {
             Name = string.Empty;
+            ParentProject = parentProject;
         }
 
         public string Name { get; set; }
-        public Guid Id { get; internal set; }
-        public Project ParentProject { get; set; }
+        public Guid Id { get; set; }
+        public Project ParentProject { get; private set; }
 
         public string FullName
         {
@@ -31,6 +32,8 @@ namespace ZBuildLights.Core.Models
         {
             get { return _lights.OrderBy(x => x.Color.DisplayOrder).ToArray(); }
         }
+
+        public MasterModel MasterModel { get { return ParentProject.MasterModel; } }
 
         public LightGroup AddLight(Light light)
         {

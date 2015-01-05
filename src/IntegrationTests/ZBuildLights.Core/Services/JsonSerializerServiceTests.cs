@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using KellermanSoftware.CompareNetObjects;
 using NUnit.Framework;
 using Should;
-using ZBuildLights.Core.Builders;
+using ZBuildLights.Core.Enumerations;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services.Storage;
 using ZBuildLights.Web;
@@ -22,12 +22,38 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                 AutoMapperConfig.Initialize();
                 var container = IoC.Initialize();
 
-                var projects = new StubStatusProvider().GetCurrentProjects();
-                var testData = new MasterModel {LastUpdatedDate = DateTime.Now, Projects = projects};
-                testData.AddUnassignedLight(new Light(3333, 3));
+                var masterModel = new MasterModel {LastUpdatedDate = DateTime.Now};
+                var core = masterModel.CreateProject(x =>
+                {
+                    x.Name = "Core";
+                    x.StatusMode = StatusMode.Success;
+                });
+                core.CreateGroup(x => x.Name = "SnP Square")
+                    .AddLight(new Light(1, 1) {Color = LightColor.Green, SwitchState = SwitchState.On})
+                    .AddLight(new Light(1, 2) {Color = LightColor.Yellow, SwitchState = SwitchState.Off})
+                    .AddLight(new Light(1, 3) {Color = LightColor.Red, SwitchState = SwitchState.Off})
+                    ;
+                core.CreateGroup(x => x.Name = "SnP Near Matt")
+                    .AddLight(new Light(1, 4) {Color = LightColor.Green, SwitchState = SwitchState.On})
+                    .AddLight(new Light(1, 5) {Color = LightColor.Yellow, SwitchState = SwitchState.Off})
+                    .AddLight(new Light(1, 6) {Color = LightColor.Red, SwitchState = SwitchState.Off})
+                    ;
+
+                var apps = masterModel.CreateProject(x =>
+                {
+                    x.StatusMode = StatusMode.BrokenAndBuilding;
+                    x.Name = "Apps";
+                });
+                apps.CreateGroup(x => x.Name = "Near Window")
+                    .AddLight(new Light(1, 7) {Color = LightColor.Green, SwitchState = SwitchState.Off})
+                    .AddLight(new Light(1, 8) {Color = LightColor.Yellow, SwitchState = SwitchState.On})
+                    .AddLight(new Light(1, 9) {Color = LightColor.Red, SwitchState = SwitchState.On})
+                    ;
+
+                masterModel.AddUnassignedLight(new Light(3333, 3));
 
                 var serializer = container.GetInstance<IJsonSerializerService>();
-                var json = serializer.SerializeMasterModel(testData);
+                var json = serializer.SerializeMasterModel(masterModel);
 
                 Console.WriteLine(json);
 
@@ -38,7 +64,7 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                     {
                         MembersToIgnore = new List<string> {"SwitchState", "StatusMode"}
                     });
-                var result = comparer.Compare(testData, deserialized);
+                var result = comparer.Compare(masterModel, deserialized);
 
                 if (!result.AreEqual)
                 {

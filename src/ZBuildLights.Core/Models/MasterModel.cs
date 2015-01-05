@@ -1,32 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ZBuildLights.Core.Extensions;
 
 namespace ZBuildLights.Core.Models
 {
     public class MasterModel
     {
         //State
-        public Project[] Projects { get; set; }
+        private readonly List<Project> _projects = new List<Project>();
+
+        public Project[] Projects
+        {
+            get { return _projects.ToArray(); }
+        }
+
         public DateTime LastUpdatedDate { get; set; }
-        public Light[] UnassignedLights { get { return _unassignedLights.ToArray(); } }
+
+        public Light[] UnassignedLights
+        {
+            get { return _unassignedLights.ToArray(); }
+        }
 
         private readonly HashSet<Light> _unassignedLights = new HashSet<Light>();
 
-        //Constructor
-        public MasterModel()
-        {
-            Projects = new Project[0];
-        }
-
         //Methods
-        public Project AddProject(Project project)
-        {
-            Projects = Projects.AddToEnd(project);
-            return project;
-        }
-
         public bool ProjectExists(Guid id)
         {
             return Projects.Any(x => x.Id.Equals(id));
@@ -34,7 +31,7 @@ namespace ZBuildLights.Core.Models
 
         public void RemoveProject(Guid projectId)
         {
-            Projects = Projects.Except(Projects.Where(x => x.Id.Equals(projectId))).ToArray();
+            _projects.RemoveAll(x => x.Id.Equals(projectId));
         }
 
         public Light[] AllLights
@@ -65,11 +62,6 @@ namespace ZBuildLights.Core.Models
             return group;
         }
 
-        public LightGroup GetUnassignedGroup()
-        {
-            return new LightGroup{Name = "Unassigned"}.AddLights(UnassignedLights);
-        }
-
         public void AddUnassignedLights(IEnumerable<Light> lights)
         {
             foreach (var light in lights)
@@ -87,17 +79,20 @@ namespace ZBuildLights.Core.Models
             if (light.IsInGroup)
                 light.Unassign();
             else
-            _unassignedLights.Remove(light);
+                _unassignedLights.Remove(light);
             FindGroup(groupId).AddLight(light);
         }
 
-//        public void MoveTo(LightGroup group)
-//        {
-//            if (ParentGroup != null)
-//                this.ParentGroup.RemoveLight(this);
-//            group.AddLight(this);
-//        }
-//
+        public Project CreateProject(Action<Project> initialize = null)
+        {
+            var init = initialize ?? (x => { });
+            var project = new Project(this);
+            init(project);
+            if (project.Id == Guid.Empty)
+                project.Id = Guid.NewGuid();
 
+            _projects.Add(project);
+            return project;
+        }
     }
 }

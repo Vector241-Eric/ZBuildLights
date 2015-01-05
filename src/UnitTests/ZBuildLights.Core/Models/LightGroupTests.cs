@@ -13,24 +13,11 @@ namespace UnitTests.ZBuildLights.Core.Models
             [Test]
             public void Should_include_the_name_of_the_parent_project()
             {
-                var project = new Project {Name = "Foo"};
-                var group = new LightGroup {Name = "Bar"};
-                project.AddGroup(group);
+                var project = new MasterModel().CreateProject(x => x.Name = "Foo");
+                var group = project.CreateGroup(x => x.Name = "Bar");
 
                 group.FullName.ShouldEqual("Foo.Bar");
-            } 
-        }
-
-        [TestFixture]
-        public class When_getting_the_full_name_of_a_group_that_isnt_in_a_project
-        {
-            [Test]
-            public void Should_simply_provide_the_name_of_the_group()
-            {
-                var group = new LightGroup {Name = "Bar"};
-
-                group.FullName.ShouldEqual("Bar");
-            } 
+            }
         }
 
         [TestFixture]
@@ -42,7 +29,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _group = new LightGroup();
+                _group = new MasterModel().CreateProject().CreateGroup();
                 _light = new Light(1, 2);
                 _group.AddLight(_light);
             }
@@ -68,11 +55,14 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                var group = new LightGroup {Id = Guid.NewGuid(), Name = "Foo", ParentProject = new Project {Name = "FooDaddy"}};
+                var masterModel = new MasterModel();
+                var fooDaddy = masterModel.CreateProject(x => x.Name = "FooDaddy");
+                var group = fooDaddy.CreateGroup(x => x.Name = "Foo");
                 var light = new Light(1, 2);
                 group.AddLight(light);
 
-                var newGroup = new LightGroup { Id = Guid.NewGuid(), Name = "Bar", ParentProject = new Project { Name = "BarDaddy" } };
+                var barDaddy = masterModel.CreateProject(x => x.Name = "BarDaddy");
+                var newGroup = barDaddy.CreateGroup(x => x.Name = "Bar");
                 try
                 {
                     newGroup.AddLight(light);
@@ -87,7 +77,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_throw_an_exception()
             {
                 _thrown.ShouldNotBeNull();
-                _thrown.GetType().ShouldEqual(typeof(InvalidOperationException));
+                _thrown.GetType().ShouldEqual(typeof (InvalidOperationException));
                 _thrown.Message.ShouldEqual(
                     "Cannot add light to group BarDaddy.Bar because it already belongs to group FooDaddy.Foo");
             }
@@ -102,7 +92,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _group = new LightGroup();
+                _group = new MasterModel().CreateProject().CreateGroup();
                 _light = new Light(1, 2);
 
                 _group.AddLight(_light);
@@ -131,7 +121,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _group = new LightGroup();
+                _group = new MasterModel().CreateProject().CreateGroup();
                 _light = new Light(1, 2);
 
                 _group.AddLight(_light);
@@ -142,8 +132,8 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_keep_the_light_in_the_group_without_creating_a_duplicate()
             {
                 _group.Lights.Length.ShouldEqual(1);
-                _group.Lights[0].ZWaveHomeId.ShouldEqual((uint)1);
-                _group.Lights[0].ZWaveDeviceId.ShouldEqual((byte)2);
+                _group.Lights[0].ZWaveHomeId.ShouldEqual((uint) 1);
+                _group.Lights[0].ZWaveDeviceId.ShouldEqual((byte) 2);
             }
         }
 
@@ -157,12 +147,20 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _bar = new LightGroup{Name = "Bar"};
-                var foo = new LightGroup{Name = "Foo"};
-                _light = new Light(1,2);
+                var masterModel = new MasterModel();
+                var barDaddy = masterModel.CreateProject(x =>
+                {
+                    x.Name = "BarDaddy";
+                });
+                _bar = barDaddy.CreateGroup(x => x.Name = "Bar");
 
-                new Project { Name = "BarDaddy" }.AddGroup(_bar);
-                new Project { Name = "FooDaddy" }.AddGroup(foo);
+                var fooDaddy = masterModel.CreateProject(x =>
+                {
+                    x.Name = "FooDaddy";
+                });
+                var foo = fooDaddy.CreateGroup(x => x.Name = "Foo");
+                _light = new Light(1, 2);
+
 
                 _bar.AddLight(_light);
 
@@ -179,8 +177,9 @@ namespace UnitTests.ZBuildLights.Core.Models
             [Test]
             public void Should_throw_an_exception()
             {
-                _thrown.GetType().ShouldEqual(typeof(InvalidOperationException));
-                _thrown.Message.ShouldEqual("Cannot remove light from group FooDaddy.Foo because it belongs to group BarDaddy.Bar");
+                _thrown.GetType().ShouldEqual(typeof (InvalidOperationException));
+                _thrown.Message.ShouldEqual(
+                    "Cannot remove light from group FooDaddy.Foo because it belongs to group BarDaddy.Bar");
             }
 
             [Test]

@@ -18,7 +18,6 @@
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 using ZBuildLights.Core;
-using ZBuildLights.Core.Builders;
 using ZBuildLights.Core.Services;
 
 namespace ZBuildLights.Web.DependencyResolution
@@ -39,7 +38,6 @@ namespace ZBuildLights.Web.DependencyResolution
                 });
 
 
-            For<IStatusProvider>().Use<StubStatusProvider>();
             For<IZWaveNetwork>().Use<StubZWaveNetwork>();
         }
 
