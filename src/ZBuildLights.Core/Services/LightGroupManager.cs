@@ -70,6 +70,11 @@ namespace ZBuildLights.Core.Services
                 return EditResult.Fail<LightGroup>(BadId(groupId));
 
             var group = allGroups.Single(x => x.Id.Equals(groupId));
+            foreach (var light in group.Lights)
+            {
+                light.Unassign();
+                masterModel.AddUnassignedLight(light);
+            }
             var parent = group.ParentProject;
             parent.RemoveGroup(group);
 
