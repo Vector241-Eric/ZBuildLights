@@ -14,8 +14,10 @@ namespace ZBuildLights.Core.Models.JsonSerialization
             var masterModel = new MasterModel
             {
                 LastUpdatedDate = LastUpdatedDate,
-                Projects = Projects.Select(x => x.ToDomainObject()).ToArray(),
             };
+            foreach (var jsonProject in Projects)
+                masterModel.CreateProject(jsonProject.ToDomainObject());
+
             var unassignedLights = UnassignedLights ?? new JsonLight[0];
 
             masterModel.AddUnassignedLights(unassignedLights.Select(x => x.ToDomainObject()));
@@ -29,15 +31,14 @@ namespace ZBuildLights.Core.Models.JsonSerialization
         public Guid Id { get; set; }
         public JsonLightGroup[] Groups { get; set; }
 
-        public Project ToDomainObject()
+        public Action<Project> ToDomainObject()
         {
-            var project = new Project
+            return p =>
             {
-                Name = Name,
-                Id = Id,
+                p.Name = Name;
+                p.Id = Id;
+                p.AddGroups(Groups.Select(x => x.ToDomainObject()));
             };
-            project.AddGroups(Groups.Select(x => x.ToDomainObject()));
-            return project;
         }
     }
 

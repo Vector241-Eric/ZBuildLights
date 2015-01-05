@@ -46,7 +46,9 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _group = new LightGroup {Name = "Foo", ParentProject = new Project {Name = "FooDaddy"}};
+                var masterModel = new MasterModel();
+                var fooDaddy = masterModel.CreateProject(x => x.Name = "FooDaddy");
+                _group = fooDaddy.AddGroup(new LightGroup {Name = "Foo"});
                 _light = new Light(1, 2);
                 _group.AddLight(_light);
 

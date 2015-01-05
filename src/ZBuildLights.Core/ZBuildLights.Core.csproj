@@ -84,9 +84,7 @@
     <Compile Include="Services\ILightGroupManager.cs" />
     <Compile Include="Services\IUnassignedLightService.cs" />
     <Compile Include="Services\ILightUpdater.cs" />
-    <Compile Include="Services\IStatusProvider.cs" />
     <Compile Include="Services\UnassignedLightService.cs" />
-    <Compile Include="Builders\StubStatusProvider.cs" />
     <Compile Include="Services\SystemClock.cs" />
     <Compile Include="Services\LightStatusSetter.cs" />
     <Compile Include="Services\SystemStatusProvider.cs" />

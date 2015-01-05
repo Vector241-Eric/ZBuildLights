@@ -20,16 +20,19 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
             [SetUp]
             public void ContextSetup()
             {
-                var projects = new Project[5];
-
-                var masterModel = new MasterModel {Projects = projects};
+                var masterModel = new MasterModel();
+                masterModel.CreateProject();    //1
+                masterModel.CreateProject();    //2
+                masterModel.CreateProject();    //3
+                masterModel.CreateProject();    //4
+                masterModel.CreateProject();    //5
 
                 var statusProvider = S<ISystemStatusProvider>();
                 statusProvider.Stub(x => x.GetSystemStatus())
                     .Return(masterModel);
 
                 var mapper = S<IMapper>();
-                mapper.Stub(x => x.Map<Project[], AdminProjectViewModel[]>(projects))
+                mapper.Stub(x => x.Map<Project[], AdminProjectViewModel[]>(masterModel.Projects))
                     .Return(new AdminProjectViewModel[3]);
                 mapper.Stub(x => x.Map<LightGroup, AdminLightGroupViewModel>(null))
                     .IgnoreArguments()

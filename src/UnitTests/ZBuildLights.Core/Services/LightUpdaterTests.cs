@@ -27,7 +27,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _destinationGroup = Guid.NewGuid();
 
                 var existingMasterModel = new MasterModel();
-                var project = existingMasterModel.AddProject(new Project {Name = "Existing Project"});
+                var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 project.AddGroup(new LightGroup()).AddLight(new Light(1, 11)).AddLight(new Light(1, 12));
                 project.AddGroup(new LightGroup()).AddLight(new Light(1, 13)).AddLight(new Light(1, 14));
 
@@ -37,10 +37,10 @@ namespace UnitTests.ZBuildLights.Core.Services
 
                 project.AddGroup(new LightGroup()).AddLight(new Light(2, 13)).AddLight(new Light(2, 14));
 
-                var project2 = existingMasterModel.AddProject(new Project {Name = "Existing Project 2"});
+                var project2 = existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
                 project2.AddGroup(new LightGroup()).AddLight(new Light(1, 21)).AddLight(new Light(1, 22));
 
-                var project3 = existingMasterModel.AddProject(new Project {Name = "Existing Project 3"});
+                var project3 = existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
                 project3.AddGroup(new LightGroup()).AddLight(new Light(1, 31)).AddLight(new Light(1, 32));
 
 
@@ -87,7 +87,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var groupId = Guid.NewGuid();
 
                 _masterModel = new MasterModel();
-                var project = _masterModel.AddProject(new Project {Name = "Existing Project"});
+                var project = _masterModel.CreateProject(x => x.Name = "Existing Project");
                 project.AddGroup(new LightGroup {Id = groupId}).AddLight(new Light(1, 11)).AddLight(new Light(1, 12));
 
                 var unassignedLights = new[]
@@ -127,7 +127,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 const byte zWaveDeviceId = 11;
 
                 var masterModel = new MasterModel();
-                var project = masterModel.AddProject(new Project {Name = "Existing Project"});
+                var project = masterModel.CreateProject(x => x.Name = "Existing Project");
 
                 var existingGroup = new LightGroup {Id = Guid.NewGuid()};
                 project.AddGroup(existingGroup).AddLight(new Light(zwaveHomeId, zWaveDeviceId){Color = LightColor.Yellow});
@@ -160,7 +160,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var groupId = Guid.NewGuid();
 
                 var _masterModel = new MasterModel();
-                var project = _masterModel.AddProject(new Project {Name = "Existing Project"});
+                var project = _masterModel.CreateProject(x => x.Name = "Existing Project");
                 project.AddGroup(new LightGroup {Id = groupId});
 
                 var repository = S<IMasterModelRepository>();

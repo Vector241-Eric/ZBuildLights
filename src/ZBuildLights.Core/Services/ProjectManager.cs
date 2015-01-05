@@ -21,9 +21,7 @@ namespace ZBuildLights.Core.Services
             if (IsProjectNameAlreadyUsed(name, currentModel))
                 return CreationResult.Fail<Project>(NameCollisionMessage(name));
 
-            var project = InitializeProject(name);
-            currentModel.AddProject(project);
-
+            var project = currentModel.CreateProject(x => { x.Name = name; });
             _masterModelRepository.Save(currentModel);
 
             return CreationResult.Success(project);
@@ -74,16 +72,6 @@ namespace ZBuildLights.Core.Services
         {
             var existingProjects = currentModel.Projects;
             return existingProjects.Any(x => x.Name.Equals(name));
-        }
-
-        private static Project InitializeProject(string name)
-        {
-            var project = new Project
-            {
-                Name = name,
-                Id = Guid.NewGuid(),
-            };
-            return project;
         }
     }
 }

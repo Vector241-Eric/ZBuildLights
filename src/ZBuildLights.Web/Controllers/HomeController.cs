@@ -1,21 +1,23 @@
 ﻿using System.Web.Mvc;
-using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Repository;
 using ZBuildLights.Web.Models.Home;
 
 namespace ZBuildLights.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IStatusProvider _statusProvider;
+        private readonly IMasterModelRepository _masterModelRepository;
 
-        public HomeController(IStatusProvider statusProvider)
+        public HomeController(IMasterModelRepository masterModelRepository)
         {
-            _statusProvider = statusProvider;
+            _masterModelRepository = masterModelRepository;
         }
 
         public ActionResult Index()
         {
-            var model = new ViewModel {Projects = _statusProvider.GetCurrentProjects()};
+            var masterModel = _masterModelRepository.GetCurrent();
+            var projects = masterModel.Projects;
+            var model = new ViewModel {Projects = projects};
             return View(model);
         }
 

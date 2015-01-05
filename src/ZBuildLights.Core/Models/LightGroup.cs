@@ -14,7 +14,7 @@ namespace ZBuildLights.Core.Models
         }
 
         public string Name { get; set; }
-        public Guid Id { get; internal set; }
+        public Guid Id { get; set; }
         public Project ParentProject { get; set; }
 
         public string FullName

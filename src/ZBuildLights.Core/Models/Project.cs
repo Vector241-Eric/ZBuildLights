@@ -11,6 +11,13 @@ namespace ZBuildLights.Core.Models
         public string Name { get; set; }
         public StatusMode StatusMode { get; set; }
         public Guid Id { get; internal set; }
+        public MasterModel MasterModel { get; private set; }
+
+        public Project(MasterModel masterModel)
+        {
+            MasterModel = masterModel;
+            StatusMode = StatusMode.NotConnected;
+        }
 
         public LightGroup[] Groups
         {

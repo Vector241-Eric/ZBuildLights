@@ -21,7 +21,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             public void ContextSetup()
             {
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(new Project {Name = "Existing Project"});
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -74,7 +74,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             public void ContextSetup()
             {
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(new Project {Name = "Existing Project"});
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -113,14 +113,10 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var projectToEdit = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
-                var project2 = new Project {Name = "Existing Project 2", Id = Guid.NewGuid()};
-                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
-
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(projectToEdit);
-                existingMasterModel.AddProject(project2);
-                existingMasterModel.AddProject(project3);
+                var projectToEdit = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -172,14 +168,10 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project1 = new Project {Name = "Name Collision", Id = Guid.NewGuid()};
-                var projectToEdit = new Project {Name = "Existing Project 2", Id = Guid.NewGuid()};
-                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
-
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project1);
-                existingMasterModel.AddProject(projectToEdit);
-                existingMasterModel.AddProject(project3);
+                existingMasterModel.CreateProject(x => x.Name = "Name Collision");
+                var projectToEdit = existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -213,27 +205,20 @@ namespace UnitTests.ZBuildLights.Core.Services
         public class When_updating_a_project_and_setting_the_name_to_the_value_it_already_has
         {
             private EditResult<Project> _result;
-            private MasterModel _savedModel;
 
             [SetUp]
             public void ContextSetup()
             {
-                var project1 = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
-                var projectToEdit = new Project {Name = "Keep This", Id = Guid.NewGuid()};
-                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
-
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project1);
-                existingMasterModel.AddProject(projectToEdit);
-                existingMasterModel.AddProject(project3);
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project");
+                var projectToEdit =existingMasterModel.CreateProject(x => x.Name = "Keep This");
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
                 _result = creator.UpdateProject(projectToEdit.Id, "Keep This");
-
-                _savedModel = repository.LastSaved;
             }
 
             [Test]
@@ -254,14 +239,10 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project1 = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
-                var project2 = new Project {Name = "Existing Project 2", Id = Guid.NewGuid()};
-                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
-
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project1);
-                existingMasterModel.AddProject(project2);
-                existingMasterModel.AddProject(project3);
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project");
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
 
                 _repository = new StubMasterModelRepository();
                 _repository.UseCurrentModel(existingMasterModel);
@@ -301,14 +282,10 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project1 = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
-                var project2 = new Project {Name = "Existing Project 2", Id = Guid.NewGuid()};
-                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
-
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project1);
-                existingMasterModel.AddProject(project2);
-                existingMasterModel.AddProject(project3);
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project");
+                var project2 = existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -345,14 +322,10 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project1 = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
-                var project2 = new Project {Name = "Existing Project 2", Id = Guid.NewGuid()};
-                var project3 = new Project {Name = "Existing Project 3", Id = Guid.NewGuid()};
-
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project1);
-                existingMasterModel.AddProject(project2);
-                existingMasterModel.AddProject(project3);
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project"  );
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
 
                 _repository = new StubMasterModelRepository();
                 _repository.UseCurrentModel(existingMasterModel);

@@ -24,7 +24,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var repo = S<IMasterModelRepository>();
                 _model = new MasterModel();
-                var group = _model.AddProject(new Project()).AddGroup(new LightGroup());
+                var group = _model.CreateProject().AddGroup(new LightGroup());
                 group.AddLight(new Light(3, 11));
                 group.AddLight(new Light(3, 22));
                 group.AddLight(new Light(3, 33));

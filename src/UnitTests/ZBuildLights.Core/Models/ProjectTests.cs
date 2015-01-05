@@ -12,7 +12,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [Test]
             public void Should_set_parentProject()
             {
-                var project = new Project();
+                var project = new MasterModel().CreateProject();
                 var group = new LightGroup();
                 project.AddGroup(group);
 

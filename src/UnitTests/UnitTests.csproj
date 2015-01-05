@@ -70,6 +70,7 @@
     <Compile Include="_Stubs\StubLightStatusSetter.cs" />
     <Compile Include="_Stubs\StubMasterModelRepository.cs" />
     <Compile Include="_Stubs\StubUnassignedLightService.cs" />
+    <Compile Include="_TestData\TestDataMother.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

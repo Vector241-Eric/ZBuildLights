@@ -20,11 +20,14 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
-                project.AddGroup(new LightGroup {Name = "Existing Group"});
-
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project);
+
+                var project = existingMasterModel.CreateProject(x =>
+                {
+                    x.Name = "Existing Project";
+                    x.Id = Guid.NewGuid();
+                });
+                project.AddGroup(new LightGroup {Name = "Existing Group"});
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -77,13 +80,12 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingMasterModel = new MasterModel();
+
+                var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 project.AddGroup(new LightGroup {Name = "Existing Group"});
 
                 _projectIdDoesntExist = Guid.NewGuid();
-
-                var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project);
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -123,11 +125,9 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
-                project.AddGroup(new LightGroup {Name = "Existing Group"});
-
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project);
+                var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
+                project.AddGroup(new LightGroup {Name = "Existing Group"});
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -166,13 +166,11 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingMasterModel = new MasterModel();
+                var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 project.AddGroup(existingGroup);
                 project.AddGroup(new LightGroup {Id = Guid.NewGuid()});
-
-                var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project);
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -227,13 +225,11 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingMasterModel = new MasterModel();
+                var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 project.AddGroup(existingGroup);
                 project.AddGroup(new LightGroup {Id = Guid.NewGuid(), Name = "Name Collision"});
-
-                var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project);
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -273,13 +269,12 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingMasterModel = new MasterModel();
+
+                var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 project.AddGroup(existingGroup);
                 project.AddGroup(new LightGroup {Id = Guid.NewGuid()});
-
-                var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project);
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -315,15 +310,14 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var project = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingMasterModel = new MasterModel();
+
+                var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 project.AddGroup(existingGroup);
                 project.AddGroup(new LightGroup {Id = Guid.NewGuid()});
 
                 _groupIdDoesntExist = Guid.NewGuid();
-
-                var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(project);
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -365,7 +359,9 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                _parentProject = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingMasterModel = new MasterModel();
+
+                _parentProject = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 existingGroup.AddLight(new Light(1, 1));
                 existingGroup.AddLight(new Light(1, 2));
@@ -373,9 +369,6 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _remainingGroup = new LightGroup {Id = Guid.NewGuid()};
                 _remainingGroup.AddLight(new Light(1, 10));
                 _parentProject.AddGroup(_remainingGroup);
-
-                var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(_parentProject);
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -423,14 +416,12 @@ namespace UnitTests.ZBuildLights.Core.Services
             [SetUp]
             public void ContextSetup()
             {
-                var parentProject = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
+                var existingMasterModel = new MasterModel();
+                var parentProject = existingMasterModel.CreateProject(x=>x.Name = "Existing Project");
                 var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
                 parentProject.AddGroup(existingGroup);
 
                 _idDoesNotExist = Guid.NewGuid();
-
-                var existingMasterModel = new MasterModel();
-                existingMasterModel.AddProject(parentProject);
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);

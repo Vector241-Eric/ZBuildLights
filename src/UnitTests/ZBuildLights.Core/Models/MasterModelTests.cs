@@ -16,7 +16,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 var model = new MasterModel();
                 
-                var project1 = model.AddProject(new Project {Name = "1"});
+                var project1 = model.CreateProject(x => x.Name = "1");
                 
                 var group1_1 = project1.AddGroup(new LightGroup {Name = "1.1"});
                 var light1_1_1 = group1_1.AddLight(new Light(11, 1));
@@ -33,7 +33,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 var light1_3_2 = group1_3.AddLight(new Light(13, 2));
                 var light1_3_3 = group1_3.AddLight(new Light(13, 3));
 
-                var project2 = model.AddProject(new Project {Name = "1"});
+                var project2 = model.CreateProject(x => x.Name = "1");
                 
                 var group2_1 = project2.AddGroup(new LightGroup {Name = "2.1"});
                 var light2_1_1 = group2_1.AddLight(new Light(21, 1));
@@ -70,7 +70,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void ContextSetup()
             {
                 var model = new MasterModel();
-                var group = model.AddProject(new Project()).AddGroup(new LightGroup());
+                var group = model.CreateProject().AddGroup(new LightGroup());
                 group.AddLight(new Light(1, 11)).AddLight(new Light(2, 22));
                 model.AddUnassignedLights(new[] {new Light(3, 33), new Light(4, 44),});
 
@@ -134,12 +134,12 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 var model = new MasterModel();
                 
-                var project1 = model.AddProject(new Project {Name = "1"});
+                var project1 = model.CreateProject(x => x.Name = "1");
                 var group1_1 = project1.AddGroup(new LightGroup {Name = "1.1", Id = Guid.NewGuid()});
                 var group1_2 = project1.AddGroup(new LightGroup {Name = "1.2", Id = Guid.NewGuid()});
                 var group1_3 = project1.AddGroup(new LightGroup {Name = "1.3", Id = Guid.NewGuid()});
 
-                var project2 = model.AddProject(new Project {Name = "1"});
+                var project2 = model.CreateProject(x => x.Name = "1");
                 var group2_1 = project2.AddGroup(new LightGroup {Name = "2.1", Id = Guid.NewGuid()});
                 var group2_2 = project2.AddGroup(new LightGroup {Name = "2.2", Id = Guid.NewGuid()});
                 var group2_3 = project2.AddGroup(new LightGroup {Name = "2.3", Id = Guid.NewGuid()});
@@ -189,7 +189,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 _model = new MasterModel();
                 _destinationGroup = new LightGroup{Id = groupId};
 
-                _model.AddProject(new Project()).AddGroup(_destinationGroup);
+                _model.CreateProject().AddGroup(_destinationGroup);
                 _model.AddUnassignedLight(_light);
 
                 _model.AssignLightToGroup(11, 23, groupId);
@@ -225,8 +225,8 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void ContextSetup()
             {
                 var model = new MasterModel();
-                _fooGroup = model.AddProject(new Project()).AddGroup(new LightGroup {Id = Guid.NewGuid()});
-                _barGroup = model.AddProject(new Project()).AddGroup(new LightGroup {Id = Guid.NewGuid()});
+                _fooGroup = model.CreateProject().AddGroup(new LightGroup {Id = Guid.NewGuid()});
+                _barGroup = model.CreateProject().AddGroup(new LightGroup {Id = Guid.NewGuid()});
 
                 _light = new Light(1, 2);
                 _fooGroup.AddLight(_light);
@@ -249,5 +249,90 @@ namespace UnitTests.ZBuildLights.Core.Models
             }
         }
 
+        [TestFixture]
+        public class When_creating_a_project_with_an_initializer_without_an_id
+        {
+            private MasterModel _masterModel;
+            private Project _project;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _masterModel = new MasterModel();
+                _project = _masterModel.CreateProject(x => x.Name = "Howdy");
+            }
+
+            [Test]
+            public void Should_set_the_master_model_reference()
+            {
+                _project.MasterModel.ShouldBeSameAs(_masterModel);
+            }
+
+            [Test]
+            public void Should_assign_an_id()
+            {
+                _project.Id.ShouldNotEqual(Guid.Empty);
+            }
+
+            [Test]
+            public void Should_initialize_the_project_based_on_the_provided_initializer()
+            {
+                _project.Name.ShouldEqual("Howdy");
+            }
+        }
+
+        [TestFixture]
+        public class When_creating_a_project_without_an_initializer
+        {
+            private MasterModel _masterModel;
+            private Project _project;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _masterModel = new MasterModel();
+                _project = _masterModel.CreateProject();
+            }
+
+            [Test]
+            public void Should_set_the_master_model_reference()
+            {
+                _project.MasterModel.ShouldBeSameAs(_masterModel);
+            }
+
+            [Test]
+            public void Should_assign_an_id()
+            {
+                _project.Id.ShouldNotEqual(Guid.Empty);
+            }
+
+            [Test]
+            public void Should_add_the_project_to_the_project_collection()
+            {
+                _masterModel.Projects.Length.ShouldEqual(1);
+                _masterModel.Projects[0].ShouldBeSameAs(_project);
+            }
+        }
+
+        [TestFixture]
+        public class When_creating_a_project_with_an_id
+        {
+            private MasterModel _masterModel;
+            private Project _project;
+            private Guid _expectedId = Guid.NewGuid();
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _masterModel = new MasterModel();
+                _project = _masterModel.CreateProject(x => x.Id = _expectedId);
+            }
+
+            [Test]
+            public void Should_keep_the_existing_id()
+            {
+                _project.Id.ShouldEqual(_expectedId);
+            }
+        }
     }
 }
