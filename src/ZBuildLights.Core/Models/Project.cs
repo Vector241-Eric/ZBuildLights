@@ -13,7 +13,7 @@ namespace ZBuildLights.Core.Models
         public Guid Id { get; internal set; }
         public MasterModel MasterModel { get; private set; }
 
-        public Project(MasterModel masterModel)
+        internal Project(MasterModel masterModel)
         {
             MasterModel = masterModel;
             StatusMode = StatusMode.NotConnected;
@@ -24,10 +24,9 @@ namespace ZBuildLights.Core.Models
             get { return _groups.ToArray(); }
         }
 
-        public LightGroup AddGroup(LightGroup group)
+        private LightGroup AddGroup(LightGroup group)
         {
             _groups.Add(group);
-            group.ParentProject = this;
             return group;
         }
 
@@ -40,6 +39,15 @@ namespace ZBuildLights.Core.Models
         public void RemoveGroup(LightGroup lightGroup)
         {
             _groups.Remove(lightGroup);
+        }
+
+        public LightGroup CreateGroup(Action<LightGroup> initialize = null)
+        {
+            var init = initialize ?? (lg => { });
+            var lightGroup = new LightGroup(this) {Id = Guid.NewGuid()};
+            init(lightGroup);
+            _groups.Add(lightGroup);
+            return lightGroup;
         }
     }
 }

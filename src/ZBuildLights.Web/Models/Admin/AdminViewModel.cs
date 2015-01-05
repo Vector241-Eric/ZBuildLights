@@ -61,7 +61,7 @@ namespace ZBuildLights.Web.Models.Admin
         public LightColor Color { get; set; }
 
         public SwitchState SwitchState { get; set; }
-        public byte ZWaveDeviceId { get; private set; }
-        public uint ZWaveHomeId { get; private set; }
+        public byte ZWaveDeviceId { get; set; }
+        public uint ZWaveHomeId { get; set; }
     }
 }

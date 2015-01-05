@@ -48,7 +48,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 var masterModel = new MasterModel();
                 var fooDaddy = masterModel.CreateProject(x => x.Name = "FooDaddy");
-                _group = fooDaddy.AddGroup(new LightGroup {Name = "Foo"});
+                _group = fooDaddy.CreateGroup(x => x.Name = "Foo");
                 _light = new Light(1, 2);
                 _group.AddLight(_light);
 
@@ -93,7 +93,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void ContextSetup()
             {
                 _light = new Light(43, 55);
-                new LightGroup().AddLight(_light);
+                new MasterModel().CreateProject().CreateGroup().AddLight(_light);
             }
 
             [Test]

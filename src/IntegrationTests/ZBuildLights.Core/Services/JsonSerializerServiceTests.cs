@@ -28,12 +28,12 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                     x.Name = "Core";
                     x.StatusMode = StatusMode.Success;
                 });
-                core.AddGroup(new LightGroup {Name = "SnP Square", Id = Guid.NewGuid()})
+                core.CreateGroup(x => x.Name = "SnP Square")
                     .AddLight(new Light(1, 1) {Color = LightColor.Green, SwitchState = SwitchState.On})
                     .AddLight(new Light(1, 2) {Color = LightColor.Yellow, SwitchState = SwitchState.Off})
                     .AddLight(new Light(1, 3) {Color = LightColor.Red, SwitchState = SwitchState.Off})
                     ;
-                core.AddGroup(new LightGroup {Name = "SnP Near Matt", Id = Guid.NewGuid()})
+                core.CreateGroup(x => x.Name = "SnP Near Matt")
                     .AddLight(new Light(1, 4) {Color = LightColor.Green, SwitchState = SwitchState.On})
                     .AddLight(new Light(1, 5) {Color = LightColor.Yellow, SwitchState = SwitchState.Off})
                     .AddLight(new Light(1, 6) {Color = LightColor.Red, SwitchState = SwitchState.Off})
@@ -44,7 +44,7 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                     x.StatusMode = StatusMode.BrokenAndBuilding;
                     x.Name = "Apps";
                 });
-                apps.AddGroup(new LightGroup {Name = "Near Window", Id = Guid.NewGuid()})
+                apps.CreateGroup(x => x.Name = "Near Window")
                     .AddLight(new Light(1, 7) {Color = LightColor.Green, SwitchState = SwitchState.Off})
                     .AddLight(new Light(1, 8) {Color = LightColor.Yellow, SwitchState = SwitchState.On})
                     .AddLight(new Light(1, 9) {Color = LightColor.Red, SwitchState = SwitchState.On})

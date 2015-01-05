@@ -28,10 +28,10 @@ namespace ZBuildLights.Core.Services
             if (project.Groups.Any(x => x.Name.Equals(name)))
                 return CreationResult.Fail<LightGroup>("A group with this name already exists");
 
-            project.AddGroup(new LightGroup {Id = Guid.NewGuid(), Name = name});
+            var group = project.CreateGroup(x => x.Name = name);
             _masterModelRepository.Save(masterModel);
 
-            return CreationResult.Success(new LightGroup());
+            return CreationResult.Success(group);
         }
 
         public EditResult<LightGroup> UpdateLightGroup(Guid groupId, string name)

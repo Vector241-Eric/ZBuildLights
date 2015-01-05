@@ -62,11 +62,6 @@ namespace ZBuildLights.Core.Models
             return group;
         }
 
-        public LightGroup GetUnassignedGroup()
-        {
-            return new LightGroup {Name = "Unassigned"}.AddLights(UnassignedLights);
-        }
-
         public void AddUnassignedLights(IEnumerable<Light> lights)
         {
             foreach (var light in lights)
@@ -87,14 +82,6 @@ namespace ZBuildLights.Core.Models
                 _unassignedLights.Remove(light);
             FindGroup(groupId).AddLight(light);
         }
-
-//        public void MoveTo(LightGroup group)
-//        {
-//            if (ParentGroup != null)
-//                this.ParentGroup.RemoveLight(this);
-//            group.AddLight(this);
-//        }
-//
 
         public Project CreateProject(Action<Project> initialize = null)
         {

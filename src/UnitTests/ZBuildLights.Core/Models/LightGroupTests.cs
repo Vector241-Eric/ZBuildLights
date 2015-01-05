@@ -14,22 +14,9 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_include_the_name_of_the_parent_project()
             {
                 var project = new MasterModel().CreateProject(x => x.Name = "Foo");
-                var group = new LightGroup {Name = "Bar"};
-                project.AddGroup(group);
+                var group = project.CreateGroup(x => x.Name = "Bar");
 
                 group.FullName.ShouldEqual("Foo.Bar");
-            }
-        }
-
-        [TestFixture]
-        public class When_getting_the_full_name_of_a_group_that_isnt_in_a_project
-        {
-            [Test]
-            public void Should_simply_provide_the_name_of_the_group()
-            {
-                var group = new LightGroup {Name = "Bar"};
-
-                group.FullName.ShouldEqual("Bar");
             }
         }
 
@@ -42,7 +29,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _group = new LightGroup();
+                _group = new MasterModel().CreateProject().CreateGroup();
                 _light = new Light(1, 2);
                 _group.AddLight(_light);
             }
@@ -70,20 +57,12 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 var masterModel = new MasterModel();
                 var fooDaddy = masterModel.CreateProject(x => x.Name = "FooDaddy");
-                var group = fooDaddy.AddGroup(new LightGroup
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Foo",
-                });
+                var group = fooDaddy.CreateGroup(x => x.Name = "Foo");
                 var light = new Light(1, 2);
                 group.AddLight(light);
 
                 var barDaddy = masterModel.CreateProject(x => x.Name = "BarDaddy");
-                var newGroup = barDaddy.AddGroup(new LightGroup
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Bar",
-                });
+                var newGroup = barDaddy.CreateGroup(x => x.Name = "Bar");
                 try
                 {
                     newGroup.AddLight(light);
@@ -113,7 +92,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _group = new LightGroup();
+                _group = new MasterModel().CreateProject().CreateGroup();
                 _light = new Light(1, 2);
 
                 _group.AddLight(_light);
@@ -142,7 +121,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _group = new LightGroup();
+                _group = new MasterModel().CreateProject().CreateGroup();
                 _light = new Light(1, 2);
 
                 _group.AddLight(_light);
@@ -169,21 +148,19 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void ContextSetup()
             {
                 var masterModel = new MasterModel();
-
-                _bar = new LightGroup {Name = "Bar"};
-                var foo = new LightGroup {Name = "Foo"};
-                _light = new Light(1, 2);
-
-                masterModel.CreateProject(x =>
+                var barDaddy = masterModel.CreateProject(x =>
                 {
                     x.Name = "BarDaddy";
-                    x.AddGroup(_bar);
                 });
-                masterModel.CreateProject(x =>
+                _bar = barDaddy.CreateGroup(x => x.Name = "Bar");
+
+                var fooDaddy = masterModel.CreateProject(x =>
                 {
                     x.Name = "FooDaddy";
-                    x.AddGroup(foo);
                 });
+                var foo = fooDaddy.CreateGroup(x => x.Name = "Foo");
+                _light = new Light(1, 2);
+
 
                 _bar.AddLight(_light);
 

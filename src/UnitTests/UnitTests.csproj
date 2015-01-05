@@ -70,7 +70,6 @@
     <Compile Include="_Stubs\StubLightStatusSetter.cs" />
     <Compile Include="_Stubs\StubMasterModelRepository.cs" />
     <Compile Include="_Stubs\StubUnassignedLightService.cs" />
-    <Compile Include="_TestData\TestDataMother.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -88,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ZBuildLights.Core\Builders\" />
+    <Folder Include="_TestData\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

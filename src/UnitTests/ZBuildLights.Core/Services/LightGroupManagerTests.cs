@@ -27,7 +27,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                     x.Name = "Existing Project";
                     x.Id = Guid.NewGuid();
                 });
-                project.AddGroup(new LightGroup {Name = "Existing Group"});
+                project.CreateGroup(x => x.Name = "Existing Group");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -83,7 +83,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var existingMasterModel = new MasterModel();
 
                 var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
-                project.AddGroup(new LightGroup {Name = "Existing Group"});
+                project.CreateGroup(x => x.Name = "Existing Group");
 
                 _projectIdDoesntExist = Guid.NewGuid();
 
@@ -127,7 +127,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var existingMasterModel = new MasterModel();
                 var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
-                project.AddGroup(new LightGroup {Name = "Existing Group"});
+                project.CreateGroup(x => x.Name = "Existing Group");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -168,9 +168,8 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var existingMasterModel = new MasterModel();
                 var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
-                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
-                project.AddGroup(existingGroup);
-                project.AddGroup(new LightGroup {Id = Guid.NewGuid()});
+                var existingGroup = project.CreateGroup(x => x.Name = "Existing Group");
+                project.CreateGroup(x => x.Name = "Some Other Group");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -227,9 +226,8 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var existingMasterModel = new MasterModel();
                 var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
-                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
-                project.AddGroup(existingGroup);
-                project.AddGroup(new LightGroup {Id = Guid.NewGuid(), Name = "Name Collision"});
+                var existingGroup = project.CreateGroup(x => x.Name = "Existing Group");
+                project.CreateGroup(x => x.Name = "Name Collision");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -272,9 +270,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var existingMasterModel = new MasterModel();
 
                 var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
-                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
-                project.AddGroup(existingGroup);
-                project.AddGroup(new LightGroup {Id = Guid.NewGuid()});
+                var existingGroup = project.CreateGroup(x => x.Name = "Existing Group");
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -313,9 +309,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var existingMasterModel = new MasterModel();
 
                 var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
-                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
-                project.AddGroup(existingGroup);
-                project.AddGroup(new LightGroup {Id = Guid.NewGuid()});
+                project.CreateGroup(x => x.Name = "Existing Group");
 
                 _groupIdDoesntExist = Guid.NewGuid();
 
@@ -362,13 +356,11 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var existingMasterModel = new MasterModel();
 
                 _parentProject = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
-                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
+                var existingGroup = _parentProject.CreateGroup(x => x.Name = "Existing Group");
                 existingGroup.AddLight(new Light(1, 1));
                 existingGroup.AddLight(new Light(1, 2));
-                _parentProject.AddGroup(existingGroup);
-                _remainingGroup = new LightGroup {Id = Guid.NewGuid()};
+                _remainingGroup = _parentProject.CreateGroup();
                 _remainingGroup.AddLight(new Light(1, 10));
-                _parentProject.AddGroup(_remainingGroup);
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
@@ -398,7 +390,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 _savedModel.AllLights.Length.ShouldEqual(3);
                 _remainingGroup.Lights.Length.ShouldEqual(1);
-                var unassignedLights = _savedModel.GetUnassignedGroup().Lights;
+                var unassignedLights = _savedModel.UnassignedLights;
                 unassignedLights.Length.ShouldEqual(2);
                 unassignedLights.Any(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(1)).ShouldBeTrue();
                 unassignedLights.Any(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(2)).ShouldBeTrue();
@@ -418,8 +410,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var existingMasterModel = new MasterModel();
                 var parentProject = existingMasterModel.CreateProject(x=>x.Name = "Existing Project");
-                var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
-                parentProject.AddGroup(existingGroup);
+                var existingGroup = parentProject.CreateGroup(x => x.Name = "Existing Group");
 
                 _idDoesNotExist = Guid.NewGuid();
 

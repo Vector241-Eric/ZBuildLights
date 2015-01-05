@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 using Rhino.Mocks;
 using Should;
 using UnitTests._Bases;
@@ -27,6 +28,8 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 masterModel.CreateProject();    //4
                 masterModel.CreateProject();    //5
 
+                masterModel.AddUnassignedLight(new Light(1, 22));
+
                 var statusProvider = S<ISystemStatusProvider>();
                 statusProvider.Stub(x => x.GetSystemStatus())
                     .Return(masterModel);
@@ -34,9 +37,9 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 var mapper = S<IMapper>();
                 mapper.Stub(x => x.Map<Project[], AdminProjectViewModel[]>(masterModel.Projects))
                     .Return(new AdminProjectViewModel[3]);
-                mapper.Stub(x => x.Map<LightGroup, AdminLightGroupViewModel>(null))
+                mapper.Stub(x => x.Map<Light[], AdminLightViewModel[]>(masterModel.UnassignedLights))
                     .IgnoreArguments()
-                    .Return(new AdminLightGroupViewModel {Name = "bar"});
+                    .Return(new AdminLightViewModel[]{new AdminLightViewModel{ZWaveHomeId = 1, ZWaveDeviceId = 22}, });
 
                 var provider = new AdminViewModelProvider(statusProvider, mapper);
                 _result = provider.GetIndexViewModel();
@@ -51,7 +54,10 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
             [Test]
             public void Should_set_unassigned_group_based_on_currently_unassigned_lights()
             {
-                _result.Unassigned.Name.ShouldEqual("bar");
+                _result.Unassigned.Name.ShouldEqual("Unassigned");
+                _result.Unassigned.Lights.Length.ShouldEqual(1);
+                _result.Unassigned.Lights.Single().ZWaveHomeId.ShouldEqual((byte)1);
+                _result.Unassigned.Lights.Single().ZWaveDeviceId.ShouldEqual((byte)22);
             }
         }
     }

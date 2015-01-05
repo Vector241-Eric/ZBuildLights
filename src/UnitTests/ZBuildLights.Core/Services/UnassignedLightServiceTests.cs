@@ -21,7 +21,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             public void ContextSetup()
             {
                 _masterModel = new MasterModel();
-                var group = _masterModel.CreateProject().AddGroup(new LightGroup());
+                var group = _masterModel.CreateProject().CreateGroup();
                 group.AddLight(new Light(1, 11));
                 group.AddLight(new Light(1, 22));
                 group.AddLight(new Light(1, 33));
