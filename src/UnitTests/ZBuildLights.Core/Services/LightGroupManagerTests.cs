@@ -367,8 +367,11 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 _parentProject = new Project {Name = "Existing Project", Id = Guid.NewGuid()};
                 var existingGroup = new LightGroup {Name = "Existing Group", Id = Guid.NewGuid()};
+                existingGroup.AddLight(new Light(1, 1));
+                existingGroup.AddLight(new Light(1, 2));
                 _parentProject.AddGroup(existingGroup);
                 _remainingGroup = new LightGroup {Id = Guid.NewGuid()};
+                _remainingGroup.AddLight(new Light(1, 10));
                 _parentProject.AddGroup(_remainingGroup);
 
                 var existingMasterModel = new MasterModel();
@@ -395,6 +398,17 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var remainingGroups = _parentProject.Groups;
                 remainingGroups.Length.ShouldEqual(1);
                 remainingGroups[0].ShouldBeSameAs(_remainingGroup);
+            }
+
+            [Test]
+            public void Should_unassign_all_lights_in_the_group()
+            {
+                _savedModel.AllLights.Length.ShouldEqual(3);
+                _remainingGroup.Lights.Length.ShouldEqual(1);
+                var unassignedLights = _savedModel.GetUnassignedGroup().Lights;
+                unassignedLights.Length.ShouldEqual(2);
+                unassignedLights.Any(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(1)).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveHomeId.Equals(1) && x.ZWaveDeviceId.Equals(2)).ShouldBeTrue();
             }
         }
 
