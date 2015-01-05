@@ -16,17 +16,11 @@ namespace ZBuildLights.Core.Models
 
         public LightColor Color { get; set; }
         public SwitchState SwitchState { get; set; }
+        public bool IsInGroup { get { return ParentGroup != null; } }
 
         public override string ToString()
         {
             return string.Format("Home: {0} Id:{1}, State: {2}", ZWaveHomeId, ZWaveDeviceId, SwitchState);
-        }
-
-        public void MoveTo(LightGroup group)
-        {
-            if (ParentGroup != null)
-                this.ParentGroup.RemoveLight(this);
-            group.AddLight(this);
         }
 
         protected bool Equals(Light other)

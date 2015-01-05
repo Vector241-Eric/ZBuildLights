@@ -177,23 +177,77 @@ namespace UnitTests.ZBuildLights.Core.Models
         [TestFixture]
         public class When_assigning_an_unassigned_light
         {
+            private MasterModel _model;
+            private Light _light;
+            private LightGroup _destinationGroup;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var groupId = Guid.NewGuid();
+                _light = new Light(11, 23);
+                _model = new MasterModel();
+                _destinationGroup = new LightGroup{Id = groupId};
+
+                _model.AddProject(new Project()).AddGroup(_destinationGroup);
+                _model.AddUnassignedLight(_light);
+
+                _model.AssignLightToGroup(11, 23, groupId);
+            }
+
             [Test]
             public void Should_set_the_parent_group()
             {
-                throw new System.NotImplementedException("Not yet implemented");
+                _light.ParentGroup.ShouldBeSameAs(_destinationGroup);
             }
 
             [Test]
             public void Should_add_the_light_to_the_parent_group()
             {
-                throw new System.NotImplementedException("Not yet implemented");
+                _destinationGroup.Lights.ShouldContain(_light);
             }
 
             [Test]
             public void Should_remove_the_light_from_the_unassigned_collection()
             {
-                throw new System.NotImplementedException("Not yet implemented");
+                _model.GetUnassignedGroup().Lights.Length.ShouldEqual(0);
+                _model.UnassignedLights.Length.ShouldEqual(0);
             }
         }
+        [TestFixture]
+        public class When_moving_a_light_from_one_group_to_another
+        {
+            private LightGroup _fooGroup;
+            private LightGroup _barGroup;
+            private Light _light;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var model = new MasterModel();
+                _fooGroup = model.AddProject(new Project()).AddGroup(new LightGroup {Id = Guid.NewGuid()});
+                _barGroup = model.AddProject(new Project()).AddGroup(new LightGroup {Id = Guid.NewGuid()});
+
+                _light = new Light(1, 2);
+                _fooGroup.AddLight(_light);
+
+                model.AssignLightToGroup(1, 2, _barGroup.Id);
+            }
+
+            [Test]
+            public void Should_remove_the_light_from_the_original_group()
+            {
+                _fooGroup.Lights.Length.ShouldEqual(0);
+            }
+
+            [Test]
+            public void Should_add_the_light_to_the_new_group()
+            {
+                _barGroup.Lights.Length.ShouldEqual(1);
+                _barGroup.Lights[0].ZWaveHomeId.ShouldEqual((uint)1);
+                _light.ParentGroup.ShouldBeSameAs(_barGroup);
+            }
+        }
+
     }
 }

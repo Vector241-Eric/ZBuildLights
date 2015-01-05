@@ -80,5 +80,24 @@ namespace ZBuildLights.Core.Models
         {
             _unassignedLights.Add(light);
         }
+
+        public void AssignLightToGroup(uint homeId, byte deviceId, Guid groupId)
+        {
+            var light = FindLight(homeId, deviceId);
+            if (light.IsInGroup)
+                light.Unassign();
+            else
+            _unassignedLights.Remove(light);
+            FindGroup(groupId).AddLight(light);
+        }
+
+//        public void MoveTo(LightGroup group)
+//        {
+//            if (ParentGroup != null)
+//                this.ParentGroup.RemoveLight(this);
+//            group.AddLight(this);
+//        }
+//
+
     }
 }

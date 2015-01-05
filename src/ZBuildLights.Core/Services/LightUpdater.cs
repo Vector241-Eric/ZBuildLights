@@ -30,8 +30,7 @@ namespace ZBuildLights.Core.Services
             }
             else
             {
-                var lightGroup = masterModel.FindGroup(groupId);
-                light.MoveTo(lightGroup);                
+                masterModel.AssignLightToGroup(light.ZWaveHomeId, light.ZWaveDeviceId, groupId);
             }
 
             //Save
