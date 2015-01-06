@@ -139,6 +139,14 @@
             }
         };
 
+        var refreshCcProjects = function() {
+            var url = $('#project-ccurl-input').val();
+            $.getJSON(ZBuildLights.Admin.Urls.ccJson, {url: url})
+                .success(function(data) {
+                console.log(data);
+            });
+        }
+
         var attachHandlers = function() {
             $('#save-new-project').click(saveNew);
             $('.btn-edit-project').click(edit);
@@ -146,6 +154,7 @@
             $('.delete-project-reject-button').click(deleteConfirmation.hide);
             $('#edit-project-modal .delete-confirm-link').click(postDelete);
             $('#save-edit-project').click(postEdits);
+            $('#button-refresh-cc-projects').click(refreshCcProjects);
         };
 
         return {

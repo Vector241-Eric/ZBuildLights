@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CruiseControl\CcReader.cs" />
+    <Compile Include="CruiseControl\ICcReader.cs" />
+    <Compile Include="CruiseControl\XmlObjectModel.cs" />
     <Compile Include="Models\ZWaveSwitch.cs" />
     <Compile Include="Services\IProjectManager.cs" />
     <Compile Include="Services\ILightStatusSetter.cs" />

@@ -12,14 +12,16 @@ namespace ZBuildLights.Web.Controllers
         private readonly ILightGroupManager _lightGroupManager;
         private readonly IAdminViewModelProvider _viewModelProvider;
         private readonly ILightUpdater _lightUpdater;
+        private readonly ICruiseProjectModelProvider _ccProjectProvider;
 
         public AdminController(IProjectManager projectManager, ILightGroupManager lightGroupManager,
-            IAdminViewModelProvider viewModelProvider, ILightUpdater lightUpdater)
+            IAdminViewModelProvider viewModelProvider, ILightUpdater lightUpdater, ICruiseProjectModelProvider ccProjectProvider)
         {
             _projectManager = projectManager;
             _lightGroupManager = lightGroupManager;
             _viewModelProvider = viewModelProvider;
             _lightUpdater = lightUpdater;
+            _ccProjectProvider = ccProjectProvider;
         }
 
         public ActionResult Index()
@@ -86,6 +88,13 @@ namespace ZBuildLights.Web.Controllers
         {
             _lightUpdater.Update(homeId, deviceId, groupId, colorId);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult CcJson(string url)
+        {
+            var projects = _ccProjectProvider.GetProjects(url);
+            return Json(new {Success = true, Projects = projects}, JsonRequestBehavior.AllowGet);
         }
     }
 }
