@@ -93,8 +93,8 @@ namespace ZBuildLights.Web.Controllers
         [HttpGet]
         public ActionResult CcJson(string url)
         {
-            var projects = _ccProjectProvider.GetProjects(url);
-            return Json(new {Success = true, Projects = projects}, JsonRequestBehavior.AllowGet);
+            var ccProjectCollection = _ccProjectProvider.GetProjects(url);
+            return Json(new {Success = true, Projects = ccProjectCollection.Projects}, JsonRequestBehavior.AllowGet);
         }
     }
 }

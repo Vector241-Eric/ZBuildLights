@@ -15,7 +15,7 @@ namespace ZBuildLights.Web.Mapping
 
             //Mapping from CCXML to View Model
             CreateMap<Projects, CcProjectCollection>()
-                .ForMember(x => x.Projects, opt => opt.MapFrom(s => s.Items));
+                .ForMember(x => x.Projects, opt => opt.Ignore());
             CreateMap<ProjectsProject, CcProjectCollection.Project>();
         }
     }

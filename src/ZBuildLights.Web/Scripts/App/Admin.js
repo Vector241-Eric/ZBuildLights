@@ -142,8 +142,17 @@
         var refreshCcProjects = function() {
             var url = $('#project-ccurl-input').val();
             $.getJSON(ZBuildLights.Admin.Urls.ccJson, {url: url})
-                .success(function(data) {
-                console.log(data);
+                .success(function (data) {
+                    var select = $('#select-ccproject');
+                var optionPattern = '<option value="#value#">#value#</option>';
+                var projects = data.Projects;
+
+                $.each(projects, function (index) {
+                    var project = projects[index];
+                    var value = project.Name;
+                    var option = optionPattern.replace(/#value#/g, value);
+                    select.append(option);
+                });
             });
         }
 
