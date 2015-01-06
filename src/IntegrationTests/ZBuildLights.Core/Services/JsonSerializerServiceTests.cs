@@ -27,6 +27,8 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                 {
                     x.Name = "Core";
                     x.StatusMode = StatusMode.Success;
+                    x.CcXmlUrl = "http://someserver:8888/cc.xml";
+                    x.CcProjectName = "MyCoreProject";
                 });
                 core.CreateGroup(x => x.Name = "SnP Square")
                     .AddLight(new Light(1, 1) {Color = LightColor.Green, SwitchState = SwitchState.On})

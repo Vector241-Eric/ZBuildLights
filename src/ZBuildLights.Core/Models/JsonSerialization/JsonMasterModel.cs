@@ -30,6 +30,8 @@ namespace ZBuildLights.Core.Models.JsonSerialization
         public string Name { get; set; }
         public Guid Id { get; set; }
         public JsonLightGroup[] Groups { get; set; }
+        public string CcXmlUrl { get; set; }
+        public string CcProjectName { get; set; }
 
         public Action<Project> InitializeDomainObject()
         {
@@ -37,6 +39,8 @@ namespace ZBuildLights.Core.Models.JsonSerialization
             {
                 p.Name = Name;
                 p.Id = Id;
+                p.CcXmlUrl = CcXmlUrl;
+                p.CcProjectName = CcProjectName;
                 foreach (var jsonGroup in Groups)
                     p.CreateGroup(jsonGroup.InitializeDomainObject());
             };
