@@ -65,16 +65,15 @@ namespace ZBuildLights.Core.Services
         public EditResult<LightGroup> DeleteLightGroup(Guid groupId)
         {
             var masterModel = _masterModelRepository.GetCurrent();
-            var allGroups = masterModel.Projects.SelectMany(x => x.Groups).ToArray();
-            if (allGroups.None(x => x.Id.Equals(groupId)))
-                return EditResult.Fail<LightGroup>(BadId(groupId));
+            var group = masterModel.Projects
+                .SelectMany(x => x.Groups)
+                .SingleOrDefault(x => x.Id.Equals(groupId));
 
-            var group = allGroups.Single(x => x.Id.Equals(groupId));
-            foreach (var light in group.Lights)
-            {
-                light.Unassign();
-                masterModel.AddUnassignedLight(light);
-            }
+            if (group == null)
+                return EditResult.Fail<LightGroup>(BadId(groupId));
+            
+            group.UnassignAllLights();
+
             var parent = group.ParentProject;
             parent.RemoveGroup(group);
 

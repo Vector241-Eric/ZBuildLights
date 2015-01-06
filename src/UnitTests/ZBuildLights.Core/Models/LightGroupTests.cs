@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Should;
+using UnitTests._Bases;
 using ZBuildLights.Core.Models;
 
 namespace UnitTests.ZBuildLights.Core.Models
@@ -148,16 +150,10 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void ContextSetup()
             {
                 var masterModel = new MasterModel();
-                var barDaddy = masterModel.CreateProject(x =>
-                {
-                    x.Name = "BarDaddy";
-                });
+                var barDaddy = masterModel.CreateProject(x => { x.Name = "BarDaddy"; });
                 _bar = barDaddy.CreateGroup(x => x.Name = "Bar");
 
-                var fooDaddy = masterModel.CreateProject(x =>
-                {
-                    x.Name = "FooDaddy";
-                });
+                var fooDaddy = masterModel.CreateProject(x => { x.Name = "FooDaddy"; });
                 var foo = fooDaddy.CreateGroup(x => x.Name = "Foo");
                 _light = new Light(1, 2);
 
@@ -186,6 +182,32 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_not_change_the_parent_reference_on_the_light()
             {
                 _light.ParentGroup.ShouldBeSameAs(_bar);
+            }
+        }
+        [TestFixture]
+        public class When_unassigning_all_lights
+        {
+            private MasterModel _masterModel;
+            private LightGroup _group;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _masterModel = new MasterModel();
+                _group = _masterModel.CreateProject().CreateGroup();
+                _group.AddLight(new Light(11, 22));
+                _group.AddLight(new Light(11, 44));
+
+                _group.UnassignAllLights();
+            }
+
+            [Test]
+            public void Should_move_lights_to_unassigned_collection_on_master_model()
+            {
+                _group.Lights.Length.ShouldEqual(0);
+                _masterModel.UnassignedLights.Length.ShouldEqual(2);
+                _masterModel.UnassignedLights.Any(x => x.ZWaveDeviceId.Equals(22)).ShouldBeTrue();
+                _masterModel.UnassignedLights.Any(x => x.ZWaveDeviceId.Equals(44)).ShouldBeTrue();
             }
         }
     }
