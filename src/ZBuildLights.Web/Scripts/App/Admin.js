@@ -139,20 +139,41 @@
             }
         };
 
-        var refreshCcProjects = function() {
+        var selectProject = (function () {
+            var selector = '#select-ccproject';
+            var disableDropDown = function() {
+                $(selector).attr('disabled', 'disabled');
+            };
+            var enableDropDown = function() {
+                $(selector).removeAttr('disabled');
+            };
+
+            return {
+                disableDropDown: disableDropDown,
+                enableDropDown: enableDropDown,
+                selector: selector,
+            }
+        })();
+
+        var refreshCcProjects = function () {
+
             var url = $('#project-ccurl-input').val();
+
             $.getJSON(ZBuildLights.Admin.Urls.ccJson, {url: url})
                 .success(function (data) {
-                    var select = $('#select-ccproject');
                 var optionPattern = '<option value="#value#">#value#</option>';
                 var projects = data.Projects;
 
+                var select = $(selectProject.selector);
                 $.each(projects, function (index) {
                     var project = projects[index];
                     var value = project.Name;
                     var option = optionPattern.replace(/#value#/g, value);
                     select.append(option);
                 });
+
+                selectProject.enableDropDown();
+
             });
         }
 
