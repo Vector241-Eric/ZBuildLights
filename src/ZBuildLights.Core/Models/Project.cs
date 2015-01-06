@@ -12,6 +12,8 @@ namespace ZBuildLights.Core.Models
         public StatusMode StatusMode { get; set; }
         public Guid Id { get; internal set; }
         public MasterModel MasterModel { get; private set; }
+        public string CcXmlUrl { get; set; }
+        public string CcProjectName { get; set; }
 
         internal Project(MasterModel masterModel)
         {
