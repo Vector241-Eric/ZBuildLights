@@ -96,10 +96,45 @@
 
         };
 
+        var resetServerProjectList = function(serverId, projects) {
+            var templateHtml = document.getElementById("cruise-project-template").innerHTML;
+            var tableBody = $('.cruise-server-projectlist[data-serverid="' + serverId + '"]');
+            tableBody.empty();
+
+            $.each(projects, function (index) {
+                var project = projects[index];
+                var template = $(templateHtml);
+                template.find(".cruise-project-name").text(project.Name);
+                template.find(".cruise-project-status").text(project.LastBuildStatus);
+                tableBody.append(template);
+            });
+        }
+
+        var updateServerProjects = function(serverId, afterSuccess) {
+            $.getJSON(ZBuildLights.Admin.Urls.ccJson, { serverId: serverId })
+                .success(function (data) {
+                    var projects = data.Projects;
+                    resetServerProjectList(serverId, projects);
+                    afterSuccess();
+            });
+        }
+
+        var updateServerProjectsClick = function () {
+            var el = $(this);
+            var serverId = el.data("serverid");
+            var spinner = el.find("i");
+            spinner.addClass("fa-spin");
+            updateServerProjects(serverId, function() {
+                spinner.removeClass("fa-spin");
+                el.blur();
+            });
+        };
+
         var attachHandlers = function () {
             $("#add-cruise-server-button").click(create);
             $(".example-cruise-url").click(populateExampleUrl);
             $("#cruise-server-save-new-button").click(postNewServer);
+            $(".cruise-server-refresh-link").click(updateServerProjectsClick);
         }
 
         return {
@@ -222,7 +257,7 @@
             $('.delete-project-reject-button').click(deleteConfirmation.hide);
             $('#edit-project-modal .delete-confirm-link').click(postDelete);
             $('#save-edit-project').click(postEdits);
-            $('#button-refresh-cc-projects').click(refreshCcProjects);
+//            $('#button-refresh-cc-projects').click(refreshCcProjects);
         };
 
         return {

@@ -1,4 +1,5 @@
-﻿@model ZBuildLights.Web.Models.Admin.EditCruiseServerViewModel[]
+﻿@using ZBuildLights.Web.Extensions
+@model ZBuildLights.Web.Models.Admin.EditCruiseServerViewModel[]
 
 @{
     ViewBag.Title = "Manage Cruise Servers";
@@ -12,13 +13,70 @@
     </script>
 }
 
+@section templates {
+    <script type="text/html" id="alert-template">
+        <div class="alert alert-dismissable alert-danger" data-purpose="error-alert">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <span data-purpose="error-message"></span>
+        </div>
+    </script>
+
+    <script type="text/html" id="cruise-project-template">
+        <tr>
+            <td class="cruise-project-name">##ProjectName##</td>
+            <td class="cruise-project-status">##ProjectStatus##</td>
+        </tr>
+    </script>
+}
+
 <h2>Manage Cruise Servers</h2>
 
 <div class="row">
-    @foreach (var server in Model)
-    {
-        <p>@server.Name</p>
-    }
+    <div class="panel-group" id="cruise-servers-panel" role="tablist" aria-multiselectable="true">
+        @foreach (var server in Model)
+        {
+            <div class="panel panel-default admin-project-panel" data-serverid="@server.Id">
+                <div class="panel-heading" role="tab" id="@server.HeaderId">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>
+                                <a data-toggle="collapse"
+                                   data-parent="cruise-servers-panel"
+                                   href="@server.PanelId.ToJqueryId()"
+                                   aria-expanded="true"
+                                   aria-controls="@server.PanelId"
+                                   class="collapsed">
+                                    <i class="fa fa-minus-circle heading-icon"></i> <span class="project-name">@server.Name</span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="col-md-6 text-right button-container">
+                            <a href="javascript:void(0)" class="btn btn-default cruise-server-refresh-link" title="Refresh Project List" data-serverid="@server.Id">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                            <a href="javascript:void(0)" class="btn btn-default cruise-server-edit-link" title="Edit Server" data-serverid="@server.Id">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="@server.PanelId" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="@server.HeaderId" data-panelheading="@server.HeaderId">
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th style="width: 50%">Project Name</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody class="cruise-server-projectlist" data-serverid="@server.Id">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
     <div class="text-right">
         <button id="add-cruise-server-button" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Server</button>
     </div>

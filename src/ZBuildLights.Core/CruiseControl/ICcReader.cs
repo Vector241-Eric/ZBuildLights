@@ -1,7 +1,9 @@
-﻿namespace ZBuildLights.Core.CruiseControl
+﻿using ZBuildLights.Core.Models.Requests;
+
+namespace ZBuildLights.Core.CruiseControl
 {
     public interface ICcReader
     {
-        Projects GetStatus(string url);
+        NetworkRequest<Projects> GetStatus(string url);
     }
 }

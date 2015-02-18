@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Linq;
 
-namespace ZBuildLights.Web.Models.Admin
+namespace ZBuildLights.Core.Models
 {
     public class CcProjectCollection
     {
-        public Project[] Items { private get; set; }
+        public CcProject[] Items { private get; set; }
 
-        public Project[] Projects
+        public CcProject[] Projects
         {
             get { return Items.OrderBy(x => x.Name).ToArray(); }
         }
 
-        public class Project
+        public class CcProject
         {
             public string Name { get; set; }
+            public string LastBuildStatus { get; set; }
 
             public string ProjectAndName
             {

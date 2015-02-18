@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Extensions\ArrayExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZBuildLights.Core\Services\CruiseControl\CruiseProjectModelProviderTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\CruiseServerManagerTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\LightGroupManagerTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\LightUpdaterTests.cs" />

@@ -41,7 +41,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             [Test]
             public void Should_indicate_the_creation_was_successful()
             {
-                _result.WasSuccessful.ShouldBeTrue();
+                _result.IsSuccessful.ShouldBeTrue();
             }
 
             [Test]
@@ -95,7 +95,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             [Test]
             public void Should_indicate_failure()
             {
-                _result.WasSuccessful.ShouldBeFalse();
+                _result.IsSuccessful.ShouldBeFalse();
             }
 
             [Test]
@@ -138,7 +138,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             [Test]
             public void Should_indicate_failure()
             {
-                _result.WasSuccessful.ShouldBeFalse();
+                _result.IsSuccessful.ShouldBeFalse();
             }
 
             [Test]

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Web.Mvc;
+using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Models.Requests;
 using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Services.CruiseControl;
 using ZBuildLights.Web.Services.ViewModelProviders;
 
 namespace ZBuildLights.Web.Controllers
@@ -33,6 +36,7 @@ namespace ZBuildLights.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public ActionResult EditProject(Guid? projectId)
         {
             return View(_viewModelProvider.GetEditProjectViewModel(projectId));
@@ -43,7 +47,7 @@ namespace ZBuildLights.Web.Controllers
         public ActionResult AddProject(string projectName)
         {
             var result = _projectManager.Create(projectName);
-            if (result.WasSuccessful)
+            if (result.IsSuccessful)
                 return RedirectToAction("Index");
             Response.StatusCode = (int) HttpStatusCode.Conflict;
             return Json(result);
@@ -60,7 +64,7 @@ namespace ZBuildLights.Web.Controllers
         public ActionResult UpdateProject(Guid projectId, string name)
         {
             var result = _projectManager.Update(projectId, name);
-            if (result.WasSuccessful)
+            if (result.IsSuccessful)
                 return RedirectToAction("Index");
             Response.StatusCode = (int) HttpStatusCode.Conflict;
             return Json(result);
@@ -78,7 +82,7 @@ namespace ZBuildLights.Web.Controllers
         public ActionResult UpdateGroup(Guid groupId, string name)
         {
             var result = _lightGroupManager.Update(groupId, name);
-            if (result.WasSuccessful)
+            if (result.IsSuccessful)
                 return RedirectToAction("Index");
             Response.StatusCode = (int) HttpStatusCode.Conflict;
             return Json(result);
@@ -99,10 +103,16 @@ namespace ZBuildLights.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult CcJson(string url)
+        public ActionResult CcJson(Guid serverId)
         {
-            var ccProjectCollection = _ccProjectProvider.GetProjects(url);
-            return Json(new {Success = true, Projects = ccProjectCollection.Projects}, JsonRequestBehavior.AllowGet);
+            var result = _ccProjectProvider.GetProjects(serverId);
+            if (result.IsSuccessful)
+            {
+                var ccProjectCollection = result;
+                return Json(new {Success = true, Projects = ccProjectCollection.Data.Projects}, JsonRequestBehavior.AllowGet);
+            }
+
+            throw new Exception("Failed to get projects from cruise server", result.Exception);
         }
 
         [HttpGet]
