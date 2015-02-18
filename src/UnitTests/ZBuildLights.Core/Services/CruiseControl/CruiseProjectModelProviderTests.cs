@@ -5,6 +5,7 @@ using Should;
 using UnitTests._Bases;
 using ZBuildLights.Core.CruiseControl;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Models.CruiseControl;
 using ZBuildLights.Core.Models.Requests;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Services.CruiseControl;
@@ -17,7 +18,7 @@ namespace UnitTests.ZBuildLights.Core.Services.CruiseControl
         [TestFixture]
         public class HappyPath : TestBase
         {
-            private NetworkRequest<CcProjectCollection> _result;
+            private NetworkRequest<CcProjectCollectionViewModel> _result;
 
             [SetUp]
             public void ContextSetup()
@@ -26,9 +27,9 @@ namespace UnitTests.ZBuildLights.Core.Services.CruiseControl
                 var server1 = masterModel.CreateCruiseServer(x => x.Url = "http://www.example.com/1");
                 var server2 = masterModel.CreateCruiseServer(x => x.Url = "http://www.example.com/2");
                 var ccReaderData = new Projects {Items = new[] {new ProjectsProject(), new ProjectsProject()}};
-                var mappedData = new CcProjectCollection
+                var mappedData = new CcProjectCollectionViewModel
                 {
-                    Items = new[] {new CcProjectCollection.CcProject {Name = "Homer Wuz Here"}}
+                    Items = new[] {new CcProjectViewModel {Name = "Homer Wuz Here"}}
                 };
 
                 var ccReaderResponse =
@@ -41,7 +42,7 @@ namespace UnitTests.ZBuildLights.Core.Services.CruiseControl
                 ccReader.Stub(x => x.GetStatus("http://www.example.com/1")).Return(ccReaderResponse);
 
                 var mapper = S<IMapper>();
-                mapper.Stub(x => x.Map<Projects, CcProjectCollection>(ccReaderData)).Return(mappedData);
+                mapper.Stub(x => x.Map<Projects, CcProjectCollectionViewModel>(ccReaderData)).Return(mappedData);
 
                 var provider = new CruiseProjectModelProvider(ccReader, mapper, statusProvider);
                 _result = provider.GetProjects(server1.Id);
@@ -64,7 +65,7 @@ namespace UnitTests.ZBuildLights.Core.Services.CruiseControl
         [TestFixture]
         public class When_network_request_fails : TestBase
         {
-            private NetworkRequest<CcProjectCollection> _result;
+            private NetworkRequest<CcProjectCollectionViewModel> _result;
 
             [SetUp]
             public void ContextSetup()

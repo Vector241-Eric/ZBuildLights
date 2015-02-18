@@ -54,7 +54,8 @@
     <Compile Include="CruiseControl\CcReader.cs" />
     <Compile Include="CruiseControl\ICcReader.cs" />
     <Compile Include="CruiseControl\XmlObjectModel.cs" />
-    <Compile Include="Models\CcProjectCollection.cs" />
+    <Compile Include="Models\CruiseControl\CcProjectViewModel.cs" />
+    <Compile Include="Models\CruiseControl\CcProjectCollectionViewModel.cs" />
     <Compile Include="Models\CruiseServer.cs" />
     <Compile Include="Models\Requests\NetworkRequest.cs" />
     <Compile Include="Models\ZWaveSwitch.cs" />

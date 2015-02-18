@@ -2,6 +2,7 @@
 using System.Linq;
 using ZBuildLights.Core.CruiseControl;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Models.CruiseControl;
 using ZBuildLights.Core.Models.Requests;
 using ZBuildLights.Core.Wrappers;
 
@@ -20,17 +21,17 @@ namespace ZBuildLights.Core.Services.CruiseControl
             _statusProvider = statusProvider;
         }
 
-        public NetworkRequest<CcProjectCollection> GetProjects(Guid serverId)
+        public NetworkRequest<CcProjectCollectionViewModel> GetProjects(Guid serverId)
         {
             var server = _statusProvider.GetSystemStatus().CruiseServers.Single(x => x.Id.Equals(serverId));
             var ccResult = _ccReader.GetStatus(server.Url);
             if (ccResult.IsSuccessful)
             {
                 var ccProjects = ccResult.Data;
-                var viewModel = _mapper.Map<Projects, CcProjectCollection>(ccProjects);
+                var viewModel = _mapper.Map<Projects, CcProjectCollectionViewModel>(ccProjects);
                 return NetworkRequest.Success(viewModel);
             }
-            return NetworkRequest.Fail<CcProjectCollection>(string.Format("Could not reach cruise server at URL: [{0}]", server.Url), ccResult.Exception);
+            return NetworkRequest.Fail<CcProjectCollectionViewModel>(string.Format("Could not reach cruise server at URL: [{0}]", server.Url), ccResult.Exception);
         }
     }
 }

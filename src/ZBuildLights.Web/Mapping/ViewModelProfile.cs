@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ZBuildLights.Core.CruiseControl;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Models.CruiseControl;
 using ZBuildLights.Web.Models.Admin;
 
 namespace ZBuildLights.Web.Mapping
@@ -15,9 +16,9 @@ namespace ZBuildLights.Web.Mapping
             CreateMap<CruiseServer, EditCruiseServerViewModel>();
 
             //Mapping from CCXML to View Model
-            CreateMap<Projects, CcProjectCollection>()
+            CreateMap<Projects, CcProjectCollectionViewModel>()
                 .ForMember(x => x.Projects, opt => opt.Ignore());
-            CreateMap<ProjectsProject, CcProjectCollection.CcProject>();
+            CreateMap<ProjectsProject, CcProjectViewModel>();
         }
     }
 }
