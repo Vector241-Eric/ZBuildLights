@@ -4,24 +4,23 @@ using ZBuildLights.Core.Enumerations;
 
 namespace ZBuildLights.Core.Models
 {
-    public class CruiseProject
-    {
-        public Guid ServerId { get; set; }
-        public string ProjectName { get; set; }
-    }
-
     public class Project
     {
         public readonly List<LightGroup> _groups = new List<LightGroup>();
+
+        public Project()
+        {
+            CruiseProjects = new CruiseProject[0];
+        }
 
         public string Name { get; set; }
         public StatusMode StatusMode { get; set; }
         public Guid Id { get; internal set; }
         public MasterModel MasterModel { get; private set; }
         public string CcXmlUrl { get; set; }
-        public string CcProjectName { get; set; }
+        public CruiseProject[] CruiseProjects { get; set; }
 
-        internal Project(MasterModel masterModel)
+        internal Project(MasterModel masterModel) : this()
         {
             MasterModel = masterModel;
             StatusMode = StatusMode.NotConnected;

@@ -23,12 +23,28 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                 var container = IoC.Initialize();
 
                 var masterModel = new MasterModel {LastUpdatedDate = DateTime.Now};
+
+                var server1 = masterModel.CreateCruiseServer(x =>
+                {
+                    x.Url = "http://www.example.com/1";
+                    x.Name = "One";
+                });
+                var server2 = masterModel.CreateCruiseServer(x =>
+                {
+                    x.Url = "http://www.example.com/2";
+                    x.Name = "Two";
+                });
+
                 var core = masterModel.CreateProject(x =>
                 {
                     x.Name = "Core";
                     x.StatusMode = StatusMode.Success;
                     x.CcXmlUrl = "http://someserver:8888/cc.xml";
-                    x.CcProjectName = "MyCoreProject";
+                    x.CruiseProjects = new[]
+                    {
+                        new CruiseProject {ProjectName = "I like toast", ServerId = server1.Id},
+                        new CruiseProject {ProjectName = "I like jam", ServerId = server2.Id}
+                    };
                 });
                 core.CreateGroup(x => x.Name = "SnP Square")
                     .AddLight(new Light(1, 1) {Color = LightColor.Green, SwitchState = SwitchState.On})
@@ -53,8 +69,6 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                     ;
 
                 masterModel.AddUnassignedLight(new Light(3333, 3));
-                masterModel.CreateCruiseServer(x => { x.Url = "http://www.example.com/1"; x.Name = "One"; });
-                masterModel.CreateCruiseServer(x => { x.Url = "http://www.example.com/2"; x.Name = "Two"; });
 
                 //Act
                 var serializer = container.GetInstance<IJsonSerializerService>();

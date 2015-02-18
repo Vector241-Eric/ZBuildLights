@@ -56,6 +56,7 @@
     <Compile Include="CruiseControl\XmlObjectModel.cs" />
     <Compile Include="Models\CruiseControl\CcProjectViewModel.cs" />
     <Compile Include="Models\CruiseControl\CcProjectCollectionViewModel.cs" />
+    <Compile Include="Models\CruiseProject.cs" />
     <Compile Include="Models\CruiseServer.cs" />
     <Compile Include="Models\Requests\NetworkRequest.cs" />
     <Compile Include="Models\ZWaveSwitch.cs" />
