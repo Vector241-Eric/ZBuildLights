@@ -10,6 +10,7 @@
     <script>
         @Html.Partial("_AdminUrls")
         @Html.Partial("_AdminConstants")
+        ZBuildLights.Admin.CruiseServer.updateAllServers();
     </script>
 }
 
@@ -35,7 +36,7 @@
     <div class="panel-group" id="cruise-servers-panel" role="tablist" aria-multiselectable="true">
         @foreach (var server in Model)
         {
-            <div class="panel panel-default admin-project-panel" data-serverid="@server.Id">
+            <div class="panel panel-default cruise-server-panel" data-serverid="@server.Id">
                 <div class="panel-heading" role="tab" id="@server.HeaderId">
                     <div class="row">
                         <div class="col-md-6">

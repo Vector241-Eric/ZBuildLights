@@ -110,23 +110,32 @@
             });
         }
 
-        var updateServerProjects = function(serverId, afterSuccess) {
+        var updateServerProjects = function (serverId, afterSuccess) {
+            var spinner = $(".cruise-server-panel .cruise-server-refresh-link i");
+            spinner.addClass("fa-spin");
             $.getJSON(ZBuildLights.Admin.Urls.ccJson, { serverId: serverId })
                 .success(function (data) {
-                    var projects = data.Projects;
-                    resetServerProjectList(serverId, projects);
+                var projects = data.Projects;
+                resetServerProjectList(serverId, projects);
+                spinner.removeClass("fa-spin");
+                if (afterSuccess) {
                     afterSuccess();
+                }
             });
         }
 
         var updateServerProjectsClick = function () {
             var el = $(this);
             var serverId = el.data("serverid");
-            var spinner = el.find("i");
-            spinner.addClass("fa-spin");
             updateServerProjects(serverId, function() {
-                spinner.removeClass("fa-spin");
                 el.blur();
+            });
+        };
+
+        var updateAllServers = function() {
+            $(".cruise-server-panel").each(function(index) {
+                var serverId = $(this).data("serverid");
+                updateServerProjects(serverId);
             });
         };
 
@@ -138,7 +147,8 @@
         }
 
         return {
-            attachHandlers: attachHandlers
+            attachHandlers: attachHandlers,
+            updateAllServers: updateAllServers
         }
     })();
 
