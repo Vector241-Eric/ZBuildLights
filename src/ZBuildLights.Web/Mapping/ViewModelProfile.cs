@@ -12,6 +12,7 @@ namespace ZBuildLights.Web.Mapping
             CreateMap<Project, AdminProjectViewModel>();
             CreateMap<LightGroup, AdminLightGroupViewModel>();
             CreateMap<Light, AdminLightViewModel>();
+            CreateMap<CruiseServer, EditCruiseServerViewModel>();
 
             //Mapping from CCXML to View Model
             CreateMap<Projects, CcProjectCollection>()

@@ -8,6 +8,7 @@ namespace ZBuildLights.Core.Models.JsonSerialization
         {
             CreateMap<MasterModel, JsonMasterModel>();
             CreateMap<Project, JsonProject>();
+            CreateMap<CruiseServer, JsonCruiseServer>();
             CreateMap<LightGroup, JsonLightGroup>();
             CreateMap<Light, JsonLight>();
         }

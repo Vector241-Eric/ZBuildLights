@@ -16,7 +16,7 @@ namespace ZBuildLights.Core.Services
             _masterModelRepository = masterModelRepository;
         }
 
-        public CreationResult<LightGroup> CreateLightGroup(Guid projectId, string name)
+        public CreationResult<LightGroup> Create(Guid projectId, string name)
         {
             var masterModel = _masterModelRepository.GetCurrent();
             if (masterModel.Projects.None(x => x.Id.Equals(projectId)))
@@ -34,7 +34,7 @@ namespace ZBuildLights.Core.Services
             return CreationResult.Success(group);
         }
 
-        public EditResult<LightGroup> UpdateLightGroup(Guid groupId, string name)
+        public EditResult<LightGroup> Update(Guid groupId, string name)
         {
             var masterModel = _masterModelRepository.GetCurrent();
             var allGroups = masterModel.Projects.SelectMany(x => x.Groups).ToArray();
@@ -62,7 +62,7 @@ namespace ZBuildLights.Core.Services
             return string.Format("Could not locate a light group with ID '{0}'", groupId);
         }
 
-        public EditResult<LightGroup> DeleteLightGroup(Guid groupId)
+        public EditResult<LightGroup> Delete(Guid groupId)
         {
             var masterModel = _masterModelRepository.GetCurrent();
             var group = masterModel.Projects

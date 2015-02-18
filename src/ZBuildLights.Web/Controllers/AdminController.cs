@@ -13,15 +13,18 @@ namespace ZBuildLights.Web.Controllers
         private readonly IAdminViewModelProvider _viewModelProvider;
         private readonly ILightUpdater _lightUpdater;
         private readonly ICruiseProjectModelProvider _ccProjectProvider;
+        private readonly ICruiseServerManager _cruiseServerManager;
 
         public AdminController(IProjectManager projectManager, ILightGroupManager lightGroupManager,
-            IAdminViewModelProvider viewModelProvider, ILightUpdater lightUpdater, ICruiseProjectModelProvider ccProjectProvider)
+            IAdminViewModelProvider viewModelProvider, ILightUpdater lightUpdater, 
+            ICruiseProjectModelProvider ccProjectProvider, ICruiseServerManager cruiseServerManager)
         {
             _projectManager = projectManager;
             _lightGroupManager = lightGroupManager;
             _viewModelProvider = viewModelProvider;
             _lightUpdater = lightUpdater;
             _ccProjectProvider = ccProjectProvider;
+            _cruiseServerManager = cruiseServerManager;
         }
 
         public ActionResult Index()
@@ -30,11 +33,16 @@ namespace ZBuildLights.Web.Controllers
             return View(model);
         }
 
+        public ActionResult EditProject(Guid? projectId)
+        {
+            return View(_viewModelProvider.GetEditProjectViewModel(projectId));
+        }
+
         //Projects
         [HttpPost]
         public ActionResult AddProject(string projectName)
         {
-            var result = _projectManager.CreateProject(projectName);
+            var result = _projectManager.Create(projectName);
             if (result.WasSuccessful)
                 return RedirectToAction("Index");
             Response.StatusCode = (int) HttpStatusCode.Conflict;
@@ -44,14 +52,14 @@ namespace ZBuildLights.Web.Controllers
         [HttpPost]
         public ActionResult DeleteProject(Guid projectId)
         {
-            _projectManager.DeleteProject(projectId);
+            _projectManager.Delete(projectId);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public ActionResult UpdateProject(Guid projectId, string name)
         {
-            var result = _projectManager.UpdateProject(projectId, name);
+            var result = _projectManager.Update(projectId, name);
             if (result.WasSuccessful)
                 return RedirectToAction("Index");
             Response.StatusCode = (int) HttpStatusCode.Conflict;
@@ -62,14 +70,14 @@ namespace ZBuildLights.Web.Controllers
         [HttpPost]
         public ActionResult AddGroup(Guid projectId, string groupName)
         {
-            _lightGroupManager.CreateLightGroup(projectId, groupName);
+            _lightGroupManager.Create(projectId, groupName);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public ActionResult UpdateGroup(Guid groupId, string name)
         {
-            var result = _lightGroupManager.UpdateLightGroup(groupId, name);
+            var result = _lightGroupManager.Update(groupId, name);
             if (result.WasSuccessful)
                 return RedirectToAction("Index");
             Response.StatusCode = (int) HttpStatusCode.Conflict;
@@ -79,7 +87,7 @@ namespace ZBuildLights.Web.Controllers
         [HttpPost]
         public ActionResult DeleteGroup(Guid groupId)
         {
-            _lightGroupManager.DeleteLightGroup(groupId);
+            _lightGroupManager.Delete(groupId);
             return RedirectToAction("Index");
         }
 
@@ -95,6 +103,19 @@ namespace ZBuildLights.Web.Controllers
         {
             var ccProjectCollection = _ccProjectProvider.GetProjects(url);
             return Json(new {Success = true, Projects = ccProjectCollection.Projects}, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult ManageCruiseServers()
+        {
+            return View(_viewModelProvider.GetCruiseServerViewModels());
+        }
+
+        [HttpPost]
+        public ActionResult CreateCruiseServer(string name, string url)
+        {
+            _cruiseServerManager.Create(name, url);
+            return RedirectToAction("ManageCruiseServers");
         }
     }
 }

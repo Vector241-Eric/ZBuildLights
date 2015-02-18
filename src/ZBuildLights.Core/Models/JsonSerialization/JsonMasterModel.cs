@@ -5,7 +5,15 @@ namespace ZBuildLights.Core.Models.JsonSerialization
 {
     public class JsonMasterModel
     {
+        public JsonMasterModel()
+        {
+            Projects = new JsonProject[0];
+            CruiseServers = new JsonCruiseServer[0];
+            UnassignedLights = new JsonLight[0];
+        }
+
         public JsonProject[] Projects { get; set; }
+        public JsonCruiseServer[] CruiseServers { get; set; }
         public DateTime LastUpdatedDate { get; set; }
         public JsonLight[] UnassignedLights { get; set; }
 
@@ -17,11 +25,29 @@ namespace ZBuildLights.Core.Models.JsonSerialization
             };
             foreach (var jsonProject in Projects)
                 masterModel.CreateProject(jsonProject.InitializeDomainObject());
+            foreach (var jsonCruiseServer in CruiseServers)
+                masterModel.CreateCruiseServer(jsonCruiseServer.InitializeDomainObject());
 
             var unassignedLights = UnassignedLights ?? new JsonLight[0];
 
             masterModel.AddUnassignedLights(unassignedLights.Select(x => x.ToDomainObject()));
             return masterModel;
+        }
+    }
+
+    public class JsonCruiseServer
+    {
+        public Guid Id { get; set; }
+        public string Url { get; set; }
+        public string Name { get; set; }
+        public Action<CruiseServer> InitializeDomainObject()
+        {
+            return srv =>
+            {
+                srv.Url = Url;
+                srv.Id = Id;
+                srv.Name = Name;
+            };
         }
     }
 

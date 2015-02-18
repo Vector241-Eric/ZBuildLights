@@ -53,7 +53,10 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                     ;
 
                 masterModel.AddUnassignedLight(new Light(3333, 3));
+                masterModel.CreateCruiseServer(x => { x.Url = "http://www.example.com/1"; x.Name = "One"; });
+                masterModel.CreateCruiseServer(x => { x.Url = "http://www.example.com/2"; x.Name = "Two"; });
 
+                //Act
                 var serializer = container.GetInstance<IJsonSerializerService>();
                 var json = serializer.SerializeMasterModel(masterModel);
 

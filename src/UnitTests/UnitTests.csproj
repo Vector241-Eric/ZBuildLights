@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Extensions\ArrayExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZBuildLights.Core\Services\CruiseServerManagerTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\LightGroupManagerTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\LightUpdaterTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\ProjectManagerTests.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="_Stubs\StorageStub.cs" />
     <Compile Include="_Stubs\StubApplicationConfiguration.cs" />
     <Compile Include="_Stubs\StubLightStatusSetter.cs" />
+    <Compile Include="_Stubs\StubMapper.cs" />
     <Compile Include="_Stubs\StubMasterModelRepository.cs" />
     <Compile Include="_Stubs\StubUnassignedLightService.cs" />
   </ItemGroup>

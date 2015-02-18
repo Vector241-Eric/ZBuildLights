@@ -33,7 +33,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new LightGroupManager(repository);
-                _result = creator.CreateLightGroup(project.Id, "My New Group");
+                _result = creator.Create(project.Id, "My New Group");
 
                 _savedModel = repository.LastSaved;
             }
@@ -91,7 +91,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new LightGroupManager(repository);
-                _result = creator.CreateLightGroup(_projectIdDoesntExist, "My New Group");
+                _result = creator.Create(_projectIdDoesntExist, "My New Group");
 
                 _savedModel = repository.LastSaved;
             }
@@ -133,7 +133,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new LightGroupManager(repository);
-                _result = creator.CreateLightGroup(project.Id, "Existing Group");
+                _result = creator.Create(project.Id, "Existing Group");
 
                 _savedModel = repository.LastSaved;
             }
@@ -175,7 +175,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new LightGroupManager(repository);
-                _result = creator.UpdateLightGroup(existingGroup.Id, "My New Name");
+                _result = creator.Update(existingGroup.Id, "My New Name");
 
                 _savedModel = repository.LastSaved;
             }
@@ -233,7 +233,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new LightGroupManager(repository);
-                _result = creator.UpdateLightGroup(existingGroup.Id, "Name Collision");
+                _result = creator.Update(existingGroup.Id, "Name Collision");
 
                 _savedModel = repository.LastSaved;
             }
@@ -276,7 +276,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new LightGroupManager(repository);
-                _result = creator.UpdateLightGroup(existingGroup.Id, "Existing Group");
+                _result = creator.Update(existingGroup.Id, "Existing Group");
 
                 _savedModel = repository.LastSaved;
             }
@@ -317,7 +317,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new LightGroupManager(repository);
-                _result = creator.UpdateLightGroup(_groupIdDoesntExist, "My New Name");
+                _result = creator.Update(_groupIdDoesntExist, "My New Name");
 
                 _savedModel = repository.LastSaved;
             }
@@ -366,7 +366,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new LightGroupManager(repository);
-                _result = creator.DeleteLightGroup(existingGroup.Id);
+                _result = creator.Delete(existingGroup.Id);
 
                 _savedModel = repository.LastSaved;
             }
@@ -418,7 +418,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new LightGroupManager(repository);
-                _result = creator.DeleteLightGroup(_idDoesNotExist);
+                _result = creator.Delete(_idDoesNotExist);
 
                 _savedModel = repository.LastSaved;
             }

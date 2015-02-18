@@ -1,0 +1,63 @@
+﻿@model ZBuildLights.Web.Models.Admin.EditCruiseServerViewModel[]
+
+@{
+    ViewBag.Title = "Manage Cruise Servers";
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/admin")
+    <script>
+        @Html.Partial("_AdminUrls")
+        @Html.Partial("_AdminConstants")
+    </script>
+}
+
+<h2>Manage Cruise Servers</h2>
+
+<div class="row">
+    @foreach (var server in Model)
+    {
+        <p>@server.Name</p>
+    }
+    <div class="text-right">
+        <button id="add-cruise-server-button" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Server</button>
+    </div>
+</div>
+
+<!-- Add Cruise Server Modal -->
+<div class="modal fade" id="add-cruise-server-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Add New Cruise Server</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="group-name-input">Server Name</label>
+                        <input type="text" class="form-control" id="cruise-server-name-input" placeholder="My Build Server"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="group-name-input">URL</label>
+                        <input type="text" class="form-control" id="cruise-server-url-input" placeholder="http://someserver/cc.xml"/>
+                        <p>
+                            Populate Example URL:
+                            <a class="example-cruise-url" style="padding-left: 5px; padding-right: 5px" href="javascript:void(0)" data-urltemplate="http://&lt;teamcity-server&gt;:&lt;port&gt;/guestAuth/app/rest/cctray/projects.xml">Team City</a>
+                            |
+                            <a class="example-cruise-url" style="padding-left: 5px; padding-right: 5px" href="javascript:void(0)" data-urltemplate="http://&lt;jenkins-server&gt;:&lt;port&gt;/cc.xml">Jenkins</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <h3 class="wait-spinner" style="position: absolute; bottom: 10px; display: none">
+                    <i class="fa fa-spinner fa-spin"></i>
+                </h3>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                <button id="cruise-server-save-new-button" type="button" class="btn btn-primary"><i class="fa fa-check"></i> Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -152,6 +152,8 @@
     <Compile Include="Mapping\ViewModelProfile.cs" />
     <Compile Include="Models\Admin\AdminViewModel.cs" />
     <Compile Include="Models\Admin\CcProjectCollection.cs" />
+    <Compile Include="Models\Admin\EditCruiseServerViewModel.cs" />
+    <Compile Include="Models\Admin\EditProjectViewModel.cs" />
     <Compile Include="Models\Admin\LightColorOption.cs" />
     <Compile Include="Models\Home\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -206,6 +208,10 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\LightGroup.cshtml" />
     <Content Include="Views\Admin\EditProjectModal.cshtml" />
+    <Content Include="Views\Admin\EditProject.cshtml" />
+    <Content Include="Views\Admin\_AdminUrls.cshtml" />
+    <Content Include="Views\Admin\_AdminConstants.cshtml" />
+    <None Include="Views\Admin\ManageCruiseServers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

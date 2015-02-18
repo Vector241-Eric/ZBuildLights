@@ -54,7 +54,10 @@
     <Compile Include="CruiseControl\CcReader.cs" />
     <Compile Include="CruiseControl\ICcReader.cs" />
     <Compile Include="CruiseControl\XmlObjectModel.cs" />
+    <Compile Include="Models\CruiseServer.cs" />
     <Compile Include="Models\ZWaveSwitch.cs" />
+    <Compile Include="Services\CruiseServerManager.cs" />
+    <Compile Include="Services\ICruiseServerManager.cs" />
     <Compile Include="Services\IProjectManager.cs" />
     <Compile Include="Services\ILightStatusSetter.cs" />
     <Compile Include="Services\ISystemStatusProvider.cs" />

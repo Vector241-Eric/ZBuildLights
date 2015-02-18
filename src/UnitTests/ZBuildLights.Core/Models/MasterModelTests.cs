@@ -123,17 +123,23 @@ namespace UnitTests.ZBuildLights.Core.Models
         [TestFixture]
         public class When_model_is_empty
         {
+            private MasterModel _model;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _model = new MasterModel();
+            }
+
             [Test]
             public void Should_throw_an_exception_when_searching_for_a_group()
             {
-                var model = new MasterModel();
-
                 Exception thrown = null;
 
                 var id = Guid.NewGuid();
                 try
                 {
-                    model.FindGroup(id);
+                    _model.FindGroup(id);
                 }
                 catch (Exception e)
                 {
@@ -142,6 +148,12 @@ namespace UnitTests.ZBuildLights.Core.Models
 
                 thrown.GetType().ShouldEqual(typeof (InvalidOperationException));
                 thrown.Message.ShouldEqual(string.Format("Could not find group with id: {0}", id));
+            }
+
+            [Test]
+            public void Should_not_have_any_cruise_servers()
+            {
+                _model.CruiseServers.Length.ShouldEqual(0);
             }
         }
 
@@ -315,8 +327,8 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 _masterModel = new MasterModel();
                 var notDeleted = _masterModel.CreateProject(x => x.Name = "Not Deleted");
-                notDeleted.CreateGroup().AddLight(new Light(1, 11)).AddLight(new Light(1,12));
-                notDeleted.CreateGroup().AddLight(new Light(1, 13)).AddLight(new Light(1,14));
+                notDeleted.CreateGroup().AddLight(new Light(1, 11)).AddLight(new Light(1, 12));
+                notDeleted.CreateGroup().AddLight(new Light(1, 13)).AddLight(new Light(1, 14));
                 var toBeDeleted = _masterModel.CreateProject(x => x.Name = "To Be Deleted");
                 toBeDeleted.CreateGroup().AddLight(new Light(1, 21)).AddLight(new Light(1, 22));
                 toBeDeleted.CreateGroup().AddLight(new Light(1, 23)).AddLight(new Light(1, 24));
@@ -329,10 +341,10 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 var unassignedLights = _masterModel.UnassignedLights;
                 unassignedLights.Length.ShouldEqual(4);
-                unassignedLights.Any(x => x.ZWaveDeviceId == (byte)21).ShouldBeTrue();
-                unassignedLights.Any(x => x.ZWaveDeviceId == (byte)22).ShouldBeTrue();
-                unassignedLights.Any(x => x.ZWaveDeviceId == (byte)23).ShouldBeTrue();
-                unassignedLights.Any(x => x.ZWaveDeviceId == (byte)24).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveDeviceId == (byte) 21).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveDeviceId == (byte) 22).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveDeviceId == (byte) 23).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveDeviceId == (byte) 24).ShouldBeTrue();
             }
 
             [Test]
@@ -342,16 +354,64 @@ namespace UnitTests.ZBuildLights.Core.Models
                 var undeletedProject = _masterModel.Projects.Single(x => x.Name == "Not Deleted");
                 var assignedLights = undeletedProject.Groups.SelectMany(x => x.Lights).ToArray();
                 assignedLights.Length.ShouldEqual(4);
-                assignedLights.Any(x => x.ZWaveDeviceId == (byte)11).ShouldBeTrue();
-                assignedLights.Any(x => x.ZWaveDeviceId == (byte)12).ShouldBeTrue();
-                assignedLights.Any(x => x.ZWaveDeviceId == (byte)13).ShouldBeTrue();
-                assignedLights.Any(x => x.ZWaveDeviceId == (byte)14).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveDeviceId == (byte) 11).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveDeviceId == (byte) 12).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveDeviceId == (byte) 13).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveDeviceId == (byte) 14).ShouldBeTrue();
             }
 
             [Test]
             public void Should_remove_the_requested_project()
             {
                 _masterModel.Projects.Length.ShouldEqual(1);
+            }
+        }
+
+        [TestFixture]
+        public class When_adding_cruise_server_to_master_model
+        {
+            private MasterModel _model;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                _model = new MasterModel();
+                _model.CreateCruiseServer(x => { x.Url = "http://www.example.com/1"; x.Name = "1"; });
+                _model.CreateCruiseServer(x => { x.Url = "http://www.example.com/2"; x.Name = "2"; });
+            }
+
+            [Test]
+            public void Should_add_server()
+            {
+
+                _model.CruiseServers.Length.ShouldEqual(2);
+                _model.CruiseServers.Count(x => x.Url.Equals("http://www.example.com/1")).ShouldEqual(1);
+                _model.CruiseServers.Count(x => x.Url.Equals("http://www.example.com/2")).ShouldEqual(1);
+            }
+
+            [Test]
+            public void Should_set_ID_on_cruise_server()
+            {
+                _model.CruiseServers.Any(x => x.Id == Guid.Empty).ShouldBeFalse();
+            }
+        }
+
+        [TestFixture]
+        public class When_removing_cruise_server_from_master_model
+        {
+            [Test]
+            public void Should_remove_cruise_server()
+            {
+                var model = new MasterModel();
+                var server1 = model.CreateCruiseServer(x => { x.Url = "http://www.example.com/1"; x.Name = "1"; });
+                var server2 = model.CreateCruiseServer(x => { x.Url = "http://www.example.com/2"; x.Name = "2"; });
+                var server3 = model.CreateCruiseServer(x => { x.Url = "http://www.example.com/3"; x.Name = "3"; });
+
+                model.RemoveCruiseServer(server2.Id);
+
+                model.CruiseServers.Length.ShouldEqual(2);
+                model.CruiseServers.Count(x => x.Id.Equals(server1.Id)).ShouldEqual(1);
+                model.CruiseServers.Count(x => x.Id.Equals(server3.Id)).ShouldEqual(1);
             }
         }
     }

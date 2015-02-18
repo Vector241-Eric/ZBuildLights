@@ -8,10 +8,16 @@ namespace ZBuildLights.Core.Models
     {
         //State
         private readonly List<Project> _projects = new List<Project>();
+        private readonly List<CruiseServer> _cruiseServers = new List<CruiseServer>();
 
         public Project[] Projects
         {
             get { return _projects.ToArray(); }
+        }
+
+        public CruiseServer[] CruiseServers
+        {
+            get { return _cruiseServers.ToArray(); }
         }
 
         public DateTime LastUpdatedDate { get; set; }
@@ -99,6 +105,23 @@ namespace ZBuildLights.Core.Models
 
             _projects.Add(project);
             return project;
+        }
+
+        public CruiseServer CreateCruiseServer(Action<CruiseServer> initialize = null)
+        {
+            var init = initialize ?? (x => { });
+            var cruiseServer = new CruiseServer();
+            init(cruiseServer);
+            if (cruiseServer.Id == Guid.Empty)
+                cruiseServer.Id = Guid.NewGuid();
+
+            _cruiseServers.Add(cruiseServer);
+            return cruiseServer;
+        }
+
+        public void RemoveCruiseServer(Guid cruiseServerId)
+        {
+            _cruiseServers.RemoveAll(x => x.Id.Equals(cruiseServerId));
         }
     }
 }

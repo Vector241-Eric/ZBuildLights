@@ -1,0 +1,83 @@
+﻿@model ZBuildLights.Web.Models.Admin.EditProjectViewModel
+
+@{
+    ViewBag.Title = "ZBuildLights Edit Project";
+    var project = Model.Project;
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/admin")
+    <script>
+        @Html.Partial("_AdminUrls")
+        @Html.Partial("_AdminConstants")
+    </script>
+}
+
+<div class="row" id="alert-container">
+</div>
+<div class="row">
+    <h2>Edit Project</h2>
+    <p class="lead">Setup a ZBuildLights project and associated it with your Continuous Integration projects</p>
+</div>
+<br/>
+<div class="row">
+    <h3>Project Settings</h3>
+    <form role="form" class="form-horizontal">
+        <input type="hidden" id="edit-project-id" value="@project.Id"/>
+        <fieldset>
+            <div class="form-group">
+                <label for="edit-project-name-input" class="col-lg-2">Project Name</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="edit-project-name-input" placeholder="My Awesome Project" value="@project.Name"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="edit-project-name-input" class="col-lg-2">Associated Cruise Control Projects</label>
+                <div class="col-lg-10">
+                    <select class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <div class="col-lg-10">
+                    <select class="form-control">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    <hr/>
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h3 class="panel-title">Danger Zone</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-9" style="padding-top: 10px">
+                    <p>
+                        Permanently delete this project... <a target="_blank" href="https://www.youtube.com/watch?v=H-Q7b-vHY3Q">For-ev-er!</a>
+                    </p>
+                </div>
+                <div class="col-lg-3 text-right">
+                    <a href="javascript:void(0)" class="btn btn-danger delete-project-link">Delete Project</a>
+                </div>
+            </div>
+            <div style="display: none;" class="well delete-project-confirm">
+                <button class="btn btn-primary btn-block delete-project-reject-button">Noooooooooo.... Don't Delete</button>
+                <div style="padding-top: 10px" class="text-right">
+                    <a href="javascript:void(0)" class="delete-confirm-link">
+                        <p class="text-danger">Yes, Delete Forever</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

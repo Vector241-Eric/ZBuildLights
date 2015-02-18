@@ -2,7 +2,6 @@
 /// <reference path="~/Scripts/jquery-1.10.2.intellisense.js" />
 /// <reference path="~/Scripts/bootstrap.js" />
 /// <reference path="~/Scripts/App/namespace.js" />
-
 (function() {
     ZBuildLights.createNamespace('Admin');
     var Admin = ZBuildLights.Admin;
@@ -55,7 +54,7 @@
             }
             Admin.Alert.show(data.responseJSON.Message);
         };
-        
+
         var handleWrapper = function(failureMessage) {
             var handleCore = function(data) {
                 handle(data, failureMessage);
@@ -66,6 +65,45 @@
 
         return {
             handle: handleWrapper
+        }
+    })();
+
+    Admin.CruiseServer = (function() {
+        var create = function() {
+            $("#add-cruise-server-modal").modal("show");
+        };
+
+        var populateExampleUrl = (function() {
+            var el = $(this);
+            var exampleUrl = $(this).data("urltemplate");
+            $("#cruise-server-url-input").val(exampleUrl);
+        });
+
+        var postNewServer = function() {
+            var name = $("#cruise-server-name-input").val();
+            var url = $("#cruise-server-url-input").val();
+            var spinner = $("#add-cruise-server-modal .wait-spinner");
+            spinner.show();
+            $.post(Admin.Urls.createCruiseServer, { name: name, url: url })
+                .always(function() {
+                    $("#add-cruise-server-modal").modal("hide");
+                    spinner.hide();
+                })
+                .success(function() {
+                    location.reload();
+                })
+                .fail(Admin.Error.handle('Failed to save new cruise server.'));
+
+        };
+
+        var attachHandlers = function () {
+            $("#add-cruise-server-button").click(create);
+            $(".example-cruise-url").click(populateExampleUrl);
+            $("#cruise-server-save-new-button").click(postNewServer);
+        }
+
+        return {
+            attachHandlers: attachHandlers
         }
     })();
 
@@ -139,7 +177,7 @@
             }
         };
 
-        var selectProject = (function () {
+        var selectProject = (function() {
             var selector = '#select-ccproject';
             var disableDropDown = function() {
                 $(selector).attr('disabled', 'disabled');
@@ -155,31 +193,31 @@
             }
         })();
 
-        var refreshCcProjects = function () {
+        var refreshCcProjects = function() {
 
             var url = $('#project-ccurl-input').val();
 
-            $.getJSON(ZBuildLights.Admin.Urls.ccJson, {url: url})
-                .success(function (data) {
-                var optionPattern = '<option value="#value#">#value#</option>';
-                var projects = data.Projects;
+            $.getJSON(ZBuildLights.Admin.Urls.ccJson, { url: url })
+                .success(function(data) {
+                    var optionPattern = '<option value="#value#">#value#</option>';
+                    var projects = data.Projects;
 
-                var select = $(selectProject.selector);
-                $.each(projects, function (index) {
-                    var project = projects[index];
-                    var value = project.Name;
-                    var option = optionPattern.replace(/#value#/g, value);
-                    select.append(option);
+                    var select = $(selectProject.selector);
+                    $.each(projects, function(index) {
+                        var project = projects[index];
+                        var value = project.Name;
+                        var option = optionPattern.replace(/#value#/g, value);
+                        select.append(option);
+                    });
+
+                    selectProject.enableDropDown();
+
                 });
-
-                selectProject.enableDropDown();
-
-            });
         }
 
         var attachHandlers = function() {
             $('#save-new-project').click(saveNew);
-            $('.btn-edit-project').click(edit);
+//            $('.btn-edit-project').click(edit);
             $('.delete-project-link').click(deleteConfirmation.show);
             $('.delete-project-reject-button').click(deleteConfirmation.hide);
             $('#edit-project-modal .delete-confirm-link').click(postDelete);
@@ -287,9 +325,9 @@
         }
     })();
 
-    Admin.Light = (function () {
+    Admin.Light = (function() {
 
-        var postEdit = function () {
+        var postEdit = function() {
             var spinner = $('#edit-light-modal .wait-spinner');
             spinner.show();
 
@@ -299,11 +337,11 @@
             var colorId = $('#select-light-color').val();
 
             $.post(Admin.Urls.editLight, { homeId: homeId, deviceId: deviceId, groupId: groupId, colorId: colorId })
-                .always(function () {
+                .always(function() {
                     $('#edit-light-modal').modal('hide');
                     spinner.hide();
                 })
-                .success(function () {
+                .success(function() {
                     location.reload();
                 })
                 .fail(Admin.Error.handle('Failed to edit light.'));
@@ -329,14 +367,14 @@
             adjustColorSelectStylesBasedOnValue();
         }
 
-        var adjustColorSelectStylesBasedOnValue = function () {
+        var adjustColorSelectStylesBasedOnValue = function() {
             var prefix = ZBuildLights.Admin.Constants.lightOptionPrefix;
 
             var el = $('#select-light-color');
             var selectElement = el[0];
             var selectedOption = selectElement[selectElement.selectedIndex];
             var cssToAdd = selectedOption.getAttribute('data-optioncss');
-            el.removeClass(function (index, cssClasses) {
+            el.removeClass(function(index, cssClasses) {
                 var splits = cssClasses.split(' ');
                 var classesToRemove = [];
                 for (var i = 0; i < splits.length; i++) {
@@ -368,4 +406,5 @@ $(function() {
     ZBuildLights.Admin.Project.attachHandlers();
     ZBuildLights.Admin.Group.attachHandlers();
     ZBuildLights.Admin.Light.attachHandlers();
+    ZBuildLights.Admin.CruiseServer.attachHandlers();
 });

@@ -27,7 +27,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.CreateProject("My New Project");
+                _result = creator.Create("My New Project");
 
                 _savedModel = repository.LastSaved;
             }
@@ -80,7 +80,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.CreateProject("Existing Project");
+                _result = creator.Create("Existing Project");
 
                 _savedModel = repository.LastSaved;
             }
@@ -122,7 +122,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.UpdateProject(projectToEdit.Id, "My New Name");
+                _result = creator.Update(projectToEdit.Id, "My New Name");
 
                 _savedModel = repository.LastSaved;
             }
@@ -177,7 +177,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.UpdateProject(projectToEdit.Id, "Name Collision");
+                _result = creator.Update(projectToEdit.Id, "Name Collision");
 
                 _savedModel = repository.LastSaved;
             }
@@ -218,7 +218,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.UpdateProject(projectToEdit.Id, "Keep This");
+                _result = creator.Update(projectToEdit.Id, "Keep This");
             }
 
             [Test]
@@ -248,7 +248,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _repository.UseCurrentModel(existingMasterModel);
 
                 var manager = new ProjectManager(_repository);
-                _result = manager.UpdateProject(_deleteId, "Value doesn't matter");
+                _result = manager.Update(_deleteId, "Value doesn't matter");
 
                 _savedModel = _repository.LastSaved;
             }
@@ -291,7 +291,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var manager = new ProjectManager(repository);
-                manager.DeleteProject(project2.Id);
+                manager.Delete(project2.Id);
 
                 _savedModel = repository.LastSaved;
             }
@@ -331,7 +331,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _repository.UseCurrentModel(existingMasterModel);
 
                 var manager = new ProjectManager(_repository);
-                _result = manager.DeleteProject(_deleteId);
+                _result = manager.Delete(_deleteId);
 
                 _savedModel = _repository.LastSaved;
             }

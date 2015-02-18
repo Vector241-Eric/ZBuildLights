@@ -6,8 +6,8 @@ namespace ZBuildLights.Core.Services
 {
     public interface ILightGroupManager
     {
-        CreationResult<LightGroup> CreateLightGroup(Guid projectId, string name);
-        EditResult<LightGroup> UpdateLightGroup(Guid groupId, string name);
-        EditResult<LightGroup> DeleteLightGroup(Guid groupId);
+        CreationResult<LightGroup> Create(Guid projectId, string name);
+        EditResult<LightGroup> Update(Guid groupId, string name);
+        EditResult<LightGroup> Delete(Guid groupId);
     }
 }

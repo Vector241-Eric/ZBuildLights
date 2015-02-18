@@ -11,18 +11,8 @@
 @section scripts {
     @Scripts.Render("~/bundles/admin")
     <script>
-        ZBuildLights.createNamespace('Admin.Urls');
-        ZBuildLights.Admin.Urls.addProject = '@Url.Action("AddProject")';
-        ZBuildLights.Admin.Urls.deleteProject = '@Url.Action("DeleteProject")';
-        ZBuildLights.Admin.Urls.updateProject = '@Url.Action("UpdateProject")';
-        ZBuildLights.Admin.Urls.addGroup = '@Url.Action("AddGroup")';
-        ZBuildLights.Admin.Urls.updateGroup = '@Url.Action("UpdateGroup")';
-        ZBuildLights.Admin.Urls.deleteGroup = '@Url.Action("DeleteGroup")';
-        ZBuildLights.Admin.Urls.editLight = '@Url.Action("EditLight")';
-        ZBuildLights.Admin.Urls.ccJson = '@Url.Action("CcJson")';
-
-        ZBuildLights.createNamespace('Admin.Constants');
-        ZBuildLights.Admin.Constants.lightOptionPrefix = '@LightColorOption.CssClassPrefix';
+        @Html.Partial("_AdminUrls")
+        @Html.Partial("_AdminConstants")
     </script>
 }
 
@@ -56,7 +46,7 @@
                             </h4>
                         </div>
                         <div class="col-md-6 text-right">
-                            <button class="btn btn-default btn-edit-project" data-projectId="@project.Id"><i class="fa fa-pencil"></i></button>
+                            <a href="@Url.Action("EditProject", new {ProjectId = project.Id})"><button class="btn btn-default" data-projectid="@project.Id"><i class="fa fa-pencil"></i></button></a>
                         </div>
                     </div>
                 </div>

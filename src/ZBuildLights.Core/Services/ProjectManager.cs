@@ -15,7 +15,7 @@ namespace ZBuildLights.Core.Services
             _masterModelRepository = masterModelRepository;
         }
 
-        public CreationResult<Project> CreateProject(string name)
+        public CreationResult<Project> Create(string name)
         {
             var currentModel = _masterModelRepository.GetCurrent();
             if (IsProjectNameAlreadyUsed(name, currentModel))
@@ -32,7 +32,7 @@ namespace ZBuildLights.Core.Services
             return string.Format("There is already a project named '{0}'", name);
         }
 
-        public EditResult<Project> DeleteProject(Guid id)
+        public EditResult<Project> Delete(Guid id)
         {
             var currentModel = _masterModelRepository.GetCurrent();
             if (!currentModel.ProjectExists(id))
@@ -48,7 +48,7 @@ namespace ZBuildLights.Core.Services
             return EditResult.Fail<Project>(string.Format("Could not locate a project with Id '{0}'", id));
         }
 
-        public EditResult<Project> UpdateProject(Guid id, string name)
+        public EditResult<Project> Update(Guid id, string name)
         {
             var currentModel = _masterModelRepository.GetCurrent();
             var project = currentModel.Projects.SingleOrDefault(x => x.Id.Equals(id));
