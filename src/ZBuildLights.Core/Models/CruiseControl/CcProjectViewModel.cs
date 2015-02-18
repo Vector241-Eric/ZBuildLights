@@ -6,6 +6,16 @@ namespace ZBuildLights.Core.Models.CruiseControl
     {
         public string Name { get; set; }
         public string LastBuildStatus { get; set; }
+        public string Activity { get; set; }
+
+        public string Status
+        {
+            get
+            {
+                var building = "Building".Equals(Activity) ? " and Building" : string.Empty;
+                return string.Format("{0}{1}", LastBuildStatus, building);
+            }
+        }
 
         public string ProjectAndName
         {

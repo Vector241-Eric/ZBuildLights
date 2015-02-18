@@ -105,7 +105,7 @@
                 var project = projects[index];
                 var template = $(templateHtml);
                 template.find(".cruise-project-name").text(project.Name);
-                template.find(".cruise-project-status").text(project.LastBuildStatus);
+                template.find(".cruise-project-status").text(project.Status);
                 tableBody.append(template);
             });
         }

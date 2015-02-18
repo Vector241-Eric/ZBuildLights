@@ -4,6 +4,12 @@ using ZBuildLights.Core.Enumerations;
 
 namespace ZBuildLights.Core.Models
 {
+    public class CruiseProject
+    {
+        public Guid ServerId { get; set; }
+        public string ProjectName { get; set; }
+    }
+
     public class Project
     {
         public readonly List<LightGroup> _groups = new List<LightGroup>();
