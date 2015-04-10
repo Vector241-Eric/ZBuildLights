@@ -101,7 +101,7 @@
             var tableBody = $('.cruise-server-projectlist[data-serverid="' + serverId + '"]');
             tableBody.empty();
 
-            $.each(projects, function (index) {
+            $.each(projects, function(index) {
                 var project = projects[index];
                 var template = $(templateHtml);
                 template.find(".cruise-project-name").text(project.Name);
@@ -110,21 +110,21 @@
             });
         }
 
-        var updateServerProjects = function (serverId, afterSuccess) {
+        var updateServerProjects = function(serverId, afterSuccess) {
             var spinner = $(".cruise-server-panel .cruise-server-refresh-link i");
             spinner.addClass("fa-spin");
             $.getJSON(ZBuildLights.Admin.Urls.ccJson, { serverId: serverId })
-                .success(function (data) {
-                var projects = data.Projects;
-                resetServerProjectList(serverId, projects);
-                spinner.removeClass("fa-spin");
-                if (afterSuccess) {
-                    afterSuccess();
-                }
-            });
+                .success(function(data) {
+                    var projects = data.Projects;
+                    resetServerProjectList(serverId, projects);
+                    spinner.removeClass("fa-spin");
+                    if (afterSuccess) {
+                        afterSuccess();
+                    }
+                });
         }
 
-        var updateServerProjectsClick = function () {
+        var updateServerProjectsClick = function() {
             var el = $(this);
             var serverId = el.data("serverid");
             updateServerProjects(serverId, function() {
@@ -139,7 +139,7 @@
             });
         };
 
-        var attachHandlers = function () {
+        var attachHandlers = function() {
             $("#add-cruise-server-button").click(create);
             $(".example-cruise-url").click(populateExampleUrl);
             $("#cruise-server-save-new-button").click(postNewServer);
@@ -153,19 +153,6 @@
     })();
 
     Admin.Project = (function() {
-        var edit = function() {
-            var projectId = $(this).attr('data-projectId');
-            var projectPanel = $('.admin-project-panel[data-projectId="' + projectId + '"]');
-            var projectName = projectPanel.attr('data-projectName');
-
-            $('#edit-project-id').val(projectId);
-            $('#edit-project-name-input').val(projectName);
-            $('#edit-project-modal .delete-confirm').hide();
-            $('#edit-project-modal .wait-spinner').hide();
-
-            $('#edit-project-modal').modal('show');
-        };
-
         var postDelete = function() {
             var spinner = $('#edit-project-modal .wait-spinner');
             spinner.show();
@@ -181,21 +168,23 @@
                 .fail(Admin.Error.handle('Failed to delete project.'));
         };
 
-        var postEdits = function() {
-            var projectId = $('#edit-project-id').val();
-            var name = $('#edit-project-name-input').val();
-            var spinner = $('#edit-project-modal .wait-spinner');
-            spinner.show();
-            $.post(Admin.Urls.updateProject, { projectId: projectId, name: name })
-                .always(function() {
-                    $('#edit-project-modal').modal('hide');
-                    spinner.hide();
-                })
-                .success(function() {
-                    location.reload();
-                })
-                .fail(Admin.Error.handle('Failed to edit project.'));
+        var addCruiseProject = function () {
+            var template = $('#edit-project-server-select').html();
+            $('#edit-project-cruise-projects').append(template);
+            resetCruiseProjectDisplay();
+            var nameTemplate = 'cruiseProject[##index##].Server';
         };
+
+        var resetCruiseProjectDisplay = function() {
+            var existingProjectCount = $('#edit-project-cruise-projects .cruise-server-select').length;
+            if (existingProjectCount === 0) {
+                $('#edit-project-cruise-projects').hide();
+                $('#edit-project-add-cruise-btn-container').removeClass('col-lg-offset-2');
+            } else {
+                $('#edit-project-cruise-projects').show();
+                $('#edit-project-add-cruise-btn-container').addClass('col-lg-offset-2');
+            }
+        }
 
         var deleteConfirmation = {
             show: function() {
@@ -248,11 +237,12 @@
             $('.delete-project-link').click(deleteConfirmation.show);
             $('.delete-project-reject-button').click(deleteConfirmation.hide);
             $('#edit-project-modal .delete-confirm-link').click(postDelete);
-            $('#save-edit-project').click(postEdits);
+            $('#edit-project-btn-add-cruise-project').click(addCruiseProject);
         };
 
         return {
             attachHandlers: attachHandlers,
+            initializeCruiseDisplay: resetCruiseProjectDisplay
         }
     })();
 
@@ -433,4 +423,5 @@ $(function() {
     ZBuildLights.Admin.Group.attachHandlers();
     ZBuildLights.Admin.Light.attachHandlers();
     ZBuildLights.Admin.CruiseServer.attachHandlers();
+    ZBuildLights.Admin.Project.initializeCruiseDisplay();
 });

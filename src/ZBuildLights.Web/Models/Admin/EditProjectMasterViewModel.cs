@@ -13,6 +13,7 @@ namespace ZBuildLights.Web.Models.Admin
         public bool ShowErrorMessage { get { return !string.IsNullOrEmpty(ErrorMessage); }}
 
         public string CruiseServerJson { get { return JsonConvert.SerializeObject(CruiseServers); } }
+        public bool ShowProjectSelections { get { return Project.CruiseProjects.Length > 0; } }
     }
 
     public class EditProjectViewModel
