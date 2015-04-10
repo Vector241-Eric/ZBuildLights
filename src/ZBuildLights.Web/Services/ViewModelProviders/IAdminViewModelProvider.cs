@@ -6,7 +6,7 @@ namespace ZBuildLights.Web.Services.ViewModelProviders
     public interface IAdminViewModelProvider
     {
         AdminViewModel GetIndexViewModel();
-        EditProjectViewModel GetEditProjectViewModel(Guid? id);
+        EditProjectMasterViewModel GetEditProjectViewModel(Guid? id);
         EditCruiseServerViewModel[] GetCruiseServerViewModels();
     }
 }

@@ -18,7 +18,7 @@ namespace UnitTests.ZBuildLights.Core.Services.CruiseControl
         [TestFixture]
         public class HappyPath : TestBase
         {
-            private NetworkRequest<CcProjectCollectionViewModel> _result;
+            private NetworkResponse<CcProjectCollectionViewModel> _result;
 
             [SetUp]
             public void ContextSetup()
@@ -33,7 +33,7 @@ namespace UnitTests.ZBuildLights.Core.Services.CruiseControl
                 };
 
                 var ccReaderResponse =
-                    NetworkRequest.Success(ccReaderData);
+                    NetworkResponse.Success(ccReaderData);
 
                 var statusProvider = S<ISystemStatusProvider>();
                 statusProvider.Stub(x => x.GetSystemStatus()).Return(masterModel);
@@ -65,7 +65,7 @@ namespace UnitTests.ZBuildLights.Core.Services.CruiseControl
         [TestFixture]
         public class When_network_request_fails : TestBase
         {
-            private NetworkRequest<CcProjectCollectionViewModel> _result;
+            private NetworkResponse<CcProjectCollectionViewModel> _result;
 
             [SetUp]
             public void ContextSetup()
@@ -74,7 +74,7 @@ namespace UnitTests.ZBuildLights.Core.Services.CruiseControl
                 var server1 = masterModel.CreateCruiseServer(x => x.Url = "http://www.example.com/1");
                 var server2 = masterModel.CreateCruiseServer(x => x.Url = "http://www.example.com/2");
 
-                var ccReaderResponse = NetworkRequest.Fail<Projects>("Network request failed.", new Exception("I don't wanna"));
+                var ccReaderResponse = NetworkResponse.Fail<Projects>("Network request failed.", new Exception("I don't wanna"));
 
                 var statusProvider = S<ISystemStatusProvider>();
                 statusProvider.Stub(x => x.GetSystemStatus()).Return(masterModel);

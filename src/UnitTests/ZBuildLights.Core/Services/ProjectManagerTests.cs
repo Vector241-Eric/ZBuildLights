@@ -105,6 +105,45 @@ namespace UnitTests.ZBuildLights.Core.Services
         }
 
         [TestFixture]
+        public class When_creating_a_new_project_without_a_name
+        {
+            private CreationResult<Project> _result;
+            private MasterModel _savedModel;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var existingMasterModel = new MasterModel();
+
+                var repository = new StubMasterModelRepository();
+                repository.UseCurrentModel(existingMasterModel);
+
+                var creator = new ProjectManager(repository);
+                _result = creator.Create(string.Empty);
+
+                _savedModel = repository.LastSaved;
+            }
+
+            [Test]
+            public void Should_indicate_that_creation_was_not_successful()
+            {
+                _result.IsSuccessful.ShouldBeFalse();
+            }
+
+            [Test]
+            public void Should_not_save_the_master_model()
+            {
+                _savedModel.ShouldBeNull();
+            }
+
+            [Test]
+            public void Should_include_a_reasonable_failure_message()
+            {
+                _result.Message.ShouldEqual("Project name is required.");
+            }
+        }
+
+        [TestFixture]
         public class When_updating_a_project_with_unique_name
         {
             private MasterModel _savedModel;

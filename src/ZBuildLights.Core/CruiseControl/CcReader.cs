@@ -8,7 +8,7 @@ namespace ZBuildLights.Core.CruiseControl
 {
     public class CcReader : ICcReader
     {
-        public NetworkRequest<Projects> GetStatus(string url)
+        public NetworkResponse<Projects> GetStatus(string url)
         {
             try
             {
@@ -23,11 +23,11 @@ namespace ZBuildLights.Core.CruiseControl
                     projects = (Projects) serializer.Deserialize(reader);
                 }
 
-                return NetworkRequest.Success(projects);
+                return NetworkResponse.Success(projects);
             }
             catch (Exception e)
             {
-                return NetworkRequest.Fail<Projects>(string.Format("{0}: {1}", e.GetType().Name, e.Message));
+                return NetworkResponse.Fail<Projects>(string.Format("{0}: {1}", e.GetType().Name, e.Message));
             }
         }
     }

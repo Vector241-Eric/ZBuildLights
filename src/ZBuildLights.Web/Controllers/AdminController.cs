@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Web.Mvc;
-using ZBuildLights.Core.Models;
-using ZBuildLights.Core.Models.Requests;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Services.CruiseControl;
+using ZBuildLights.Web.Models.Admin;
 using ZBuildLights.Web.Services.ViewModelProviders;
 
 namespace ZBuildLights.Web.Controllers
@@ -19,7 +18,7 @@ namespace ZBuildLights.Web.Controllers
         private readonly ICruiseServerManager _cruiseServerManager;
 
         public AdminController(IProjectManager projectManager, ILightGroupManager lightGroupManager,
-            IAdminViewModelProvider viewModelProvider, ILightUpdater lightUpdater, 
+            IAdminViewModelProvider viewModelProvider, ILightUpdater lightUpdater,
             ICruiseProjectModelProvider ccProjectProvider, ICruiseServerManager cruiseServerManager)
         {
             _projectManager = projectManager;
@@ -39,18 +38,20 @@ namespace ZBuildLights.Web.Controllers
         [HttpGet]
         public ActionResult EditProject(Guid? projectId)
         {
-            return View(_viewModelProvider.GetEditProjectViewModel(projectId));
+            var editProjectMasterViewModel = _viewModelProvider.GetEditProjectViewModel(projectId);
+            if (TempData.ContainsKey("ErrorMessage"))
+                editProjectMasterViewModel.ErrorMessage = (string) TempData["ErrorMessage"];
+            return View(editProjectMasterViewModel);
         }
 
-        //Projects
         [HttpPost]
-        public ActionResult AddProject(string projectName)
+        public ActionResult EditProject(EditProjectEditModel editModel)
         {
-            var result = _projectManager.Create(projectName);
+            var result = _projectManager.Create(editModel.Name);
             if (result.IsSuccessful)
                 return RedirectToAction("Index");
-            Response.StatusCode = (int) HttpStatusCode.Conflict;
-            return Json(result);
+            TempData["ErrorMessage"] = result.Message;
+            return RedirectToAction("EditProject", new {projectId = editModel.ProjectId});
         }
 
         [HttpPost]
@@ -109,7 +110,7 @@ namespace ZBuildLights.Web.Controllers
             if (result.IsSuccessful)
             {
                 var ccProjectCollection = result;
-                return Json(new {Success = true, Projects = ccProjectCollection.Data.Projects}, JsonRequestBehavior.AllowGet);
+                return Json(new {Success = true, ccProjectCollection.Data.Projects}, JsonRequestBehavior.AllowGet);
             }
 
             throw new Exception("Failed to get projects from cruise server", result.Exception);

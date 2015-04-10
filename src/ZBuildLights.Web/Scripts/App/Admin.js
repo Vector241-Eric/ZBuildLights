@@ -166,22 +166,6 @@
             $('#edit-project-modal').modal('show');
         };
 
-        var saveNew = function() {
-            Admin.Alert.close();
-            var spinner = $('#add-project-modal .wait-spinner');
-            spinner.show();
-            var input = $('#project-name-input').val();
-            $.post(Admin.Urls.addProject, { projectName: input })
-                .always(function() {
-                    $('#add-project-modal').modal('hide');
-                    spinner.hide();
-                })
-                .success(function() {
-                    location.reload();
-                })
-                .fail(Admin.Error.handle('Failed to save new project.'));
-        };
-
         var postDelete = function() {
             var spinner = $('#edit-project-modal .wait-spinner');
             spinner.show();
@@ -261,7 +245,6 @@
         }
 
         var attachHandlers = function() {
-            $('#save-new-project').click(saveNew);
 //            $('.btn-edit-project').click(edit);
             $('.delete-project-link').click(deleteConfirmation.show);
             $('.delete-project-reject-button').click(deleteConfirmation.hide);

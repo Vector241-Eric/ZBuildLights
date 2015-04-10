@@ -152,7 +152,9 @@
     <Compile Include="Mapping\ViewModelProfile.cs" />
     <Compile Include="Models\Admin\AdminViewModel.cs" />
     <Compile Include="Models\Admin\EditCruiseServerViewModel.cs" />
-    <Compile Include="Models\Admin\EditProjectViewModel.cs" />
+    <Compile Include="Models\Admin\EditProjectCruiseServerViewModel.cs" />
+    <Compile Include="Models\Admin\EditProjectEditModel.cs" />
+    <Compile Include="Models\Admin\EditProjectMasterViewModel.cs" />
     <Compile Include="Models\Admin\LightColorOption.cs" />
     <Compile Include="Models\Home\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

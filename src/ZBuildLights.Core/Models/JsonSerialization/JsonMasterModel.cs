@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ZBuildLights.Core.Models.JsonSerialization
@@ -67,7 +66,7 @@ namespace ZBuildLights.Core.Models.JsonSerialization
                 p.Name = Name;
                 p.Id = Id;
                 p.CcXmlUrl = CcXmlUrl;
-                var mappedCruiseProjects = CruiseProjects.Select(cp => cp.BuildDomainObject()).ToArray();
+                var mappedCruiseProjects = (CruiseProjects ?? new JsonCruiseProject[0]).Select(cp => cp.BuildDomainObject()).ToArray();
                 p.CruiseProjects = mappedCruiseProjects;
                 foreach (var jsonGroup in Groups)
                     p.CreateGroup(jsonGroup.InitializeDomainObject());

@@ -17,6 +17,8 @@ namespace ZBuildLights.Core.Services
 
         public CreationResult<Project> Create(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                return CreationResult.Fail<Project>("Project name is required.");
             var currentModel = _masterModelRepository.GetCurrent();
             if (IsProjectNameAlreadyUsed(name, currentModel))
                 return CreationResult.Fail<Project>(NameCollisionMessage(name));

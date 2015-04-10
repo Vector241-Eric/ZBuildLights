@@ -11,9 +11,13 @@ namespace ZBuildLights.Web.Mapping
         protected override void Configure()
         {
             CreateMap<Project, AdminProjectViewModel>();
+            CreateMap<Project, EditProjectViewModel>();
+            CreateMap<CruiseProject, AdminCruiseProjectViewModel>();
             CreateMap<LightGroup, AdminLightGroupViewModel>();
             CreateMap<Light, AdminLightViewModel>();
             CreateMap<CruiseServer, EditCruiseServerViewModel>();
+            CreateMap<CruiseServer, EditProjectCruiseServerViewModel>()
+                .ForMember(x => x.Projects, opt => opt.Ignore());
 
             //Mapping from CCXML to View Model
             CreateMap<Projects, CcProjectCollectionViewModel>()
