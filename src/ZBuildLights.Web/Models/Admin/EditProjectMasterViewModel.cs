@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace ZBuildLights.Web.Models.Admin
 {
@@ -10,6 +11,8 @@ namespace ZBuildLights.Web.Models.Admin
         public bool ShowDelete { get; set; }
         public string ErrorMessage { get; set; }
         public bool ShowErrorMessage { get { return !string.IsNullOrEmpty(ErrorMessage); }}
+
+        public string CruiseServerJson { get { return JsonConvert.SerializeObject(CruiseServers); } }
     }
 
     public class EditProjectViewModel

@@ -1,4 +1,5 @@
 using System;
+using ZBuildLights.Core.Models.CruiseControl;
 
 namespace ZBuildLights.Web.Models.Admin
 {
@@ -7,6 +8,6 @@ namespace ZBuildLights.Web.Models.Admin
         public string Url { get; set; }
         public string Name { get; set; }
         public Guid Id { get; set; }
-        public string[] Projects { get; set; }
+        public CcProjectViewModel[] Projects { get; set; }
     }
 }

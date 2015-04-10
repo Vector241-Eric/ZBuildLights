@@ -10,6 +10,10 @@
     <script>
         @Html.Partial("_AdminUrls")
         @Html.Partial("_AdminConstants")
+
+        ZBuildLights.createNamespace('Admin.EditProject');
+        ZBuildLights.Admin.EditProject.cruiseServers = @Html.Raw(Model.CruiseServerJson);
+//        @Html.Raw(string.Format("var servers = ZBuildLights.Admin.EditProject.cruiseServers = [{0}]", string.Join(",", Model.CruiseServers.Select(x => x.Name))));
     </script>
 }
 

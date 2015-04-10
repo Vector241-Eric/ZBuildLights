@@ -142,11 +142,11 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
             public void Should_include_the_current_projects_from_the_cruise_server()
             {
                 _result.CruiseServers.Single(x => x.Url.Equals("foo 1")).Projects.Length.ShouldEqual(2);
-                _result.CruiseServers.Single(x => x.Url.Equals("foo 1")).Projects.ShouldContain("1.1");
-                _result.CruiseServers.Single(x => x.Url.Equals("foo 1")).Projects.ShouldContain("1.2");
+                _result.CruiseServers.Single(x => x.Url.Equals("foo 1")).Projects.Select(x => x.Name).ShouldContain("1.1");
+                _result.CruiseServers.Single(x => x.Url.Equals("foo 1")).Projects.Select(x => x.Name).ShouldContain("1.2");
                 _result.CruiseServers.Single(x => x.Url.Equals("foo 2")).Projects.Length.ShouldEqual(2);
-                _result.CruiseServers.Single(x => x.Url.Equals("foo 2")).Projects.ShouldContain("2.1");
-                _result.CruiseServers.Single(x => x.Url.Equals("foo 2")).Projects.ShouldContain("2.2");
+                _result.CruiseServers.Single(x => x.Url.Equals("foo 2")).Projects.Select(x => x.Name).ShouldContain("2.1");
+                _result.CruiseServers.Single(x => x.Url.Equals("foo 2")).Projects.Select(x => x.Name).ShouldContain("2.2");
             }
 
             [Test]
@@ -259,11 +259,11 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
             public void Should_include_the_current_projects_from_the_cruise_server()
             {
                 _result.CruiseServers.Single(x => x.Url.Equals("Mapped 1")).Projects.Length.ShouldEqual(2);
-                _result.CruiseServers.Single(x => x.Url.Equals("Mapped 1")).Projects.ShouldContain("1.1");
-                _result.CruiseServers.Single(x => x.Url.Equals("Mapped 1")).Projects.ShouldContain("1.2");
+                _result.CruiseServers.Single(x => x.Url.Equals("Mapped 1")).Projects.Select(x => x.Name).ShouldContain("1.1");
+                _result.CruiseServers.Single(x => x.Url.Equals("Mapped 1")).Projects.Select(x => x.Name).ShouldContain("1.2");
                 _result.CruiseServers.Single(x => x.Url.Equals("Mapped 2")).Projects.Length.ShouldEqual(2);
-                _result.CruiseServers.Single(x => x.Url.Equals("Mapped 2")).Projects.ShouldContain("2.1");
-                _result.CruiseServers.Single(x => x.Url.Equals("Mapped 2")).Projects.ShouldContain("2.2");
+                _result.CruiseServers.Single(x => x.Url.Equals("Mapped 2")).Projects.Select(x => x.Name).ShouldContain("2.1");
+                _result.CruiseServers.Single(x => x.Url.Equals("Mapped 2")).Projects.Select(x => x.Name).ShouldContain("2.2");
             }
 
             [Test]

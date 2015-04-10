@@ -2,6 +2,7 @@
 using System.Linq;
 using ZBuildLights.Core.Extensions;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Core.Models.CruiseControl;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Services.CruiseControl;
 using ZBuildLights.Core.Wrappers;
@@ -115,8 +116,8 @@ namespace ZBuildLights.Web.Services.ViewModelProviders
             {
                 var networkResponse = _cruiseProjectProvider.GetProjects(server.Id);
                 var projects = networkResponse.IsSuccessful
-                    ? networkResponse.Data.Projects.Select(x => x.Name).ToArray()
-                    : new string[0];
+                    ? networkResponse.Data.Projects
+                    : new CcProjectViewModel[0];
                 server.Projects = projects;
             }
             return cruiseServerViewModels;
