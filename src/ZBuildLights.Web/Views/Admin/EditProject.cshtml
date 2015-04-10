@@ -93,9 +93,12 @@
                 <div style="display: none;" class="well delete-project-confirm">
                     <button class="btn btn-primary btn-block delete-project-reject-button">Noooooooooo.... Don't Delete</button>
                     <div style="padding-top: 10px" class="text-right">
-                        <a href="javascript:void(0)" class="delete-confirm-link">
-                            <p class="text-danger">Yes, Delete Forever</p>
-                        </a>
+                        <form action="@Url.Action("DeleteProject")" method="POST">
+                            <input type="hidden" name="projectId" value="@Model.Project.Id"/>
+                            <button href="javascript:void(0)" class="btn btn-danger" type="submit">
+                                Yes, Delete Forever
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
