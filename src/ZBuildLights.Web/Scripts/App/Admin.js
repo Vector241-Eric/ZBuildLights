@@ -245,12 +245,10 @@
         }
 
         var attachHandlers = function() {
-//            $('.btn-edit-project').click(edit);
             $('.delete-project-link').click(deleteConfirmation.show);
             $('.delete-project-reject-button').click(deleteConfirmation.hide);
             $('#edit-project-modal .delete-confirm-link').click(postDelete);
             $('#save-edit-project').click(postEdits);
-//            $('#button-refresh-cc-projects').click(refreshCcProjects);
         };
 
         return {
