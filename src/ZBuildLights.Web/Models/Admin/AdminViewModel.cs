@@ -34,7 +34,7 @@ namespace ZBuildLights.Web.Models.Admin
         public Guid Id { get; set; }
 
         public AdminLightGroupViewModel[] Groups { get; set; }
-        public AdminCruiseProjectViewModel[] CruiseProjects { get; set; }
+        public AdminCruiseProjectViewModel[] CruiseProjectAssociations { get; set; }
 
         public string HeaderId
         {
@@ -50,7 +50,7 @@ namespace ZBuildLights.Web.Models.Admin
     public class AdminCruiseProjectViewModel
     {
         public Guid ServerId { get; set; }
-        public string ProjectName { get; set; }
+        public string Name { get; set; }
 
     }
 

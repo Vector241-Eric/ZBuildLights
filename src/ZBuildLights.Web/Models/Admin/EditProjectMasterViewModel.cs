@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace ZBuildLights.Web.Models.Admin
@@ -12,19 +13,18 @@ namespace ZBuildLights.Web.Models.Admin
         public string ErrorMessage { get; set; }
         public bool ShowErrorMessage { get { return !string.IsNullOrEmpty(ErrorMessage); }}
 
-        public string CruiseServerJson { get { return JsonConvert.SerializeObject(CruiseServers); } }
-        public bool ShowProjectSelections { get { return Project.CruiseProjects.Length > 0; } }
+        public string CruiseServerJson { get { return JsonConvert.SerializeObject(CruiseServers.Select(x => new {x.Name, x.Id, Projects = x.ProjectsByProjectAndName}).ToArray()); } }
     }
 
     public class EditProjectViewModel
     {
         public EditProjectViewModel()
         {
-            CruiseProjects = new AdminCruiseProjectViewModel[0];
+            CruiseProjectAssociations = new AdminCruiseProjectViewModel[0];
         }
 
         public string Name { get; set; }
         public Guid? Id { get; set; }
-        public AdminCruiseProjectViewModel[] CruiseProjects { get; set; }
+        public AdminCruiseProjectViewModel[] CruiseProjectAssociations { get; set; }
     }
 }

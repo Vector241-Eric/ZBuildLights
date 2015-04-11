@@ -15,15 +15,22 @@ namespace ZBuildLights.Core.Services
             _masterModelRepository = masterModelRepository;
         }
 
-        public CreationResult<Project> Create(string name)
+        public CreationResult<Project> Create(EditProject editModel)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(editModel.Name))
                 return CreationResult.Fail<Project>("Project name is required.");
             var currentModel = _masterModelRepository.GetCurrent();
-            if (IsProjectNameAlreadyUsed(name, currentModel))
-                return CreationResult.Fail<Project>(NameCollisionMessage(name));
+            if (IsProjectNameAlreadyUsed(editModel.Name, currentModel))
+                return CreationResult.Fail<Project>(NameCollisionMessage(editModel.Name));
 
-            var project = currentModel.CreateProject(x => { x.Name = name; });
+            var project = currentModel.CreateProject(x =>
+            {
+                x.Name = editModel.Name;
+                x.CruiseProjectAssociations =
+                    editModel.CruiseProjects.Select(
+                        cp => new CruiseProjectAssociation {ServerId = cp.Server, Name = cp.Project})
+                        .ToArray();
+            });
             _masterModelRepository.Save(currentModel);
 
             return CreationResult.Success(project);
@@ -54,7 +61,7 @@ namespace ZBuildLights.Core.Services
         {
             var currentModel = _masterModelRepository.GetCurrent();
             var project = currentModel.Projects.SingleOrDefault(x => x.Id.Equals(id));
-            
+
             if (project == null)
                 return CouldNotLocateProject(id);
 

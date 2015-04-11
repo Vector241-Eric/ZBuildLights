@@ -1,6 +1,7 @@
 ﻿/// <reference path="~/Scripts/jquery-1.10.2.js" />
 /// <reference path="~/Scripts/jquery-1.10.2.intellisense.js" />
 /// <reference path="~/Scripts/bootstrap.js" />
+/// <reference path="underscore.min.js" />
 /// <reference path="~/Scripts/App/namespace.js" />
 (function() {
     ZBuildLights.createNamespace('Admin');
@@ -168,15 +169,15 @@
                 .fail(Admin.Error.handle('Failed to delete project.'));
         };
 
-        var addCruiseProject = function () {
+        var addCruiseProject = function() {
             var template = $('#edit-project-server-select').html();
             $('#edit-project-cruise-projects').append(template);
             resetCruiseProjectDisplay();
-            var nameTemplate = 'cruiseProject[##index##].Server';
         };
 
         var resetCruiseProjectDisplay = function() {
-            var existingProjectCount = $('#edit-project-cruise-projects .cruise-server-select').length;
+            var cruiseSelectRows = $('#edit-project-cruise-projects .cruise-select-row');
+            var existingProjectCount = cruiseSelectRows.length;
             if (existingProjectCount === 0) {
                 $('#edit-project-cruise-projects').hide();
                 $('#edit-project-add-cruise-btn-container').removeClass('col-lg-offset-2');
@@ -184,6 +185,28 @@
                 $('#edit-project-cruise-projects').show();
                 $('#edit-project-add-cruise-btn-container').addClass('col-lg-offset-2');
             }
+            cruiseSelectRows.each(function(index) {
+                var el = $(this);
+                el.find('.cruise-server-select').attr('name', 'cruiseProjects[' + index + '].Server');
+                el.find('.cruise-project-select').attr('name', 'cruiseProjects[' + index + '].Project');
+            });
+        }
+
+        var updateProjectsForSelectedServer = function () {
+            var serverSelect = $(this);
+            var projectSelect = serverSelect.parents('.cruise-select-row').find('.cruise-project-select');
+
+            var selectedValue = serverSelect.val();
+            var server = _.findWhere(ZBuildLights.Admin.EditProject.cruiseServers, { Id: selectedValue });
+            var projects = server.Projects;
+            var options = _.map(projects, function(project) {
+                return { value: project.Name, text: project.ProjectAndName };
+            });
+            projectSelect.find(":gt(0)").remove();
+            $.each(options, function(index, option) {
+                projectSelect.append($("<option></option>").attr("value", option.value).text(option.text));
+            });
+            projectSelect.removeAttr('disabled');
         }
 
         var deleteConfirmation = {
@@ -238,6 +261,7 @@
             $('.delete-project-reject-button').click(deleteConfirmation.hide);
             $('#edit-project-modal .delete-confirm-link').click(postDelete);
             $('#edit-project-btn-add-cruise-project').click(addCruiseProject);
+            $(document).on("change", ".cruise-server-select", updateProjectsForSelectedServer);
         };
 
         return {

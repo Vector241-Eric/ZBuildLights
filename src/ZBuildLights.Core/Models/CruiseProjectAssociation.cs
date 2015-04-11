@@ -2,9 +2,9 @@
 
 namespace ZBuildLights.Core.Models
 {
-    public class CruiseProject
+    public class CruiseProjectAssociation
     {
         public Guid ServerId { get; set; }
-        public string ProjectName { get; set; }
+        public string Name { get; set; }
     }
 }

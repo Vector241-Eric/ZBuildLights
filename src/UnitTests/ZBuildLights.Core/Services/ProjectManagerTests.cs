@@ -16,18 +16,29 @@ namespace UnitTests.ZBuildLights.Core.Services
         {
             private MasterModel _savedModel;
             private CreationResult<Project> _result;
+            private Guid _serverId1;
+            private Guid _serverId2;
 
             [SetUp]
             public void ContextSetup()
             {
+                _serverId1 = Guid.NewGuid();
+                _serverId2 = Guid.NewGuid();
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.CreateProject(x => x.Name = "Existing Project");
+                var cruiseProjects = new[]
+                {
+                    new EditProjectCruiseProject {Server = _serverId1, Project = "Project 1.1"},
+                    new EditProjectCruiseProject {Server = _serverId1, Project = "Project 1.2"},
+                    new EditProjectCruiseProject {Server = _serverId2, Project = "Project 2.1"},
+                    new EditProjectCruiseProject {Server = _serverId2, Project = "Project 2.2"}
+                };
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.Create("My New Project");
+                _result = creator.Create(new EditProject {Name = "My New Project", CruiseProjects = cruiseProjects});
 
                 _savedModel = repository.LastSaved;
             }
@@ -62,6 +73,17 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 _result.Entity.Id.ShouldNotEqual(Guid.Empty);
             }
+
+            [Test]
+            public void Should_add_the_cruise_projects_to_the_project()
+            {
+                var project = _savedModel.Projects.Single(x => x.Name == "My New Project");
+                project.CruiseProjectAssociations.Length.ShouldEqual(4);
+                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId1 && x.Name == "Project 1.1").ShouldBeTrue();
+                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId1 && x.Name == "Project 1.2").ShouldBeTrue();
+                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId2 && x.Name == "Project 2.1").ShouldBeTrue();
+                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId2 && x.Name == "Project 2.2").ShouldBeTrue();
+            }
         }
 
         [TestFixture]
@@ -80,7 +102,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.Create("Existing Project");
+                _result = creator.Create(new EditProject {Name = "Existing Project"});
 
                 _savedModel = repository.LastSaved;
             }
@@ -119,7 +141,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.Create(string.Empty);
+                _result = creator.Create(new EditProject {Name = string.Empty});
 
                 _savedModel = repository.LastSaved;
             }
@@ -250,7 +272,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var existingMasterModel = new MasterModel();
                 existingMasterModel.CreateProject(x => x.Name = "Existing Project");
-                var projectToEdit =existingMasterModel.CreateProject(x => x.Name = "Keep This");
+                var projectToEdit = existingMasterModel.CreateProject(x => x.Name = "Keep This");
                 existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
 
                 var repository = new StubMasterModelRepository();
@@ -362,7 +384,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             public void ContextSetup()
             {
                 var existingMasterModel = new MasterModel();
-                existingMasterModel.CreateProject(x => x.Name = "Existing Project"  );
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
                 existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
 

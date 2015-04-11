@@ -153,7 +153,6 @@
     <Compile Include="Models\Admin\AdminViewModel.cs" />
     <Compile Include="Models\Admin\EditCruiseServerViewModel.cs" />
     <Compile Include="Models\Admin\EditProjectCruiseServerViewModel.cs" />
-    <Compile Include="Models\Admin\EditProjectEditModel.cs" />
     <Compile Include="Models\Admin\EditProjectMasterViewModel.cs" />
     <Compile Include="Models\Admin\LightColorOption.cs" />
     <Compile Include="Models\Home\ViewModel.cs" />
@@ -189,6 +188,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\underscore.js" />
+    <Content Include="Scripts\underscore.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -211,6 +212,7 @@
     <Content Include="Views\Admin\EditProject.cshtml" />
     <Content Include="Views\Admin\_AdminUrls.cshtml" />
     <Content Include="Views\Admin\_AdminConstants.cshtml" />
+    <Content Include="Scripts\underscore.min.map" />
     <None Include="Views\Admin\ManageCruiseServers.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -57,7 +57,7 @@ namespace ZBuildLights.Core.Models.JsonSerialization
         public Guid Id { get; set; }
         public JsonLightGroup[] Groups { get; set; }
         public string CcXmlUrl { get; set; }
-        public JsonCruiseProject[] CruiseProjects { get; set; }
+        public JsonCruiseProjectAssociation[] CruiseProjectAssociations { get; set; }
 
         public Action<Project> InitializeDomainObject()
         {
@@ -66,24 +66,24 @@ namespace ZBuildLights.Core.Models.JsonSerialization
                 p.Name = Name;
                 p.Id = Id;
                 p.CcXmlUrl = CcXmlUrl;
-                var mappedCruiseProjects = (CruiseProjects ?? new JsonCruiseProject[0]).Select(cp => cp.BuildDomainObject()).ToArray();
-                p.CruiseProjects = mappedCruiseProjects;
+                var mappedCruiseProjects = (CruiseProjectAssociations ?? new JsonCruiseProjectAssociation[0]).Select(cp => cp.BuildDomainObject()).ToArray();
+                p.CruiseProjectAssociations = mappedCruiseProjects;
                 foreach (var jsonGroup in Groups)
                     p.CreateGroup(jsonGroup.InitializeDomainObject());
             };
         }
     }
 
-    public class JsonCruiseProject
+    public class JsonCruiseProjectAssociation
     {
         public Guid ServerId { get; set; }
-        public string ProjectName { get; set; }
+        public string Name { get; set; }
 
-        public CruiseProject BuildDomainObject()
+        public CruiseProjectAssociation BuildDomainObject()
         {
-            return new CruiseProject
+            return new CruiseProjectAssociation
             {
-                ProjectName = ProjectName,
+                Name = Name,
                 ServerId = ServerId,
             };
         }

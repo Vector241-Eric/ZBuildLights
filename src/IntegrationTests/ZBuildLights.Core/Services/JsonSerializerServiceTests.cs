@@ -40,10 +40,10 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                     x.Name = "Core";
                     x.StatusMode = StatusMode.Success;
                     x.CcXmlUrl = "http://someserver:8888/cc.xml";
-                    x.CruiseProjects = new[]
+                    x.CruiseProjectAssociations = new[]
                     {
-                        new CruiseProject {ProjectName = "I like toast", ServerId = server1.Id},
-                        new CruiseProject {ProjectName = "I like jam", ServerId = server2.Id}
+                        new CruiseProjectAssociation {Name = "I like toast", ServerId = server1.Id},
+                        new CruiseProjectAssociation {Name = "I like jam", ServerId = server2.Id}
                     };
                 });
                 core.CreateGroup(x => x.Name = "SnP Square")

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Web.Mvc;
+using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Services.CruiseControl;
-using ZBuildLights.Web.Models.Admin;
 using ZBuildLights.Web.Services.ViewModelProviders;
 
 namespace ZBuildLights.Web.Controllers
@@ -36,7 +36,7 @@ namespace ZBuildLights.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditProject(Guid? projectId)
+        public ActionResult EditProject(Guid? projectId, EditProjectCruiseProject[] projects)
         {
             var editProjectMasterViewModel = _viewModelProvider.GetEditProjectViewModel(projectId);
             if (TempData.ContainsKey("ErrorMessage"))
@@ -45,13 +45,13 @@ namespace ZBuildLights.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditProject(EditProjectEditModel editModel)
+        public ActionResult EditProject(EditProject editModel)
         {
-            var result = _projectManager.Create(editModel.Name);
+            var result = _projectManager.Create(editModel);
             if (result.IsSuccessful)
                 return RedirectToAction("Index");
             TempData["ErrorMessage"] = result.Message;
-            return RedirectToAction("EditProject", new {projectId = editModel.ProjectId});
+            return RedirectToAction("EditProject", new {projectId = editModel.ProjectId, projects = editModel.CruiseProjects});
         }
 
         [HttpPost]

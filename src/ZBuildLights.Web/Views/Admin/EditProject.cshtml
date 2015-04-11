@@ -1,4 +1,5 @@
-﻿@model ZBuildLights.Web.Models.Admin.EditProjectMasterViewModel
+﻿@using ZBuildLights.Core.Extensions
+@model ZBuildLights.Web.Models.Admin.EditProjectMasterViewModel
 
 @{
     ViewBag.Title = "ZBuildLights Edit Project";
@@ -13,17 +14,27 @@
 
         ZBuildLights.createNamespace('Admin.EditProject');
         ZBuildLights.Admin.EditProject.cruiseServers = @Html.Raw(Model.CruiseServerJson);
-//        @Html.Raw(string.Format("var servers = ZBuildLights.Admin.EditProject.cruiseServers = [{0}]", string.Join(",", Model.CruiseServers.Select(x => x.Name))));
     </script>
-
+    <script type="text/html" id="edit-project-empty-project-select">
+        <option value="@Guid.Empty">Select Project...</option>
+    </script>
     <script type="text/html" id="edit-project-server-select">
-        <select class="form-control cruise-server-select">
-            <option value="@Guid.Empty">Please Select Server...</option>
-            @foreach (var server in Model.CruiseServers)
-            {
-                <option value="@server.Id">@server.Name</option>
-            }
-        </select>
+        <div class="row cruise-select-row">
+            <div class="col-lg-6">
+                <select class="form-control cruise-server-select">
+                    <option value="@Guid.Empty">Select Server...</option>
+                    @foreach (var server in Model.CruiseServers)
+                    {
+                        <option value="@server.Id">@server.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-6">
+                <select class="form-control cruise-project-select" disabled="true">
+                    <option value="@Guid.Empty">Select Project...</option>
+                </select>
+            </div>
+        </div>
     </script>
 
 }
@@ -48,7 +59,7 @@
                 <div class="form-group">
                     <label for="edit-project-name-input" class="col-lg-2">Project Name</label>
                     <div class="col-lg-10">
-                        <input type="text" class="form-control" id="project-name-input" placeholder="My Awesome Project" value="@project.Name" name="Name"/>
+                        <input type="text" class="form-control" id="project-name-input" value="@project.Name" name="Name"/>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -56,29 +67,33 @@
                         <label for="edit-project-name-input">Associated Cruise Control Projects</label>
                     </div>
                     <div class="col-lg-10" id="edit-project-cruise-projects" style="margin-bottom: 15px; display: none">
-                        @for (var projectIndex = 0; projectIndex < Model.Project.CruiseProjects.Length; projectIndex++)
+                        @for (var projectIndex = 0; projectIndex < Model.Project.CruiseProjectAssociations.Length; projectIndex++)
                         {
-                            var cruiseProject = Model.Project.CruiseProjects[projectIndex];
+                            var cruiseProject = Model.Project.CruiseProjectAssociations[projectIndex];
                             var serverDefinition = Model.CruiseServers.Single(x => x.Id.Equals(cruiseProject.ServerId));
+                            <div class="row cruise-select-row">
+                                <div class="col-lg-6">
+                                    <select class="form-control cruise-server-select" name="@string.Format("cruiseProject[{0}].Server", projectIndex)">
+                                        <option value="@Guid.Empty">Please Select Server...</option>
+                                        @foreach (var server in Model.CruiseServers)
+                                        {
+                                            var selected = cruiseProject.ServerId.Equals(server.Id) ? "selected" : string.Empty;
 
-                            <div class="col-lg-5">
-                                <select class="form-control cruise-server-select" name="@string.Format("cruiseProject[{0}].Server", projectIndex)">
-                                    <option value="@Guid.Empty">Please Select Server...</option>
-                                    @foreach (var server in Model.CruiseServers)
-                                    {
-                                        var selected = cruiseProject.ServerId.Equals(server.Id) ? "selected" : string.Empty;
-
-                                        <option @selected value="@server.Id">@server.Name</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-lg-5">
-                                <select class="form-control cruise-project-select">
-                                    @foreach (var projectSelection in serverDefinition.Projects)
-                                    {
-                                        <option>@projectSelection</option>
-                                    }
-                                </select>
+                                            <option @selected value="@server.Id">@server.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-6">
+                                    <select class="form-control cruise-project-select">
+                                        @{ var selectEmpty = serverDefinition.Projects.None(x => x.Name.Equals(cruiseProject.Name)) ? "selected" : string.Empty;}
+                                        <option @selectEmpty value="@Guid.Empty">Select Project...</option>
+                                        @foreach (var projectSelection in serverDefinition.ProjectsByProjectAndName)
+                                        {
+                                            var selected = projectSelection.Name.Equals(cruiseProject.Name) ? "selected" : string.Empty;
+                                            <option @selected value="@projectSelection.Name">@projectSelection.ProjectAndName</option>
+                                        }
+                                    </select>
+                                </div>
                             </div>
                         }
                     </div>

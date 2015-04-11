@@ -23,6 +23,9 @@ namespace ZBuildLights.Web
                 "~/Scripts/bootstrap.js",
                 "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/underscore").Include(
+                "~/Scripts/underscore.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/admin")
                 .Include("~/Scripts/app/namespace.js")
                 .Include("~/Scripts/app/Admin.js")

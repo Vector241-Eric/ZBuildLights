@@ -10,7 +10,7 @@ namespace ZBuildLights.Core.Models
 
         public Project()
         {
-            CruiseProjects = new CruiseProject[0];
+            CruiseProjectAssociations = new CruiseProjectAssociation[0];
         }
 
         public string Name { get; set; }
@@ -18,7 +18,7 @@ namespace ZBuildLights.Core.Models
         public Guid Id { get; internal set; }
         public MasterModel MasterModel { get; private set; }
         public string CcXmlUrl { get; set; }
-        public CruiseProject[] CruiseProjects { get; set; }
+        public CruiseProjectAssociation[] CruiseProjectAssociations { get; set; }
 
         internal Project(MasterModel masterModel) : this()
         {

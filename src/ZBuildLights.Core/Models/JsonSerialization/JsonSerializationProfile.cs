@@ -11,7 +11,7 @@ namespace ZBuildLights.Core.Models.JsonSerialization
             CreateMap<CruiseServer, JsonCruiseServer>();
             CreateMap<LightGroup, JsonLightGroup>();
             CreateMap<Light, JsonLight>();
-            CreateMap<CruiseProject, JsonCruiseProject>();
+            CreateMap<CruiseProjectAssociation, JsonCruiseProjectAssociation>();
         }
     }
 }
