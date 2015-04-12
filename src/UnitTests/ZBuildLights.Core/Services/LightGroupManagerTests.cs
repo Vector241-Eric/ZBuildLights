@@ -5,7 +5,7 @@ using Should;
 using UnitTests._Stubs;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services;
-using ZBuildLights.Core.Validation;
+using ZBuildLights.Core.Services.Results;
 
 namespace UnitTests.ZBuildLights.Core.Services
 {

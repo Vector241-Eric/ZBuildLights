@@ -2,7 +2,7 @@
 using System.Linq;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Repository;
-using ZBuildLights.Core.Validation;
+using ZBuildLights.Core.Services.Results;
 
 namespace ZBuildLights.Core.Services
 {
@@ -57,21 +57,28 @@ namespace ZBuildLights.Core.Services
             return EditResult.Fail<Project>(string.Format("Could not locate a project with Id '{0}'", id));
         }
 
-        public EditResult<Project> Update(Guid id, string name)
+        public EditResult<Project> Update(EditProject editModel)
         {
             var currentModel = _masterModelRepository.GetCurrent();
-            var project = currentModel.Projects.SingleOrDefault(x => x.Id.Equals(id));
+            var project = currentModel.Projects.SingleOrDefault(x => x.Id.Equals(editModel.ProjectId.Value));
 
             if (project == null)
-                return CouldNotLocateProject(id);
+                return CouldNotLocateProject(editModel.ProjectId.Value);
 
-            if (project.Name.Equals(name))
-                return EditResult.Success(project);
+            var existingProjectWithThisName = currentModel.Projects.SingleOrDefault(x => x.Name.Equals(editModel.Name));
+            if (existingProjectWithThisName != null && existingProjectWithThisName.Id != editModel.ProjectId)
+                return EditResult.Fail<Project>(NameCollisionMessage(editModel.Name));
 
-            if (currentModel.Projects.Any(x => x.Name.Equals(name)))
-                return EditResult.Fail<Project>(NameCollisionMessage(name));
-
-            project.Name = name;
+            project.Name = editModel.Name;
+            if (editModel.CruiseProjects == null)
+                project.CruiseProjectAssociations = new CruiseProjectAssociation[0];
+            else
+            {
+                project.CruiseProjectAssociations = editModel.CruiseProjects
+                    .Select(
+                        cp => new CruiseProjectAssociation {Name = cp.Project, ServerId = cp.Server})
+                    .ToArray();
+            }
             _masterModelRepository.Save(currentModel);
 
             return EditResult.Success(project);

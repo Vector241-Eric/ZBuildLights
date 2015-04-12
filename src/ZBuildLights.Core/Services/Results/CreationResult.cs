@@ -1,22 +1,21 @@
-﻿namespace ZBuildLights.Core.Validation
+﻿namespace ZBuildLights.Core.Services.Results
 {
-    public class CreationResult<T>
+    public class CreationResult<T> : ICrudResult<T>
     {
         public bool IsSuccessful { get; set; }
         public string Message { get; set; }
         public T Entity { get; set; }
     }
-
     public static class CreationResult
     {
         public static CreationResult<T> Success<T>(T entity)
         {
-            return new CreationResult<T> {IsSuccessful = true, Entity = entity};
+            return new CreationResult<T> { IsSuccessful = true, Entity = entity };
         }
 
         public static CreationResult<T> Fail<T>(string message)
         {
-            return new CreationResult<T> {IsSuccessful = false, Message = message};
+            return new CreationResult<T> { IsSuccessful = false, Message = message };
         }
     }
 }

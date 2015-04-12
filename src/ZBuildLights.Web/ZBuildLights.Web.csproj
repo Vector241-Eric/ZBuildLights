@@ -208,7 +208,6 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\LightGroup.cshtml" />
-    <Content Include="Views\Admin\EditProjectModal.cshtml" />
     <Content Include="Views\Admin\EditProject.cshtml" />
     <Content Include="Views\Admin\_AdminUrls.cshtml" />
     <Content Include="Views\Admin\_AdminConstants.cshtml" />

@@ -1,6 +1,6 @@
 ﻿using System;
 using ZBuildLights.Core.Models;
-using ZBuildLights.Core.Validation;
+using ZBuildLights.Core.Services.Results;
 
 namespace ZBuildLights.Core.Services
 {

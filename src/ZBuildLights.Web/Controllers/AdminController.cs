@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Core.Services.CruiseControl;
+using ZBuildLights.Core.Services.Results;
 using ZBuildLights.Web.Services.ViewModelProviders;
 
 namespace ZBuildLights.Web.Controllers
@@ -47,7 +48,11 @@ namespace ZBuildLights.Web.Controllers
         [HttpPost]
         public ActionResult EditProject(EditProject editModel)
         {
-            var result = _projectManager.Create(editModel);
+            ICrudResult<Project> result;
+            if (editModel.ProjectId == null || editModel.ProjectId.Value == Guid.Empty)
+                result = _projectManager.Create(editModel);
+            else
+                result = _projectManager.Update(editModel);
             if (result.IsSuccessful)
                 return RedirectToAction("Index");
             TempData["ErrorMessage"] = result.Message;
@@ -59,16 +64,6 @@ namespace ZBuildLights.Web.Controllers
         {
             _projectManager.Delete(projectId);
             return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public ActionResult UpdateProject(Guid projectId, string name)
-        {
-            var result = _projectManager.Update(projectId, name);
-            if (result.IsSuccessful)
-                return RedirectToAction("Index");
-            Response.StatusCode = (int) HttpStatusCode.Conflict;
-            return Json(result);
         }
 
         //Groups

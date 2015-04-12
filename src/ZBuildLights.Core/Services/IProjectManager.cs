@@ -1,6 +1,6 @@
 using System;
 using ZBuildLights.Core.Models;
-using ZBuildLights.Core.Validation;
+using ZBuildLights.Core.Services.Results;
 
 namespace ZBuildLights.Core.Services
 {
@@ -8,6 +8,6 @@ namespace ZBuildLights.Core.Services
     {
         CreationResult<Project> Create(EditProject editModel);
         EditResult<Project> Delete(Guid id);
-        EditResult<Project> Update(Guid id, string name);
+        EditResult<Project> Update(EditProject editModel);
     }
 }

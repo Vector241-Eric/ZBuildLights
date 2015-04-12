@@ -2,7 +2,7 @@
 using System.Linq;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Repository;
-using ZBuildLights.Core.Validation;
+using ZBuildLights.Core.Services.Results;
 
 namespace ZBuildLights.Core.Services
 {

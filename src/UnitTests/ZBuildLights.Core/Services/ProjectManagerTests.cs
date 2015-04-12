@@ -5,7 +5,7 @@ using Should;
 using UnitTests._Stubs;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services;
-using ZBuildLights.Core.Validation;
+using ZBuildLights.Core.Services.Results;
 
 namespace UnitTests.ZBuildLights.Core.Services
 {
@@ -79,10 +79,14 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var project = _savedModel.Projects.Single(x => x.Name == "My New Project");
                 project.CruiseProjectAssociations.Length.ShouldEqual(4);
-                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId1 && x.Name == "Project 1.1").ShouldBeTrue();
-                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId1 && x.Name == "Project 1.2").ShouldBeTrue();
-                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId2 && x.Name == "Project 2.1").ShouldBeTrue();
-                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId2 && x.Name == "Project 2.2").ShouldBeTrue();
+                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId1 && x.Name == "Project 1.1")
+                    .ShouldBeTrue();
+                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId1 && x.Name == "Project 1.2")
+                    .ShouldBeTrue();
+                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId2 && x.Name == "Project 2.1")
+                    .ShouldBeTrue();
+                project.CruiseProjectAssociations.Any(x => x.ServerId == _serverId2 && x.Name == "Project 2.2")
+                    .ShouldBeTrue();
             }
         }
 
@@ -183,7 +187,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.Update(projectToEdit.Id, "My New Name");
+                _result = creator.Update(new EditProject {ProjectId = projectToEdit.Id, Name = "My New Name"});
 
                 _savedModel = repository.LastSaved;
             }
@@ -221,6 +225,162 @@ namespace UnitTests.ZBuildLights.Core.Services
         }
 
         [TestFixture]
+        public class When_updating_a_project_and_changing_its_cruise_project_associations
+        {
+            private MasterModel _savedModel;
+            private EditResult<Project> _result;
+            private Guid _expectedId;
+            private Guid _serverId;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var existingMasterModel = new MasterModel();
+                _serverId = Guid.NewGuid();
+                var existingCruiseProjectAssociations = new[]
+                {
+                    new CruiseProjectAssociation {ServerId = _serverId, Name = "Project Foo"},
+                    new CruiseProjectAssociation {ServerId = _serverId, Name = "Project Bar"},
+                    new CruiseProjectAssociation {ServerId = _serverId, Name = "Project To Remove"}
+                };
+                var projectToEdit = existingMasterModel.CreateProject(x =>
+                {
+                    x.Name = "Existing Project";
+                    x.CruiseProjectAssociations = existingCruiseProjectAssociations;
+                });
+                _expectedId = projectToEdit.Id;
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
+                existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
+
+                var repository = new StubMasterModelRepository();
+                repository.UseCurrentModel(existingMasterModel);
+
+                var manager = new ProjectManager(repository);
+                var editModel = new EditProject
+                {
+                    ProjectId = projectToEdit.Id,
+                    Name = "Existing Project",
+                    CruiseProjects = new[]
+                    {
+                        new EditProjectCruiseProject{Server = _serverId, Project = "Project Foo"},
+                        new EditProjectCruiseProject{Server = _serverId, Project = "Project Bar"},
+                        new EditProjectCruiseProject{Server = _serverId, Project = "Project New"},
+                    }
+                };
+                _result = manager.Update(editModel);
+
+                _savedModel = repository.LastSaved;
+            }
+
+            [Test]
+            public void Should_indicate_the_update_was_successful()
+            {
+                _result.IsSuccessful.ShouldBeTrue();
+            }
+
+            [Test]
+            public void Should_save_the_existing_master_model()
+            {
+                _savedModel.ShouldNotBeNull();
+            }
+
+            [Test]
+            public void Should_not_add_any_projects()
+            {
+                _savedModel.Projects.Length.ShouldEqual(3);
+                _savedModel.Projects.Count(x => ReferenceEquals(x, _result.Entity)).ShouldEqual(1);
+            }
+
+            [Test]
+            public void Should_set_the_project_name()
+            {
+                _result.Entity.Name.ShouldEqual("Existing Project");
+            }
+
+            [Test]
+            public void Should_not_change_the_id_of_the_project()
+            {
+                _result.Entity.Id.ShouldEqual(_expectedId);
+            }
+
+            [Test]
+            public void Should_update_projects()
+            {
+                var project = _savedModel.Projects.Single(x => x.Id.Equals(_expectedId));
+                var cruiseAssociations = project.CruiseProjectAssociations;
+                cruiseAssociations.Length.ShouldEqual(3);
+                cruiseAssociations.Any(x => x.ServerId.Equals(_serverId) && x.Name.Equals("Project Foo")).ShouldBeTrue();
+                cruiseAssociations.Any(x => x.ServerId.Equals(_serverId) && x.Name.Equals("Project Bar")).ShouldBeTrue();
+                cruiseAssociations.Any(x => x.ServerId.Equals(_serverId) && x.Name.Equals("Project New")).ShouldBeTrue();
+            }
+        }
+
+        [TestFixture]
+        public class When_updating_a_project_and_removing_its_cruise_project_associations
+        {
+            private MasterModel _savedModel;
+            private EditResult<Project> _result;
+            private Guid _expectedId;
+            private Guid _serverId;
+
+            [SetUp]
+            public void ContextSetup()
+            {
+                var existingMasterModel = new MasterModel();
+                _serverId = Guid.NewGuid();
+                var existingCruiseProjectAssociations = new[]
+                {
+                    new CruiseProjectAssociation {ServerId = _serverId, Name = "Project Foo"},
+                };
+                var projectToEdit = existingMasterModel.CreateProject(x =>
+                {
+                    x.Name = "Existing Project";
+                    x.CruiseProjectAssociations = existingCruiseProjectAssociations;
+                });
+                _expectedId = projectToEdit.Id;
+
+                var repository = new StubMasterModelRepository();
+                repository.UseCurrentModel(existingMasterModel);
+
+                var manager = new ProjectManager(repository);
+                var editModel = new EditProject
+                {
+                    ProjectId = projectToEdit.Id,
+                    Name = "Existing Project",
+                    CruiseProjects = null,
+                };
+                _result = manager.Update(editModel);
+
+                _savedModel = repository.LastSaved;
+            }
+
+            [Test]
+            public void Should_indicate_the_update_was_successful()
+            {
+                _result.IsSuccessful.ShouldBeTrue();
+            }
+
+            [Test]
+            public void Should_save_the_existing_master_model()
+            {
+                _savedModel.ShouldNotBeNull();
+            }
+
+            [Test]
+            public void Should_not_change_the_id_of_the_project()
+            {
+                _result.Entity.Id.ShouldEqual(_expectedId);
+            }
+
+            [Test]
+            public void Should_update_projects()
+            {
+                var project = _savedModel.Projects.Single(x => x.Id.Equals(_expectedId));
+                project.CruiseProjectAssociations.Length.ShouldEqual(0);
+            }
+        }
+
+        [TestFixture]
         public class When_updating_a_project_with_a_name_that_is_already_used
         {
             private EditResult<Project> _result;
@@ -238,7 +398,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.Update(projectToEdit.Id, "Name Collision");
+                _result = creator.Update(new EditProject {ProjectId = projectToEdit.Id, Name = "Name Collision"});
 
                 _savedModel = repository.LastSaved;
             }
@@ -279,7 +439,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 repository.UseCurrentModel(existingMasterModel);
 
                 var creator = new ProjectManager(repository);
-                _result = creator.Update(projectToEdit.Id, "Keep This");
+                _result = creator.Update(new EditProject {ProjectId = projectToEdit.Id, Name = "Keep This"});
             }
 
             [Test]
@@ -309,7 +469,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _repository.UseCurrentModel(existingMasterModel);
 
                 var manager = new ProjectManager(_repository);
-                _result = manager.Update(_deleteId, "Value doesn't matter");
+                _result = manager.Update(new EditProject {ProjectId = _deleteId, Name = "Value doesn't matter"});
 
                 _savedModel = _repository.LastSaved;
             }

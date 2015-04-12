@@ -1,6 +1,6 @@
-﻿namespace ZBuildLights.Core.Validation
+﻿namespace ZBuildLights.Core.Services.Results
 {
-    public class EditResult<T>
+    public class EditResult<T> : ICrudResult<T>
     {
         public bool IsSuccessful { get; set; }
         public string Message { get; set; }
