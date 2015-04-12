@@ -6,7 +6,14 @@ namespace ZBuildLightsConsole
     {
         public static void Main(string[] args)
         {
-           new ConsoleCommandWatcher().Run();
+            try
+            {
+                new ConsoleCommandWatcher().Run();
+            }
+            finally
+            {
+                ZWaveManagerFactory.Destroy();
+            }
         }
     }
 }

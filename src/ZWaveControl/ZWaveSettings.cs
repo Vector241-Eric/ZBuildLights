@@ -4,19 +4,22 @@ namespace ZWaveControl
 {
     public class ZWaveSettings
     {
-        public string LogDirectory
-        {
-            get { return ConfigurationManager.AppSettings["LogDirectory"]; }
-        }
-
         public string ConfigurationPath
         {
-            get { return ConfigurationManager.AppSettings["ConfigurationPath"]; }
+            get { return GetRequiredSetting("ZWaveConfigurationPath"); }
         }
 
         public string ControllerPortNumber
         {
-            get { return @"\\.\COM" + ConfigurationManager.AppSettings["ControllerPortNumber"]; }
+            get { return @"\\.\COM" + GetRequiredSetting("ZWaveControllerPortNumber"); }
+        }
+
+        private string GetRequiredSetting(string key)
+        {
+            var value = ConfigurationManager.AppSettings[key];
+            if (string.IsNullOrEmpty(value))
+                throw new ConfigurationErrorsException(string.Format("Configuration [{0}] is required.", key));
+            return value;
         }
     }
 }

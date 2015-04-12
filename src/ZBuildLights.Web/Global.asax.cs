@@ -5,6 +5,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using NLog;
 using ZBuildLights.Core.Services;
+using ZWaveControl;
 
 namespace ZBuildLights.Web
 {
@@ -32,6 +33,7 @@ namespace ZBuildLights.Web
 
         protected void Application_End()
         {
+            ZWaveManagerFactory.Destroy();
             Log.Debug("Application ({0}) ending", ApplicationId);
         }
     }

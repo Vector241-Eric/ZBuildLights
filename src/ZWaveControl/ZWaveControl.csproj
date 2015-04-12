@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DisposableManager.cs" />
+    <Compile Include="ZWaveNetwork.cs" />
     <Compile Include="ZWaveSettings.cs" />
     <Compile Include="ConsoleCommandWatcher.cs" />
     <Compile Include="Node.cs" />
@@ -56,6 +56,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZBuildLights.Core\ZBuildLights.Core.csproj">
+      <Project>{67332df2-4acd-4ca3-b39b-86c93a7d738c}</Project>
+      <Name>ZBuildLights.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

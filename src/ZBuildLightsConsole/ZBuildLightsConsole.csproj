@@ -52,12 +52,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ZBuildLights.Core\ZBuildLights.Core.csproj">
+      <Project>{67332df2-4acd-4ca3-b39b-86c93a7d738c}</Project>
+      <Name>ZBuildLights.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ZWaveControl\ZWaveControl.csproj">
       <Project>{cfa3620a-df75-4b1b-b039-c02e38693d91}</Project>
       <Name>ZWaveControl</Name>

@@ -1,25 +1,49 @@
+using System;
 using System.Diagnostics;
+using System.Threading;
+using NLog;
 using OpenZWaveDotNet;
 
 namespace ZWaveControl
 {
     public static class ZWaveManagerFactory
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private static ZWManager _instance;
+        private static bool _destroyed;
 
         private static readonly ZWaveSettings ZWaveSettings = new ZWaveSettings();
 
         private static readonly ZWOptions _options = new ZWOptions();
         private static readonly object _lock = new object();
 
-        public static DisposableManager GetInstance()
+        private static bool _allNodesQueried;
+        private static readonly TimeSpan MaxQuietWait = TimeSpan.FromMinutes(2);
+
+        public static ZWManager GetInstance()
         {
             lock (_lock)
             {
+                if (_destroyed)
+                    throw new InvalidOperationException("Factory cannot be used after it has been destroyed.");
                 if (_instance == null)
                     _instance = Create();
             }
-            return new DisposableManager(_instance);
+            return _instance;
+        }
+
+        public static void Destroy()
+        {
+            lock (_lock)
+            {
+                if (_instance != null)
+                {
+                    _instance.Destroy();
+                    _instance = null;
+                }
+                _destroyed = true;
+            }
         }
 
         private static ZWManager Create()
@@ -29,12 +53,46 @@ namespace ZWaveControl
             var manager = new ZWManager();
             // create the OpenZWave Manager
             manager.Create();
-            manager.OnNotification += notification => ZWaveNotificationHandler.HandleNotification(notification, manager);
-            manager.OnControllerStateChanged += state => { Debug.WriteLine(state); };
+            manager.OnNotification += notification =>
+            {
+                ZWaveNotificationHandler.HandleNotification(notification, manager);
+                var type = notification.GetType();
+                if (type.Equals(ZWNotification.Type.AllNodesQueriedSomeDead) ||
+                    type.Equals(ZWNotification.Type.AllNodesQueried))
+                    _allNodesQueried = true;
+            };
+            manager.OnControllerStateChanged += state =>    
+            {
+                Log.Debug(state);
+            };
             // once the driver is added it takes some time for the device to get ready
             manager.AddDriver(ZWaveSettings.ControllerPortNumber);
+            WaitForZWaveToInitialize();
             return manager;
         }
+
+        private static void WaitForZWaveToInitialize()
+        {
+            Log.Info("Waiting for zWave network to initialize and stabilize (Max wait: {0}).", MaxQuietWait);
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+            while (!_allNodesQueried)
+            {
+                if (stopwatch.Elapsed > MaxQuietWait)
+                    throw new Exception("Timed out waiting to ZWave network to get quiet");
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+            }
+            Log.Info("zWave initialization complete.");
+        }
+
+//        private static bool NetworkIsQuiet()
+//        {
+//            var now = DateTime.Now;
+//            var elapsedSinceLastEvent = now - LastEventTimestamp;
+//            Log.Error("Elapsed since last event: {0} ({1} - {2})", elapsedSinceLastEvent, now, LastEventTimestamp);
+//            return elapsedSinceLastEvent > QuietThreshold;
+//        }
 
         private static void SetOptions()
         {
@@ -42,9 +100,9 @@ namespace ZWaveControl
             _options.Create(ZWaveSettings.ConfigurationPath, @"", @"");
 
             // logging options
-            _options.AddOptionInt("SaveLogLevel", (int)ZWLogLevel.Debug);
-            _options.AddOptionInt("QueueLogLevel", (int)ZWLogLevel.Debug);
-            _options.AddOptionInt("DumpTriggerLevel", (int)ZWLogLevel.Error);
+            _options.AddOptionInt("SaveLogLevel", (int) ZWLogLevel.Debug);
+            _options.AddOptionInt("QueueLogLevel", (int) ZWLogLevel.Debug);
+            _options.AddOptionInt("DumpTriggerLevel", (int) ZWLogLevel.Error);
 
             // lock the options
             _options.Lock();

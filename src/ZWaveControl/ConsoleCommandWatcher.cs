@@ -8,71 +8,68 @@ namespace ZWaveControl
     {
         public void Run()
         {
-            using (var managerHelper = ZWaveManagerFactory.GetInstance())
+            var manager = ZWaveManagerFactory.GetInstance();
+            Console.ReadKey();
+            Console.WriteLine("NODES:");
+            Console.WriteLine("------");
+
+            var nodes = ZWaveNotificationHandler.GetNodes();
+            Console.WriteLine("------");
+            var homeId = nodes[0].HomeId;
+            var activeNodeId = 2;
+            ulong activeValueId = default(ulong);
+            while (true)
             {
-                var manager = (ZWManager)managerHelper;
-                Console.ReadKey();
-                Console.WriteLine("NODES:");
-                Console.WriteLine("------");
-
-                var nodes = ZWaveNotificationHandler.GetNodes();
-                Console.WriteLine("------");
-                var homeId = nodes[0].HomeId;
-                var activeNodeId = 2;
-                ulong activeValueId = default(ulong);
-                while (true)
+                Console.WriteLine("Waiting for input (Current node: {0})...", activeNodeId);
+                var input = ReadKey();
+                if (input.Equals("q"))
+                    break;
+                if (input.Equals("h"))
                 {
-                    Console.WriteLine("Waiting for input (Current node: {0})...", activeNodeId);
-                    var input = ReadKey();
-                    if (input.Equals("q"))
-                        break;
-                    if (input.Equals("h"))
+                    manager.HealNetwork(homeId, true);
+                }
+                else if (input.Equals("n"))
+                {
+                    Console.Write("Enter node number: ");
+                    var numberString = Console.ReadLine();
+                    int value;
+                    if (Int32.TryParse(numberString, out value))
                     {
-                        manager.HealNetwork(homeId, true);
+                        activeNodeId = value;
                     }
-                    else if (input.Equals("n"))
+                }
+                else if (input.Equals("v"))
+                {
+                    Console.Write("Enter value ID: ");
+                    var numberString = Console.ReadLine();
+                    ulong value;
+                    if (UInt64.TryParse(numberString, out value))
                     {
-                        Console.Write("Enter node number: ");
-                        var numberString = Console.ReadLine();
-                        int value;
-                        if (Int32.TryParse(numberString, out value))
-                        {
-                            activeNodeId = value;
-                        }
+                        activeValueId = value;
                     }
-                    else if (input.Equals("v"))
+                }
+                else if (input.Equals("d"))
+                {
+                    var node = GetNode(nodes, activeNodeId);
+                    if (node == null)
+                        continue;
+                    DumpNodeValues(node, manager);
+                }
+                else if (input.Equals("s"))
+                {
+                    var node = GetNode(nodes, activeNodeId);
+                    if (node == null)
+                        continue;
+                    var switchZwValue = node.Values.FirstOrDefault(x => x.GetId().Equals(activeValueId));
+                    if (switchZwValue == null)
+                        Console.WriteLine("Could not locate switch with value ({0})", activeValueId);
+                    else
                     {
-                        Console.Write("Enter value ID: ");
-                        var numberString = Console.ReadLine();
-                        ulong value;
-                        if (UInt64.TryParse(numberString, out value))
-                        {
-                            activeValueId = value;
-                        }
-                    }
-                    else if (input.Equals("d"))
-                    {
-                        var node = GetNode(nodes, activeNodeId);
-                        if (node == null)
-                            continue;
-                        DumpNodeValues(node, manager);
-                    }
-                    else if (input.Equals("s"))
-                    {
-                        var node = GetNode(nodes, activeNodeId);
-                        if (node == null)
-                            continue;
-                        var switchZwValue = node.Values.FirstOrDefault(x => x.GetId().Equals(activeValueId));
-                        if (switchZwValue == null)
-                            Console.WriteLine("Could not locate switch with value ({0})", activeValueId);
-                        else
-                        {
-                            var currentValue = bool.Parse(ZWaveNotificationHandler.GetValue(switchZwValue, manager));
-                            Console.WriteLine("***** Current switch: {0}", currentValue);
+                        var currentValue = bool.Parse(ZWaveNotificationHandler.GetValue(switchZwValue, manager));
+                        Console.WriteLine("***** Current switch: {0}", currentValue);
 
-                            var newValue = !currentValue;
-                            manager.SetValue(switchZwValue, newValue);
-                        }
+                        var newValue = !currentValue;
+                        manager.SetValue(switchZwValue, newValue);
                     }
                 }
             }
@@ -95,7 +92,8 @@ namespace ZWaveControl
             {
                 var valueLabel = manager.GetValueLabel(value);
                 if (valueLabel.ToLowerInvariant().Equals("switch"))
-                    Console.WriteLine("***** Value ID:({0}) label:({1}) index:({2}) type:({3})", value.GetId(), valueLabel, value.GetIndex(), value.GetType());
+                    Console.WriteLine("***** Value ID:({0}) label:({1}) index:({2}) type:({3})", value.GetId(),
+                        valueLabel, value.GetIndex(), value.GetType());
             }
         }
 
