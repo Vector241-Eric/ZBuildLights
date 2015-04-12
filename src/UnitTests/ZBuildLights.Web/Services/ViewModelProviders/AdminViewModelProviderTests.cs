@@ -33,7 +33,7 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 masterModel.CreateProject(); //4
                 masterModel.CreateProject(); //5
 
-                masterModel.AddUnassignedLight(new Light(1, 22));
+                masterModel.AddUnassignedLight(new Light(1, 22, 123));
 
                 var statusProvider = S<ISystemStatusProvider>();
                 statusProvider.Stub(x => x.GetSystemStatus())

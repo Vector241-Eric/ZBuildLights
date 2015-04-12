@@ -30,10 +30,10 @@ namespace UnitTests.ZBuildLights.Core.Services
                 //Reordered
                 _lights = new[]
                 {
-                    new Light(switches[3].HomeId, switches[3].DeviceId),
-                    new Light(switches[0].HomeId, switches[0].DeviceId),
-                    new Light(switches[1].HomeId, switches[1].DeviceId),
-                    new Light(switches[2].HomeId, switches[2].DeviceId)
+                    new Light(switches[3].HomeId, switches[3].DeviceId, 123),
+                    new Light(switches[0].HomeId, switches[0].DeviceId, 123),
+                    new Light(switches[1].HomeId, switches[1].DeviceId, 123),
+                    new Light(switches[2].HomeId, switches[2].DeviceId, 123)
                 };
 
                 _network = S<IZWaveNetwork>();
@@ -76,10 +76,10 @@ namespace UnitTests.ZBuildLights.Core.Services
                 //Reordered
                 _lights = new[]
                 {
-                    new Light(1, 2),
-                    new Light(switches[0].HomeId, switches[0].DeviceId),
-                    new Light(switches[1].HomeId, switches[1].DeviceId),
-                    new Light(1, 3)
+                    new Light(1, 2, 123),
+                    new Light(switches[0].HomeId, switches[0].DeviceId, 123),
+                    new Light(switches[1].HomeId, switches[1].DeviceId, 123),
+                    new Light(1, 3, 123)
                 };
 
                 var network = S<IZWaveNetwork>();

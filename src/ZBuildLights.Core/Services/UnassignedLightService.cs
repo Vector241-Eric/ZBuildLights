@@ -26,7 +26,7 @@ namespace ZBuildLights.Core.Services
                 ).ToArray();
 
             var newSwitches = allSwitches.Except(switchesAlreadyInAProject);
-            var newLights = newSwitches.Select(x => new Light(x.HomeId, x.DeviceId)).ToArray();
+            var newLights = newSwitches.Select(x => new Light(x.HomeId, x.DeviceId, x.ValueId)).ToArray();
 
             masterModel.AddUnassignedLights(newLights);
         }

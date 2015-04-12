@@ -357,10 +357,10 @@ namespace UnitTests.ZBuildLights.Core.Services
 
                 _parentProject = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 var existingGroup = _parentProject.CreateGroup(x => x.Name = "Existing Group");
-                existingGroup.AddLight(new Light(1, 1));
-                existingGroup.AddLight(new Light(1, 2));
+                existingGroup.AddLight(new Light(1, 1, 123));
+                existingGroup.AddLight(new Light(1, 2, 123));
                 _remainingGroup = _parentProject.CreateGroup();
-                _remainingGroup.AddLight(new Light(1, 10));
+                _remainingGroup.AddLight(new Light(1, 10, 123));
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);

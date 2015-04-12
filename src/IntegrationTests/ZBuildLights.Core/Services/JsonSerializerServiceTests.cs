@@ -47,14 +47,14 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                     };
                 });
                 core.CreateGroup(x => x.Name = "SnP Square")
-                    .AddLight(new Light(1, 1) {Color = LightColor.Green, SwitchState = SwitchState.On})
-                    .AddLight(new Light(1, 2) {Color = LightColor.Yellow, SwitchState = SwitchState.Off})
-                    .AddLight(new Light(1, 3) {Color = LightColor.Red, SwitchState = SwitchState.Off})
+                    .AddLight(new Light(1, 1, 123) {Color = LightColor.Green, SwitchState = SwitchState.On})
+                    .AddLight(new Light(1, 2, 123) { Color = LightColor.Yellow, SwitchState = SwitchState.Off })
+                    .AddLight(new Light(1, 3, 123) { Color = LightColor.Red, SwitchState = SwitchState.Off })
                     ;
                 core.CreateGroup(x => x.Name = "SnP Near Matt")
-                    .AddLight(new Light(1, 4) {Color = LightColor.Green, SwitchState = SwitchState.On})
-                    .AddLight(new Light(1, 5) {Color = LightColor.Yellow, SwitchState = SwitchState.Off})
-                    .AddLight(new Light(1, 6) {Color = LightColor.Red, SwitchState = SwitchState.Off})
+                    .AddLight(new Light(1, 4, 123) { Color = LightColor.Green, SwitchState = SwitchState.On })
+                    .AddLight(new Light(1, 5, 123) { Color = LightColor.Yellow, SwitchState = SwitchState.Off })
+                    .AddLight(new Light(1, 6, 123) { Color = LightColor.Red, SwitchState = SwitchState.Off })
                     ;
 
                 var apps = masterModel.CreateProject(x =>
@@ -63,12 +63,12 @@ namespace IntegrationTests.ZBuildLights.Core.Services
                     x.Name = "Apps";
                 });
                 apps.CreateGroup(x => x.Name = "Near Window")
-                    .AddLight(new Light(1, 7) {Color = LightColor.Green, SwitchState = SwitchState.Off})
-                    .AddLight(new Light(1, 8) {Color = LightColor.Yellow, SwitchState = SwitchState.On})
-                    .AddLight(new Light(1, 9) {Color = LightColor.Red, SwitchState = SwitchState.On})
+                    .AddLight(new Light(1, 7, 123) { Color = LightColor.Green, SwitchState = SwitchState.Off })
+                    .AddLight(new Light(1, 8, 123) { Color = LightColor.Yellow, SwitchState = SwitchState.On })
+                    .AddLight(new Light(1, 9, 123) { Color = LightColor.Red, SwitchState = SwitchState.On })
                     ;
 
-                masterModel.AddUnassignedLight(new Light(3333, 3));
+                masterModel.AddUnassignedLight(new Light(3333, 3, 123));
 
                 //Act
                 var serializer = container.GetInstance<IJsonSerializerService>();

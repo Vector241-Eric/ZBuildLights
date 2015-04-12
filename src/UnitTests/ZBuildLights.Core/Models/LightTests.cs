@@ -12,8 +12,8 @@ namespace UnitTests.ZBuildLights.Core.Models
             [Test]
             public void Lights_with_same_device_and_home_ids_should_be_equal()
             {
-                var light1 = new Light(10, 20);
-                var light2 = new Light(10, 20);
+                var light1 = new Light(10, 20, 123);
+                var light2 = new Light(10, 20, 123);
 
                 light1.ShouldEqual(light2);
             }
@@ -21,8 +21,8 @@ namespace UnitTests.ZBuildLights.Core.Models
             [Test]
             public void Lights_with_different_home_ids_should_not_be_equal()
             {
-                var light1 = new Light(100, 20);
-                var light2 = new Light(10, 20);
+                var light1 = new Light(100, 20, 123);
+                var light2 = new Light(10, 20, 123);
 
                 light1.ShouldNotEqual(light2);
             }
@@ -30,8 +30,8 @@ namespace UnitTests.ZBuildLights.Core.Models
             [Test]
             public void Lights_with_different_device_ids_should_not_be_equal()
             {
-                var light1 = new Light(10, 20);
-                var light2 = new Light(10, 200);
+                var light1 = new Light(10, 20, 123);
+                var light2 = new Light(10, 200, 123);
 
                 light1.ShouldNotEqual(light2);
             }
@@ -49,7 +49,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 var masterModel = new MasterModel();
                 var fooDaddy = masterModel.CreateProject(x => x.Name = "FooDaddy");
                 _group = fooDaddy.CreateGroup(x => x.Name = "Foo");
-                _light = new Light(1, 2);
+                _light = new Light(1, 2, 123);
                 _group.AddLight(_light);
 
                 _light.Unassign();
@@ -74,7 +74,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                new Light(1, 2).Unassign();
+                new Light(1, 2, 123).Unassign();
             }
 
             [Test]
@@ -92,7 +92,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _light = new Light(43, 55);
+                _light = new Light(43, 55, 123);
                 new MasterModel().CreateProject().CreateGroup().AddLight(_light);
             }
 
@@ -111,7 +111,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _light = new Light(43, 55);
+                _light = new Light(43, 55, 123);
             }
 
             [Test]

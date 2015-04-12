@@ -22,11 +22,11 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 _masterModel = new MasterModel();
                 var group = _masterModel.CreateProject().CreateGroup();
-                group.AddLight(new Light(1, 11));
-                group.AddLight(new Light(1, 22));
-                group.AddLight(new Light(1, 33));
+                group.AddLight(new Light(1, 11, 123));
+                group.AddLight(new Light(1, 22, 123));
+                group.AddLight(new Light(1, 33, 123));
 
-                _masterModel.AddUnassignedLight(new Light(1, 44){Color = LightColor.Red});
+                _masterModel.AddUnassignedLight(new Light(1, 44, 123) { Color = LightColor.Red });
 
                 var allSwitches = new[]
                 {

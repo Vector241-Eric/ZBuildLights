@@ -4,12 +4,14 @@ namespace ZBuildLights.Core.Models
     {
         public byte ZWaveDeviceId { get; private set; }
         public uint ZWaveHomeId { get; private set; }
+        public ulong ZWaveValueId { get; private set; }
         public LightGroup ParentGroup { get; set; }
 
-        public Light(uint zwaveHomeId, byte zWaveDeviceId)
+        public Light(uint zwaveHomeId, byte zWaveDeviceId, ulong valueId)
         {
             ZWaveHomeId = zwaveHomeId;
             ZWaveDeviceId = zWaveDeviceId;
+            ZWaveValueId = valueId;
             SwitchState = SwitchState.Unknown;
             Color = LightColor.Unknown;
         }

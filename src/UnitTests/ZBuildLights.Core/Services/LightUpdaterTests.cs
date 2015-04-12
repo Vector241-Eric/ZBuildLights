@@ -28,20 +28,20 @@ namespace UnitTests.ZBuildLights.Core.Services
 
                 var existingMasterModel = new MasterModel();
                 var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
-                project.CreateGroup(x => x.Id = _destinationGroupId).AddLight(new Light(1, 11)).AddLight(new Light(1, 12));
-                project.CreateGroup().AddLight(new Light(1, 13)).AddLight(new Light(1, 14));
+                project.CreateGroup(x => x.Id = _destinationGroupId).AddLight(new Light(1, 11, 123)).AddLight(new Light(1, 12, 123));
+                project.CreateGroup().AddLight(new Light(1, 13, 123)).AddLight(new Light(1, 14, 123));
 
                 project.CreateGroup()
-                    .AddLight(new Light(1, 15))
-                    .AddLight(new Light(1, 16));
+                    .AddLight(new Light(1, 15, 123))
+                    .AddLight(new Light(1, 16, 123));
 
-                project.CreateGroup().AddLight(new Light(2, 13)).AddLight(new Light(2, 14));
+                project.CreateGroup().AddLight(new Light(2, 13, 123)).AddLight(new Light(2, 14, 123));
 
                 var project2 = existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
-                project2.CreateGroup().AddLight(new Light(1, 21)).AddLight(new Light(1, 22));
+                project2.CreateGroup().AddLight(new Light(1, 21, 123)).AddLight(new Light(1, 22, 123));
 
                 var project3 = existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
-                project3.CreateGroup().AddLight(new Light(1, 31)).AddLight(new Light(1, 32));
+                project3.CreateGroup().AddLight(new Light(1, 31, 123)).AddLight(new Light(1, 32, 123));
 
 
                 var repository = new StubMasterModelRepository();
@@ -88,13 +88,13 @@ namespace UnitTests.ZBuildLights.Core.Services
 
                 _masterModel = new MasterModel();
                 var project = _masterModel.CreateProject(x => x.Name = "Existing Project");
-                project.CreateGroup(x => x.Id = groupId).AddLight(new Light(1, 11)).AddLight(new Light(1, 12));
+                project.CreateGroup(x => x.Id = groupId).AddLight(new Light(1, 11, 123)).AddLight(new Light(1, 12, 123));
 
                 var unassignedLights = new[]
                 {
-                    new Light(1, 51),
-                    new Light(_zwaveHomeId, _zWaveDeviceId),
-                    new Light(1, 53),
+                    new Light(1, 51, 123),
+                    new Light(_zwaveHomeId, _zWaveDeviceId, 123),
+                    new Light(1, 53, 123),
                 };
 
                 _masterModel.AddUnassignedLights(unassignedLights);
@@ -129,7 +129,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var masterModel = new MasterModel();
                 var project = masterModel.CreateProject(x => x.Name = "Existing Project");
 
-                project.CreateGroup().AddLight(new Light(zwaveHomeId, zWaveDeviceId){Color = LightColor.Yellow});
+                project.CreateGroup().AddLight(new Light(zwaveHomeId, zWaveDeviceId, 123) { Color = LightColor.Yellow });
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(masterModel);

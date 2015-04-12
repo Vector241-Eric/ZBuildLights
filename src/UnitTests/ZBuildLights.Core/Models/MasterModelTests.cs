@@ -19,36 +19,36 @@ namespace UnitTests.ZBuildLights.Core.Models
                 var project1 = model.CreateProject(x => x.Name = "1");
 
                 var group1_1 = project1.CreateGroup(x => x.Name = "1.1");
-                var light1_1_1 = group1_1.AddLight(new Light(11, 1));
-                var light1_1_2 = group1_1.AddLight(new Light(11, 2));
-                var light1_1_3 = group1_1.AddLight(new Light(11, 3));
+                var light1_1_1 = group1_1.AddLight(new Light(11, 1, 123));
+                var light1_1_2 = group1_1.AddLight(new Light(11, 2, 123));
+                var light1_1_3 = group1_1.AddLight(new Light(11, 3, 123));
 
                 var group1_2 = project1.CreateGroup(x => x.Name = "1.2");
-                var light1_2_1 = group1_2.AddLight(new Light(12, 1));
-                var light1_2_2 = group1_2.AddLight(new Light(12, 2));
-                var light1_2_3 = group1_2.AddLight(new Light(12, 3));
+                var light1_2_1 = group1_2.AddLight(new Light(12, 1, 123));
+                var light1_2_2 = group1_2.AddLight(new Light(12, 2, 123));
+                var light1_2_3 = group1_2.AddLight(new Light(12, 3, 123));
 
                 var group1_3 = project1.CreateGroup(x => x.Name = "1.3");
-                var light1_3_1 = group1_3.AddLight(new Light(13, 1));
-                var light1_3_2 = group1_3.AddLight(new Light(13, 2));
-                var light1_3_3 = group1_3.AddLight(new Light(13, 3));
+                var light1_3_1 = group1_3.AddLight(new Light(13, 1, 123));
+                var light1_3_2 = group1_3.AddLight(new Light(13, 2, 123));
+                var light1_3_3 = group1_3.AddLight(new Light(13, 3, 123));
 
                 var project2 = model.CreateProject(x => x.Name = "1");
 
                 var group2_1 = project2.CreateGroup(x => x.Name = "2.1");
-                var light2_1_1 = group2_1.AddLight(new Light(21, 1));
-                var light2_1_2 = group2_1.AddLight(new Light(21, 2));
-                var light2_1_3 = group2_1.AddLight(new Light(21, 3));
+                var light2_1_1 = group2_1.AddLight(new Light(21, 1, 123));
+                var light2_1_2 = group2_1.AddLight(new Light(21, 2, 123));
+                var light2_1_3 = group2_1.AddLight(new Light(21, 3, 123));
 
                 var group2_2 = project2.CreateGroup(x => x.Name = "2.2");
-                var light2_2_1 = group2_2.AddLight(new Light(22, 1));
-                var light2_2_2 = group2_2.AddLight(new Light(22, 2));
-                var light2_2_3 = group2_2.AddLight(new Light(22, 3));
+                var light2_2_1 = group2_2.AddLight(new Light(22, 1, 123));
+                var light2_2_2 = group2_2.AddLight(new Light(22, 2, 123));
+                var light2_2_3 = group2_2.AddLight(new Light(22, 3, 123));
 
                 var group2_3 = project2.CreateGroup(x => x.Name = "2.3");
-                var light2_3_1 = group2_3.AddLight(new Light(23, 1));
-                var light2_3_2 = group2_3.AddLight(new Light(23, 2));
-                var light2_3_3 = group2_3.AddLight(new Light(23, 3));
+                var light2_3_1 = group2_3.AddLight(new Light(23, 1, 123));
+                var light2_3_2 = group2_3.AddLight(new Light(23, 2, 123));
+                var light2_3_3 = group2_3.AddLight(new Light(23, 3, 123));
 
                 uint homeId = 22;
                 byte deviceId = 2;
@@ -71,8 +71,8 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 var model = new MasterModel();
                 var group = model.CreateProject().CreateGroup();
-                group.AddLight(new Light(1, 11)).AddLight(new Light(2, 22));
-                model.AddUnassignedLights(new[] {new Light(3, 33), new Light(4, 44)});
+                group.AddLight(new Light(1, 11, 123)).AddLight(new Light(2, 22, 123));
+                model.AddUnassignedLights(new[] { new Light(3, 33, 123), new Light(4, 44, 123) });
 
                 _result = model.AllLights;
             }
@@ -167,7 +167,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _light = new Light(11, 23);
+                _light = new Light(11, 23, 123);
                 _model = new MasterModel();
                 _destinationGroup = _model.CreateProject().CreateGroup();
 
@@ -210,7 +210,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 _fooGroup = model.CreateProject().CreateGroup();
                 _barGroup = model.CreateProject().CreateGroup();
 
-                _light = new Light(1, 2);
+                _light = new Light(1, 2, 123);
                 _fooGroup.AddLight(_light);
 
                 model.AssignLightToGroup(1, 2, _barGroup.Id);
@@ -327,11 +327,11 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 _masterModel = new MasterModel();
                 var notDeleted = _masterModel.CreateProject(x => x.Name = "Not Deleted");
-                notDeleted.CreateGroup().AddLight(new Light(1, 11)).AddLight(new Light(1, 12));
-                notDeleted.CreateGroup().AddLight(new Light(1, 13)).AddLight(new Light(1, 14));
+                notDeleted.CreateGroup().AddLight(new Light(1, 11, 123)).AddLight(new Light(1, 12, 123));
+                notDeleted.CreateGroup().AddLight(new Light(1, 13, 123)).AddLight(new Light(1, 14, 123));
                 var toBeDeleted = _masterModel.CreateProject(x => x.Name = "To Be Deleted");
-                toBeDeleted.CreateGroup().AddLight(new Light(1, 21)).AddLight(new Light(1, 22));
-                toBeDeleted.CreateGroup().AddLight(new Light(1, 23)).AddLight(new Light(1, 24));
+                toBeDeleted.CreateGroup().AddLight(new Light(1, 21, 123)).AddLight(new Light(1, 22, 123));
+                toBeDeleted.CreateGroup().AddLight(new Light(1, 23, 123)).AddLight(new Light(1, 24, 123));
 
                 _masterModel.RemoveProject(toBeDeleted.Id);
             }

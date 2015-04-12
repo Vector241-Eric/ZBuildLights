@@ -25,10 +25,10 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var repo = S<IMasterModelRepository>();
                 _model = new MasterModel();
                 var group = _model.CreateProject().CreateGroup();
-                group.AddLight(new Light(3, 11));
-                group.AddLight(new Light(3, 22));
-                group.AddLight(new Light(3, 33));
-                group.AddLight(new Light(3, 44));
+                group.AddLight(new Light(3, 11, 123));
+                group.AddLight(new Light(3, 22, 123));
+                group.AddLight(new Light(3, 33, 123));
+                group.AddLight(new Light(3, 44, 123));
                 repo.Stub(x => x.GetCurrent()).Return(_model);
 
                 _lightStatusSetter = new StubLightStatusSetter().DefaultStatus(SwitchState.On).StubStatus(1,11,SwitchState.Off);
