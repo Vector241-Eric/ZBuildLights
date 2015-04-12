@@ -2,13 +2,19 @@
 
 namespace ZWaveControl
 {
-    public class ConfigurationSettings
+    public class ZWaveSettings
     {
-        public string ZWaveConfigurationPath
+        public string LogDirectory
+        {
+            get { return ConfigurationManager.AppSettings["LogDirectory"]; }
+        }
+
+        public string ConfigurationPath
         {
             get { return ConfigurationManager.AppSettings["ConfigurationPath"]; }
         }
-        public string ZWavePort
+
+        public string ControllerPortNumber
         {
             get { return @"\\.\COM" + ConfigurationManager.AppSettings["ControllerPortNumber"]; }
         }
