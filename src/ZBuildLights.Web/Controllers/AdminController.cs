@@ -92,9 +92,10 @@ namespace ZBuildLights.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditLight(uint homeId, byte deviceId, ulong valueId, Guid groupId, int colorId)
+//        public ActionResult EditLight(uint homeId, byte nodeId, ulong valueId, Guid groupId, int colorId)
+        public ActionResult EditLight(uint homeId, byte nodeId, ulong valueId, Guid groupId, int colorId)
         {
-            _lightUpdater.Update(new ZWaveIdentity(homeId, deviceId, valueId), groupId, colorId);
+            _lightUpdater.Update(new ZWaveIdentity(homeId, nodeId, valueId), groupId, colorId);
             return RedirectToAction("Index");
         }
 

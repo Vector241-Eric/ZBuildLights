@@ -14,7 +14,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             private ZWaveIdentity _expectedIdentity;
 
             [Test]
-            public void Should_find_a_light_by_homeId_and_deviceId_and_valueId()
+            public void Should_find_a_light_by_homeId_and_nodeId_and_valueId()
             {
                 var model = new MasterModel();
 
