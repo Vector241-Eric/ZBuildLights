@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ZWaveControlMarkerType.cs" />
     <Compile Include="ZWaveNetwork.cs" />
     <Compile Include="ZWaveSettings.cs" />
     <Compile Include="ConsoleCommandWatcher.cs" />

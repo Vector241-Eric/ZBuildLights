@@ -18,7 +18,7 @@
 using StructureMap.Configuration.DSL;
 using StructureMap.Graph;
 using ZBuildLights.Core;
-using ZBuildLights.Core.Services;
+using ZWaveControl;
 
 namespace ZBuildLights.Web.DependencyResolution
 {
@@ -33,12 +33,13 @@ namespace ZBuildLights.Web.DependencyResolution
                 {
                     scan.TheCallingAssembly();
                     scan.AssemblyContainingType<CoreMarkerType>();
+                    scan.AssemblyContainingType<ZWaveControlMarkerType>();
                     scan.WithDefaultConventions();
                     scan.With(new ControllerConvention());
                 });
 
-
-            For<IZWaveNetwork>().Use<StubZWaveNetwork>();
+//
+//            For<IZWaveNetwork>().Use<StubZWaveNetwork>();
         }
 
         #endregion
