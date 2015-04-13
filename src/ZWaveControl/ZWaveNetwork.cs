@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenZWaveDotNet;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Services.Results;
 
 namespace ZWaveControl
 {
@@ -41,7 +43,7 @@ namespace ZWaveControl
             var zWaveSwitch = new ZWaveSwitch
             {
                 HomeId = node.HomeId,
-                DeviceId = node.Id,
+                NodeId = node.Id,
                 ValueId = value.GetId()
             };
             if (successfullyReadValue)
@@ -51,9 +53,29 @@ namespace ZWaveControl
             return zWaveSwitch;
         }
 
-        public void SetSwitchState(ZWaveSwitch zwSwitch)
+        public ZWaveOperationResult SetSwitchState(ZWaveSwitch zwSwitch)
         {
-            throw new NotImplementedException();
+            var node =
+                ZWaveNotificationHandler.GetNodes()
+                    .SingleOrDefault(x => x.HomeId.Equals(zwSwitch.HomeId) && x.Id.Equals(zwSwitch.NodeId));
+            if (node == null)
+            {
+                var message = string.Format("Could not locate a node with HomeId {0} and NodeId {1}",
+                    zwSwitch.HomeId, zwSwitch.NodeId);
+                return ZWaveOperationResult.Fail(message);
+            }
+
+            var value = node.Values.SingleOrDefault(x => x.GetId().Equals(zwSwitch.ValueId));
+            if (value == null)
+            {
+                var message = string.Format("Could not locate a value with HomeId {0} NodeId {1} and ValueId {2}",
+                    zwSwitch.HomeId, zwSwitch.NodeId, zwSwitch.ValueId);
+                return ZWaveOperationResult.Fail(message);
+            }
+
+            var switchValueBool = zwSwitch.SwitchState == SwitchState.On;
+            _manager.SetValue(value, switchValueBool);
+            return ZWaveOperationResult.Success;
         }
     }
 }

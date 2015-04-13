@@ -19,7 +19,7 @@ namespace ZBuildLights.Core.Services
             foreach (var light in lights)
             {
                 var zwSwitch = zWaveSwitches
-                    .SingleOrDefault(x => x.DeviceId.Equals(light.ZWaveDeviceId) && x.HomeId.Equals(light.ZWaveHomeId));
+                    .SingleOrDefault(x => x.NodeId.Equals(light.ZWaveDeviceId) && x.HomeId.Equals(light.ZWaveHomeId));
                 if (zwSwitch != null)
                     light.SwitchState = zwSwitch.SwitchState;
                 else

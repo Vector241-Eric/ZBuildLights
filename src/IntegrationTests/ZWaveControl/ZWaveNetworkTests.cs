@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Threading;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using Should;
+using ZBuildLights.Core.Models;
 using ZWaveControl;
 
 namespace IntegrationTests.ZWaveControl
@@ -24,7 +25,22 @@ namespace IntegrationTests.ZWaveControl
                 {
                     ZWaveManagerFactory.Destroy();
                 }
-            } 
+            }
+
+            [Test, Explicit]
+            public void Should_set_switch_state_on_device()
+            {
+                try
+                {
+                    var network = new ZWaveNetwork();
+                    var result = network.SetSwitchState(new ZWaveSwitch { HomeId = 25479126, NodeId = 2, ValueId = 72057594076282880, SwitchState = SwitchState.Off});
+                    result.IsSuccessful.ShouldBeTrue();
+                }
+                finally
+                {
+                    ZWaveManagerFactory.Destroy();
+                }
+            }
         } 
     }
 }

@@ -21,19 +21,19 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var switches = new[]
                 {
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 1, SwitchState = SwitchState.On},
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 2, SwitchState = SwitchState.Off},
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 3, SwitchState = SwitchState.On},
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 4, SwitchState = SwitchState.Off}
+                    new ZWaveSwitch {HomeId = 1, NodeId = 1, SwitchState = SwitchState.On},
+                    new ZWaveSwitch {HomeId = 1, NodeId = 2, SwitchState = SwitchState.Off},
+                    new ZWaveSwitch {HomeId = 1, NodeId = 3, SwitchState = SwitchState.On},
+                    new ZWaveSwitch {HomeId = 1, NodeId = 4, SwitchState = SwitchState.Off}
                 };
 
                 //Reordered
                 _lights = new[]
                 {
-                    new Light(switches[3].HomeId, switches[3].DeviceId, 123),
-                    new Light(switches[0].HomeId, switches[0].DeviceId, 123),
-                    new Light(switches[1].HomeId, switches[1].DeviceId, 123),
-                    new Light(switches[2].HomeId, switches[2].DeviceId, 123)
+                    new Light(switches[3].HomeId, switches[3].NodeId, 123),
+                    new Light(switches[0].HomeId, switches[0].NodeId, 123),
+                    new Light(switches[1].HomeId, switches[1].NodeId, 123),
+                    new Light(switches[2].HomeId, switches[2].NodeId, 123)
                 };
 
                 _network = S<IZWaveNetwork>();
@@ -69,16 +69,16 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var switches = new[]
                 {
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 1, SwitchState = SwitchState.On},
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 4, SwitchState = SwitchState.Off}
+                    new ZWaveSwitch {HomeId = 1, NodeId = 1, SwitchState = SwitchState.On},
+                    new ZWaveSwitch {HomeId = 1, NodeId = 4, SwitchState = SwitchState.Off}
                 };
 
                 //Reordered
                 _lights = new[]
                 {
                     new Light(1, 2, 123),
-                    new Light(switches[0].HomeId, switches[0].DeviceId, 123),
-                    new Light(switches[1].HomeId, switches[1].DeviceId, 123),
+                    new Light(switches[0].HomeId, switches[0].NodeId, 123),
+                    new Light(switches[1].HomeId, switches[1].NodeId, 123),
                     new Light(1, 3, 123)
                 };
 

@@ -95,6 +95,7 @@
     <Compile Include="Repository\IMasterModelRepository.cs" />
     <Compile Include="Repository\MasterModelRepository.cs" />
     <Compile Include="Services\Results\ICrudResult.cs" />
+    <Compile Include="Services\Results\ZWaveOperationResult.cs" />
     <Compile Include="Services\Storage\FileSystemStorage.cs" />
     <Compile Include="Services\LightGroupManager.cs" />
     <Compile Include="Services\Storage\IFileSystemStorage.cs" />

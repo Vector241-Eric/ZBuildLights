@@ -30,13 +30,13 @@ namespace UnitTests.ZBuildLights.Core.Services
 
                 var allSwitches = new[]
                 {
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 11}, //In a group
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 15}, //New
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 16}, //New
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 22}, //In a group
-                    new ZWaveSwitch {HomeId = 1, DeviceId = 33}, //In a group
-                    new ZWaveSwitch {HomeId = 2, DeviceId = 11}, //New (different home ID)
-                    new ZWaveSwitch {HomeId = 2, DeviceId = 22} //New (different home ID)
+                    new ZWaveSwitch {HomeId = 1, NodeId = 11}, //In a group
+                    new ZWaveSwitch {HomeId = 1, NodeId = 15}, //New
+                    new ZWaveSwitch {HomeId = 1, NodeId = 16}, //New
+                    new ZWaveSwitch {HomeId = 1, NodeId = 22}, //In a group
+                    new ZWaveSwitch {HomeId = 1, NodeId = 33}, //In a group
+                    new ZWaveSwitch {HomeId = 2, NodeId = 11}, //New (different home ID)
+                    new ZWaveSwitch {HomeId = 2, NodeId = 22} //New (different home ID)
                 };
 
                 var network = S<IZWaveNetwork>();
