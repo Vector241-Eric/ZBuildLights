@@ -47,27 +47,26 @@ namespace ZWaveControl
             return zWaveSwitch;
         }
 
-        public ZWaveOperationResult SetSwitchState(ZWaveSwitch zwSwitch)
+        public ZWaveOperationResult SetSwitchState(ZWaveIdentity identity, SwitchState state)
         {
             var node =
                 ZWaveNotificationHandler.GetNodes()
-                    .SingleOrDefault(x => x.HomeId.Equals(zwSwitch.ZWaveIdentity.HomeId) && x.Id.Equals(zwSwitch.ZWaveIdentity.NodeId));
+                    .SingleOrDefault(x => x.HomeId.Equals(identity.HomeId) && x.Id.Equals(identity.NodeId));
             if (node == null)
             {
                 var message = string.Format("Could not locate a node with HomeId {0} and NodeId {1}",
-                    zwSwitch.ZWaveIdentity.HomeId, zwSwitch.ZWaveIdentity.NodeId);
+                    identity.HomeId, identity.NodeId);
                 return ZWaveOperationResult.Fail(message);
             }
 
-            var value = node.Values.SingleOrDefault(x => x.GetId().Equals(zwSwitch.ZWaveIdentity.ValueId));
+            var value = node.Values.SingleOrDefault(x => x.GetId().Equals(identity.ValueId));
             if (value == null)
             {
-                var message = string.Format("Could not locate a value with HomeId {0} NodeId {1} and ValueId {2}",
-                    zwSwitch.ZWaveIdentity.HomeId, zwSwitch.ZWaveIdentity.NodeId, zwSwitch.ZWaveIdentity.ValueId);
+                var message = string.Format("Could not locate a value for {0}", identity);
                 return ZWaveOperationResult.Fail(message);
             }
 
-            var switchValueBool = zwSwitch.SwitchState == SwitchState.On;
+            var switchValueBool = state == SwitchState.On;
             _manager.SetValue(value, switchValueBool);
             return ZWaveOperationResult.Success;
         }

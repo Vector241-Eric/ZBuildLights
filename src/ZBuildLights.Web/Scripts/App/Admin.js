@@ -192,7 +192,7 @@
             });
         }
 
-        var updateProjectsForSelectedServer = function () {
+        var updateProjectsForSelectedServer = function() {
             var serverSelect = $(this);
             var projectSelect = serverSelect.parents('.cruise-select-row').find('.cruise-project-select');
 
@@ -350,6 +350,21 @@
                 .fail(Admin.Error.handle('Failed to delete light group.'));
         };
 
+        var toggleState = function () {
+            var anchorTag = $(this);
+            var container = anchorTag.parents('.zwaveLight');
+            var homeId = container.data('homeid');
+            var nodeId = container.data('nodeid');
+            var valueId = container.data('valueid');
+            var currentState = $(this).data('state');
+
+            $.post(ZBuildLights.Admin.Urls.toggleState, { homeId: homeId, nodeId: nodeId, valueId: valueId, currentState: currentState })
+                .success(function(data) {
+                    anchorTag.data('state', data.newState);
+                    anchorTag.find('.state-text').text(data.newState);
+                });
+        };
+
         var attachHandlers = function() {
             $('.delete-group-reject-button').click(deleteConfirmation.hide);
             $('.delete-group-link').click(deleteConfirmation.show);
@@ -358,6 +373,7 @@
             $('.btn-edit-group').click(edit);
             $('#save-edit-group').click(postEdit);
             $('#edit-group-modal .delete-confirm-link').click(postDelete);
+            $('.light-group-toggle-state').click(toggleState);
         };
 
         return {

@@ -104,6 +104,7 @@
     <Compile Include="Services\ILightGroupManager.cs" />
     <Compile Include="Services\IUnassignedLightService.cs" />
     <Compile Include="Services\ILightUpdater.cs" />
+    <Compile Include="Services\StubZWaveNetwork.cs" />
     <Compile Include="Services\UnassignedLightService.cs" />
     <Compile Include="Services\SystemClock.cs" />
     <Compile Include="Services\LightStatusSetter.cs" />

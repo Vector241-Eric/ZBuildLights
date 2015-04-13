@@ -17,10 +17,12 @@ namespace ZBuildLights.Web.Controllers
         private readonly ILightUpdater _lightUpdater;
         private readonly ICruiseProjectModelProvider _ccProjectProvider;
         private readonly ICruiseServerManager _cruiseServerManager;
+        private readonly IZWaveNetwork _zWaveNetwork;
 
         public AdminController(IProjectManager projectManager, ILightGroupManager lightGroupManager,
             IAdminViewModelProvider viewModelProvider, ILightUpdater lightUpdater,
-            ICruiseProjectModelProvider ccProjectProvider, ICruiseServerManager cruiseServerManager)
+            ICruiseProjectModelProvider ccProjectProvider, ICruiseServerManager cruiseServerManager,
+            IZWaveNetwork zWaveNetwork)
         {
             _projectManager = projectManager;
             _lightGroupManager = lightGroupManager;
@@ -28,6 +30,7 @@ namespace ZBuildLights.Web.Controllers
             _lightUpdater = lightUpdater;
             _ccProjectProvider = ccProjectProvider;
             _cruiseServerManager = cruiseServerManager;
+            _zWaveNetwork = zWaveNetwork;
         }
 
         public ActionResult Index()
@@ -56,7 +59,8 @@ namespace ZBuildLights.Web.Controllers
             if (result.IsSuccessful)
                 return RedirectToAction("Index");
             TempData["ErrorMessage"] = result.Message;
-            return RedirectToAction("EditProject", new {projectId = editModel.ProjectId, projects = editModel.CruiseProjects});
+            return RedirectToAction("EditProject",
+                new {projectId = editModel.ProjectId, projects = editModel.CruiseProjects});
         }
 
         [HttpPost]
@@ -123,6 +127,18 @@ namespace ZBuildLights.Web.Controllers
         {
             _cruiseServerManager.Create(name, url);
             return RedirectToAction("ManageCruiseServers");
+        }
+
+        [HttpPost]
+        public ActionResult ToggleSwitchState(uint homeId, byte nodeId, ulong valueId, SwitchState currentState)
+        {
+            var zWaveIdentity = new ZWaveIdentity(homeId, nodeId, valueId);
+            var newState = currentState == SwitchState.On ? SwitchState.Off : SwitchState.On;
+            var result = _zWaveNetwork.SetSwitchState(zWaveIdentity, newState);
+            if (result.IsSuccessful)
+                return Json(new {isSuccessful = true, newState = newState.ToString()});
+            else
+                return Json(new {isSuccessful = false, errorMessage = result.Message});
         }
     }
 }

@@ -33,11 +33,7 @@ namespace IntegrationTests.ZWaveControl
                 try
                 {
                     var network = new ZWaveNetwork();
-                    var result =
-                        network.SetSwitchState(new ZWaveSwitch(new ZWaveIdentity(25479126, 2, 72057594076282880))
-                        {
-                            SwitchState = SwitchState.Off
-                        });
+                    var result = network.SetSwitchState(new ZWaveIdentity(25479126, 2, 72057594076282880), SwitchState.Off);
                     result.IsSuccessful.ShouldBeTrue();
                 }
                 finally
