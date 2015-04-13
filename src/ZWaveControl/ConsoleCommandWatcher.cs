@@ -65,10 +65,9 @@ namespace ZWaveControl
                         Console.WriteLine("Could not locate switch with value ({0})", activeValueId);
                     else
                     {
-                        var currentValue = bool.Parse(ZWaveNotificationHandler.GetValue(switchZwValue, manager));
-                        Console.WriteLine("***** Current switch: {0}", currentValue);
-
-                        var newValue = !currentValue;
+                        bool value;
+                        manager.GetValueAsBool(switchZwValue, out value);
+                        var newValue = !value;
                         manager.SetValue(switchZwValue, newValue);
                     }
                 }
