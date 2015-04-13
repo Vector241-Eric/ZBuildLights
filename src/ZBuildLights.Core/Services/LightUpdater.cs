@@ -14,10 +14,10 @@ namespace ZBuildLights.Core.Services
             _masterModelRepository = masterModelRepository;
         }
 
-        public void Update(uint homeId, byte deviceId, Guid groupId, int colorId)
+        public void Update(ZWaveIdentity identity, Guid groupId, int colorId)
         {
             var masterModel = _masterModelRepository.GetCurrent();
-            var light = FindLight(homeId, deviceId, masterModel);
+            var light = FindLight(identity, masterModel);
 
             //Set color
             light.Color = LightColor.FromValue(colorId);
@@ -30,20 +30,20 @@ namespace ZBuildLights.Core.Services
             }
             else
             {
-                masterModel.AssignLightToGroup(light.ZWaveHomeId, light.ZWaveDeviceId, groupId);
+                masterModel.AssignLightToGroup(identity, groupId);
             }
 
             //Save
             _masterModelRepository.Save(masterModel);
         }
 
-        private Light FindLight(uint homeId, byte deviceId, MasterModel masterModel)
+        private Light FindLight(ZWaveIdentity identity, MasterModel masterModel)
         {
             var light = masterModel.AllLights
-                .SingleOrDefault(x => x.ZWaveHomeId.Equals(homeId) && x.ZWaveDeviceId.Equals(deviceId));
+                .SingleOrDefault(x => x.ZWaveIdentity.Equals(identity));
             if (light == null)
                 throw new InvalidOperationException(
-                    string.Format("Could not find light with homeId: {0} and deviceId: {1}", homeId, deviceId));
+                    string.Format("Could not find light with identity: {0}", identity));
             return light;
         }
     }

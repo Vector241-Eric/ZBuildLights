@@ -62,7 +62,9 @@
     <Compile Include="Models\CruiseProjectAssociation.cs" />
     <Compile Include="Models\CruiseServer.cs" />
     <Compile Include="Models\EditProject.cs" />
+    <Compile Include="Models\IHasZWaveIdentity.cs" />
     <Compile Include="Models\Requests\NetworkResponse.cs" />
+    <Compile Include="Models\ZWaveIdentity.cs" />
     <Compile Include="Models\ZWaveSwitch.cs" />
     <Compile Include="Services\CruiseControl\CruiseProjectModelProvider.cs" />
     <Compile Include="Services\CruiseControl\ICruiseProjectModelProvider.cs" />

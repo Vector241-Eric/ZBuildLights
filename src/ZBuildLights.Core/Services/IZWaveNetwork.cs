@@ -15,17 +15,17 @@ namespace ZBuildLights.Core.Services
     {
         private static readonly List<ZWaveSwitch> _switches = new List<ZWaveSwitch>
         {
-            new ZWaveSwitch {HomeId = 1, NodeId = 1, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 2, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 3, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 4, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 5, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 6, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 7, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 8, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 9, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 10, SwitchState = SwitchState.Off},
-            new ZWaveSwitch {HomeId = 1, NodeId = 11, SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 1, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 2, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 3, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 4, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 5, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 6, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 7, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 8, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 9, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 10, 1)) {SwitchState = SwitchState.Off},
+            new ZWaveSwitch(new ZWaveIdentity(1, 11, 1)) {SwitchState = SwitchState.Off}
         };
 
         public ZWaveSwitch[] GetAllSwitches()
@@ -35,9 +35,7 @@ namespace ZBuildLights.Core.Services
 
         public ZWaveOperationResult SetSwitchState(ZWaveSwitch zwSwitch)
         {
-            var zWaveSwitch = _switches.Single(
-                x => x.HomeId.Equals(zwSwitch.HomeId)
-                     && x.NodeId.Equals(zwSwitch.NodeId));
+            var zWaveSwitch = _switches.Single(x => x.ZWaveIdentity.Equals(zwSwitch.ZWaveIdentity));
             zWaveSwitch.SwitchState = zwSwitch.SwitchState;
             return ZWaveOperationResult.Success;
         }

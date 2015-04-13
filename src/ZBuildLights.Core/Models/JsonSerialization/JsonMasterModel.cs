@@ -108,14 +108,12 @@ namespace ZBuildLights.Core.Models.JsonSerialization
 
     public class JsonLight
     {
-        public byte ZWaveDeviceId { get; set; }
-        public uint ZWaveHomeId { get; set; }
-        public ulong ZWaveValueId { get; set; }
+        public ZWaveIdentity ZWaveIdentity { get; set; }
         public int ColorValue { get; set; }
 
         public Light ToDomainObject()
         {
-            var light = new Light(ZWaveHomeId, ZWaveDeviceId, ZWaveValueId)
+            var light = new Light(ZWaveIdentity)
             {
                 Color = LightColor.FromValue(ColorValue)
             };

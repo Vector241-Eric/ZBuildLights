@@ -10,10 +10,10 @@ namespace UnitTests.ZBuildLights.Core.Models
         public class When_checking_equality
         {
             [Test]
-            public void Lights_with_same_device_and_home_ids_should_be_equal()
+            public void Lights_with_same_node_and_home_and_value_ids_should_be_equal()
             {
-                var light1 = new Light(10, 20, 123);
-                var light2 = new Light(10, 20, 123);
+                var light1 = new Light(new ZWaveIdentity(10, 20, 123));
+                var light2 = new Light(new ZWaveIdentity(10, 20, 123));
 
                 light1.ShouldEqual(light2);
             }
@@ -21,17 +21,26 @@ namespace UnitTests.ZBuildLights.Core.Models
             [Test]
             public void Lights_with_different_home_ids_should_not_be_equal()
             {
-                var light1 = new Light(100, 20, 123);
-                var light2 = new Light(10, 20, 123);
+                var light1 = new Light(new ZWaveIdentity(100, 20, 123));
+                var light2 = new Light(new ZWaveIdentity(10, 20, 123));
 
                 light1.ShouldNotEqual(light2);
             }
 
             [Test]
-            public void Lights_with_different_device_ids_should_not_be_equal()
+            public void Lights_with_different_node_ids_should_not_be_equal()
             {
-                var light1 = new Light(10, 20, 123);
-                var light2 = new Light(10, 200, 123);
+                var light1 = new Light(new ZWaveIdentity(10, 20, 123));
+                var light2 = new Light(new ZWaveIdentity(10, 200, 123));
+
+                light1.ShouldNotEqual(light2);
+            }
+
+            [Test]
+            public void Lights_with_different_value_ids_should_not_be_equal()
+            {
+                var light1 = new Light(new ZWaveIdentity(10, 20, 111));
+                var light2 = new Light(new ZWaveIdentity(10, 20, 222));
 
                 light1.ShouldNotEqual(light2);
             }
@@ -49,7 +58,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 var masterModel = new MasterModel();
                 var fooDaddy = masterModel.CreateProject(x => x.Name = "FooDaddy");
                 _group = fooDaddy.CreateGroup(x => x.Name = "Foo");
-                _light = new Light(1, 2, 123);
+                _light = new Light(new ZWaveIdentity(1, 2, 123));
                 _group.AddLight(_light);
 
                 _light.Unassign();
@@ -74,7 +83,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                new Light(1, 2, 123).Unassign();
+                new Light(new ZWaveIdentity(1, 2, 123)).Unassign();
             }
 
             [Test]
@@ -92,7 +101,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _light = new Light(43, 55, 123);
+                _light = new Light(new ZWaveIdentity(43, 55, 123));
                 new MasterModel().CreateProject().CreateGroup().AddLight(_light);
             }
 
@@ -111,7 +120,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _light = new Light(43, 55, 123);
+                _light = new Light(new ZWaveIdentity(43, 55, 123));
             }
 
             [Test]

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using OpenZWaveDotNet;
 using ZBuildLights.Core.Models;
@@ -40,12 +39,7 @@ namespace ZWaveControl
         {
             bool switchValue;
             var successfullyReadValue = _manager.GetValueAsBool(value, out switchValue);
-            var zWaveSwitch = new ZWaveSwitch
-            {
-                HomeId = node.HomeId,
-                NodeId = node.Id,
-                ValueId = value.GetId()
-            };
+            var zWaveSwitch = new ZWaveSwitch(new ZWaveIdentity(node.HomeId, node.Id, value.GetId()));
             if (successfullyReadValue)
                 zWaveSwitch.SwitchState = switchValue ? SwitchState.On : SwitchState.Off;
             else
@@ -57,19 +51,19 @@ namespace ZWaveControl
         {
             var node =
                 ZWaveNotificationHandler.GetNodes()
-                    .SingleOrDefault(x => x.HomeId.Equals(zwSwitch.HomeId) && x.Id.Equals(zwSwitch.NodeId));
+                    .SingleOrDefault(x => x.HomeId.Equals(zwSwitch.ZWaveIdentity.HomeId) && x.Id.Equals(zwSwitch.ZWaveIdentity.NodeId));
             if (node == null)
             {
                 var message = string.Format("Could not locate a node with HomeId {0} and NodeId {1}",
-                    zwSwitch.HomeId, zwSwitch.NodeId);
+                    zwSwitch.ZWaveIdentity.HomeId, zwSwitch.ZWaveIdentity.NodeId);
                 return ZWaveOperationResult.Fail(message);
             }
 
-            var value = node.Values.SingleOrDefault(x => x.GetId().Equals(zwSwitch.ValueId));
+            var value = node.Values.SingleOrDefault(x => x.GetId().Equals(zwSwitch.ZWaveIdentity.ValueId));
             if (value == null)
             {
                 var message = string.Format("Could not locate a value with HomeId {0} NodeId {1} and ValueId {2}",
-                    zwSwitch.HomeId, zwSwitch.NodeId, zwSwitch.ValueId);
+                    zwSwitch.ZWaveIdentity.HomeId, zwSwitch.ZWaveIdentity.NodeId, zwSwitch.ZWaveIdentity.ValueId);
                 return ZWaveOperationResult.Fail(message);
             }
 

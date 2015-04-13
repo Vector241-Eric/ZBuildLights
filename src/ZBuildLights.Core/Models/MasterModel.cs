@@ -41,7 +41,7 @@ namespace ZBuildLights.Core.Models
             if (toRemove == null)
                 return;
 
-            foreach(var group in toRemove.Groups)
+            foreach (var group in toRemove.Groups)
                 group.UnassignAllLights();
             _projects.Remove(toRemove);
         }
@@ -56,13 +56,11 @@ namespace ZBuildLights.Core.Models
             get { return Projects.SelectMany(x => x.Groups).ToArray(); }
         }
 
-        public Light FindLight(uint homeId, byte deviceId)
+        public Light FindLight(ZWaveIdentity identity)
         {
-            var light = AllLights
-                .SingleOrDefault(x => x.ZWaveHomeId.Equals(homeId) && x.ZWaveDeviceId.Equals(deviceId));
+            var light = AllLights.SingleOrDefault(x => x.ZWaveIdentity.Equals(identity));
             if (light == null)
-                throw new InvalidOperationException(
-                    string.Format("Could not find light with homeId: {0} and deviceId: {1}", homeId, deviceId));
+                throw new InvalidOperationException(string.Format("Could not find light with identity: {0}", identity));
             return light;
         }
 
@@ -85,9 +83,9 @@ namespace ZBuildLights.Core.Models
             _unassignedLights.Add(light);
         }
 
-        public void AssignLightToGroup(uint homeId, byte deviceId, Guid groupId)
+        public void AssignLightToGroup(ZWaveIdentity identity, Guid groupId)
         {
-            var light = FindLight(homeId, deviceId);
+            var light = FindLight(identity);
             if (light.IsInGroup)
                 light.Unassign();
             else

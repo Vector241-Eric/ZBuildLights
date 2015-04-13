@@ -33,7 +33,7 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 masterModel.CreateProject(); //4
                 masterModel.CreateProject(); //5
 
-                masterModel.AddUnassignedLight(new Light(1, 22, 123));
+                masterModel.AddUnassignedLight(new Light(new ZWaveIdentity(1, 22, 123)));
 
                 var statusProvider = S<ISystemStatusProvider>();
                 statusProvider.Stub(x => x.GetSystemStatus())
@@ -44,7 +44,7 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                     .Return(new AdminProjectViewModel[3]);
                 mapper.Stub(x => x.Map<Light[], AdminLightViewModel[]>(masterModel.UnassignedLights))
                     .IgnoreArguments()
-                    .Return(new[] {new AdminLightViewModel {ZWaveHomeId = 1, ZWaveDeviceId = 22}});
+                    .Return(new[] {new AdminLightViewModel {ZWaveIdentity = new ZWaveIdentity(1, 22, 444)}});
 
                 var provider = new AdminViewModelProvider(statusProvider, mapper, null);
                 _result = provider.GetIndexViewModel();
@@ -61,8 +61,8 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
             {
                 _result.Unassigned.Name.ShouldEqual("Unassigned");
                 _result.Unassigned.Lights.Length.ShouldEqual(1);
-                _result.Unassigned.Lights.Single().ZWaveHomeId.ShouldEqual((byte) 1);
-                _result.Unassigned.Lights.Single().ZWaveDeviceId.ShouldEqual((byte) 22);
+                _result.Unassigned.Lights.Single().ZWaveIdentity.HomeId.ShouldEqual((byte) 1);
+                _result.Unassigned.Lights.Single().ZWaveIdentity.NodeId.ShouldEqual((byte) 22);
             }
         }
 

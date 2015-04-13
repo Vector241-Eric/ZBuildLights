@@ -21,19 +21,19 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var switches = new[]
                 {
-                    new ZWaveSwitch {HomeId = 1, NodeId = 1, SwitchState = SwitchState.On},
-                    new ZWaveSwitch {HomeId = 1, NodeId = 2, SwitchState = SwitchState.Off},
-                    new ZWaveSwitch {HomeId = 1, NodeId = 3, SwitchState = SwitchState.On},
-                    new ZWaveSwitch {HomeId = 1, NodeId = 4, SwitchState = SwitchState.Off}
+                    new ZWaveSwitch(new ZWaveIdentity(1, 1, 345)) {SwitchState = SwitchState.On},
+                    new ZWaveSwitch(new ZWaveIdentity(1, 2, 345)) {SwitchState = SwitchState.Off},
+                    new ZWaveSwitch(new ZWaveIdentity(1, 3, 345)) {SwitchState = SwitchState.On},
+                    new ZWaveSwitch(new ZWaveIdentity(1, 4, 345)) {SwitchState = SwitchState.Off}
                 };
 
                 //Reordered
                 _lights = new[]
                 {
-                    new Light(switches[3].HomeId, switches[3].NodeId, 123),
-                    new Light(switches[0].HomeId, switches[0].NodeId, 123),
-                    new Light(switches[1].HomeId, switches[1].NodeId, 123),
-                    new Light(switches[2].HomeId, switches[2].NodeId, 123)
+                    new Light(switches[3].ZWaveIdentity),
+                    new Light(switches[0].ZWaveIdentity),
+                    new Light(switches[1].ZWaveIdentity),
+                    new Light(switches[2].ZWaveIdentity)
                 };
 
                 _network = S<IZWaveNetwork>();
@@ -46,10 +46,10 @@ namespace UnitTests.ZBuildLights.Core.Services
             [Test]
             public void Should_set_light_status()
             {
-                _lights.Single(x => x.ZWaveDeviceId.Equals(1)).SwitchState.ShouldEqual(SwitchState.On);
-                _lights.Single(x => x.ZWaveDeviceId.Equals(2)).SwitchState.ShouldEqual(SwitchState.Off);
-                _lights.Single(x => x.ZWaveDeviceId.Equals(3)).SwitchState.ShouldEqual(SwitchState.On);
-                _lights.Single(x => x.ZWaveDeviceId.Equals(4)).SwitchState.ShouldEqual(SwitchState.Off);
+                _lights.Single(x => x.ZWaveIdentity.NodeId.Equals(1)).SwitchState.ShouldEqual(SwitchState.On);
+                _lights.Single(x => x.ZWaveIdentity.NodeId.Equals(2)).SwitchState.ShouldEqual(SwitchState.Off);
+                _lights.Single(x => x.ZWaveIdentity.NodeId.Equals(3)).SwitchState.ShouldEqual(SwitchState.On);
+                _lights.Single(x => x.ZWaveIdentity.NodeId.Equals(4)).SwitchState.ShouldEqual(SwitchState.Off);
             }
 
             [Test]
@@ -69,17 +69,17 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 var switches = new[]
                 {
-                    new ZWaveSwitch {HomeId = 1, NodeId = 1, SwitchState = SwitchState.On},
-                    new ZWaveSwitch {HomeId = 1, NodeId = 4, SwitchState = SwitchState.Off}
+                    new ZWaveSwitch(new ZWaveIdentity(1, 1, 111)) {SwitchState = SwitchState.On},
+                    new ZWaveSwitch(new ZWaveIdentity(1, 4, 111)) {SwitchState = SwitchState.Off}
                 };
 
                 //Reordered
                 _lights = new[]
                 {
-                    new Light(1, 2, 123),
-                    new Light(switches[0].HomeId, switches[0].NodeId, 123),
-                    new Light(switches[1].HomeId, switches[1].NodeId, 123),
-                    new Light(1, 3, 123)
+                    new Light(new ZWaveIdentity(1, 2, 123)),
+                    new Light(switches[0].ZWaveIdentity),
+                    new Light(switches[1].ZWaveIdentity),
+                    new Light(new ZWaveIdentity(2, 3, 4))
                 };
 
                 var network = S<IZWaveNetwork>();
@@ -92,15 +92,17 @@ namespace UnitTests.ZBuildLights.Core.Services
             [Test]
             public void Should_set_light_status_for_the_lights_in_the_network()
             {
-                _lights.Single(x => x.ZWaveDeviceId.Equals(1)).SwitchState.ShouldEqual(SwitchState.On);
-                _lights.Single(x => x.ZWaveDeviceId.Equals(4)).SwitchState.ShouldEqual(SwitchState.Off);
+                _lights.Single(x => x.ZWaveIdentity.NodeId.Equals(1)).SwitchState.ShouldEqual(SwitchState.On);
+                _lights.Single(x => x.ZWaveIdentity.NodeId.Equals(4) && x.ZWaveIdentity.ValueId == 111)
+                    .SwitchState.ShouldEqual(SwitchState.Off);
             }
 
             [Test]
             public void Should_set_the_status_to_unknown_for_lights_not_in_the_network()
             {
-                _lights.Single(x => x.ZWaveDeviceId.Equals(2)).SwitchState.ShouldEqual(SwitchState.Unknown);
-                _lights.Single(x => x.ZWaveDeviceId.Equals(3)).SwitchState.ShouldEqual(SwitchState.Unknown);
+                _lights.Single(x => x.ZWaveIdentity.NodeId.Equals(2)).SwitchState.ShouldEqual(SwitchState.Unknown);
+                _lights.Single(x => x.ZWaveIdentity.NodeId.Equals(3) && x.ZWaveIdentity.ValueId == 4)
+                    .SwitchState.ShouldEqual(SwitchState.Unknown);
             }
         }
     }

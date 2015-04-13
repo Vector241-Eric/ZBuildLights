@@ -1,11 +1,14 @@
 ﻿namespace ZBuildLights.Core.Models
 {
-    public class ZWaveSwitch
+    public class ZWaveSwitch : IHasZWaveIdentity
     {
-        public byte NodeId { get; set; }
-        public uint HomeId { get; set; }
-        public ulong ValueId { get; set; }
+        public ZWaveSwitch(ZWaveIdentity identity)
+        {
+            ZWaveIdentity = identity;
+        }
+
         public SwitchState SwitchState { get; set; }
         public string SwitchStateDisplayText { get { return SwitchState.ToString(); } }
+        public ZWaveIdentity ZWaveIdentity { get; private set; }
     }
 }

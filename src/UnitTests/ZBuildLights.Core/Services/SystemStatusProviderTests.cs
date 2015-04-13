@@ -18,6 +18,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             private MasterModel _model;
             private MasterModel _result;
             private StubLightStatusSetter _lightStatusSetter;
+            private ZWaveIdentity _identityForOffSwitch;
 
             [SetUp]
             public void ContextSetup()
@@ -25,13 +26,14 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var repo = S<IMasterModelRepository>();
                 _model = new MasterModel();
                 var group = _model.CreateProject().CreateGroup();
-                group.AddLight(new Light(3, 11, 123));
-                group.AddLight(new Light(3, 22, 123));
-                group.AddLight(new Light(3, 33, 123));
-                group.AddLight(new Light(3, 44, 123));
+                _identityForOffSwitch = new ZWaveIdentity(3, 11, 123);
+                group.AddLight(new Light(_identityForOffSwitch));
+                group.AddLight(new Light(new ZWaveIdentity(3, 22, 123)));
+                group.AddLight(new Light(new ZWaveIdentity(3, 33, 123)));
+                group.AddLight(new Light(new ZWaveIdentity(3, 44, 123)));
                 repo.Stub(x => x.GetCurrent()).Return(_model);
 
-                _lightStatusSetter = new StubLightStatusSetter().DefaultStatus(SwitchState.On).StubStatus(1,11,SwitchState.Off);
+                _lightStatusSetter = new StubLightStatusSetter().DefaultStatus(SwitchState.On).StubStatus(_identityForOffSwitch, SwitchState.Off);
 
                 var statusProvider = new SystemStatusProvider(repo, _lightStatusSetter);
                 _result = statusProvider.GetSystemStatus();
@@ -46,12 +48,13 @@ namespace UnitTests.ZBuildLights.Core.Services
             [Test]
             public void Should_set_light_status_from_the_network()
             {
-                _result.AllLights.All(x => x.SwitchState.Equals(SwitchState.On)).ShouldBeTrue();
+                _result.AllLights.Count(x => x.SwitchState.Equals(SwitchState.On)).ShouldEqual(3);
+                _result.AllLights.Count(x => x.SwitchState.Equals(SwitchState.Off)).ShouldEqual(1);
                 _lightStatusSetter.LightsThatHadStatusSet.Length.ShouldEqual(4);
-                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveDeviceId.Equals(11)).ShouldBeTrue();
-                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveDeviceId.Equals(22)).ShouldBeTrue();
-                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveDeviceId.Equals(33)).ShouldBeTrue();
-                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveDeviceId.Equals(44)).ShouldBeTrue();
+                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveIdentity.NodeId.Equals(11)).ShouldBeTrue();
+                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveIdentity.NodeId.Equals(22)).ShouldBeTrue();
+                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveIdentity.NodeId.Equals(33)).ShouldBeTrue();
+                _lightStatusSetter.LightsThatHadStatusSet.Any(x => x.ZWaveIdentity.NodeId.Equals(44)).ShouldBeTrue();
             }
         }
     }

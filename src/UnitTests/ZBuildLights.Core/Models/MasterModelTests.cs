@@ -11,51 +11,52 @@ namespace UnitTests.ZBuildLights.Core.Models
         [TestFixture]
         public class When_model_has_multiple_projects_with_multiple_groups_with_multiple_lights
         {
+            private ZWaveIdentity _expectedIdentity;
+
             [Test]
-            public void Should_find_a_light_by_homeId_and_deviceId()
+            public void Should_find_a_light_by_homeId_and_deviceId_and_valueId()
             {
                 var model = new MasterModel();
 
                 var project1 = model.CreateProject(x => x.Name = "1");
 
                 var group1_1 = project1.CreateGroup(x => x.Name = "1.1");
-                var light1_1_1 = group1_1.AddLight(new Light(11, 1, 123));
-                var light1_1_2 = group1_1.AddLight(new Light(11, 2, 123));
-                var light1_1_3 = group1_1.AddLight(new Light(11, 3, 123));
+                var light1_1_1 = group1_1.AddLight(new Light(new ZWaveIdentity(11, 1, 123)));
+                var light1_1_2 = group1_1.AddLight(new Light(new ZWaveIdentity(11, 2, 123)));
+                var light1_1_3 = group1_1.AddLight(new Light(new ZWaveIdentity(11, 3, 123)));
 
                 var group1_2 = project1.CreateGroup(x => x.Name = "1.2");
-                var light1_2_1 = group1_2.AddLight(new Light(12, 1, 123));
-                var light1_2_2 = group1_2.AddLight(new Light(12, 2, 123));
-                var light1_2_3 = group1_2.AddLight(new Light(12, 3, 123));
+                var light1_2_1 = group1_2.AddLight(new Light(new ZWaveIdentity(12, 1, 123)));
+                var light1_2_2 = group1_2.AddLight(new Light(new ZWaveIdentity(12, 2, 123)));
+                var light1_2_3 = group1_2.AddLight(new Light(new ZWaveIdentity(12, 3, 123)));
 
                 var group1_3 = project1.CreateGroup(x => x.Name = "1.3");
-                var light1_3_1 = group1_3.AddLight(new Light(13, 1, 123));
-                var light1_3_2 = group1_3.AddLight(new Light(13, 2, 123));
-                var light1_3_3 = group1_3.AddLight(new Light(13, 3, 123));
+                var light1_3_1 = group1_3.AddLight(new Light(new ZWaveIdentity(13, 1, 123)));
+                var light1_3_2 = group1_3.AddLight(new Light(new ZWaveIdentity(13, 2, 123)));
+                var light1_3_3 = group1_3.AddLight(new Light(new ZWaveIdentity(13, 3, 123)));
 
                 var project2 = model.CreateProject(x => x.Name = "1");
 
                 var group2_1 = project2.CreateGroup(x => x.Name = "2.1");
-                var light2_1_1 = group2_1.AddLight(new Light(21, 1, 123));
-                var light2_1_2 = group2_1.AddLight(new Light(21, 2, 123));
-                var light2_1_3 = group2_1.AddLight(new Light(21, 3, 123));
+                var light2_1_1 = group2_1.AddLight(new Light(new ZWaveIdentity(21, 1, 123)));
+                var light2_1_2 = group2_1.AddLight(new Light(new ZWaveIdentity(21, 2, 123)));
+                var light2_1_3 = group2_1.AddLight(new Light(new ZWaveIdentity(21, 3, 123)));
 
                 var group2_2 = project2.CreateGroup(x => x.Name = "2.2");
-                var light2_2_1 = group2_2.AddLight(new Light(22, 1, 123));
-                var light2_2_2 = group2_2.AddLight(new Light(22, 2, 123));
-                var light2_2_3 = group2_2.AddLight(new Light(22, 3, 123));
+                var light2_2_1 = group2_2.AddLight(new Light(new ZWaveIdentity(22, 1, 123)));
+                _expectedIdentity = new ZWaveIdentity(22, 2, 111);
+                var light2_2_2 = group2_2.AddLight(new Light(_expectedIdentity));
+                var light2_2_2_2 = group2_2.AddLight(new Light(new ZWaveIdentity(22, 2, 222)));
+                var light2_2_3 = group2_2.AddLight(new Light(new ZWaveIdentity(22, 3, 123)));
 
                 var group2_3 = project2.CreateGroup(x => x.Name = "2.3");
-                var light2_3_1 = group2_3.AddLight(new Light(23, 1, 123));
-                var light2_3_2 = group2_3.AddLight(new Light(23, 2, 123));
-                var light2_3_3 = group2_3.AddLight(new Light(23, 3, 123));
+                var light2_3_1 = group2_3.AddLight(new Light(new ZWaveIdentity(23, 1, 123)));
+                var light2_3_2 = group2_3.AddLight(new Light(new ZWaveIdentity(23, 2, 123)));
+                var light2_3_3 = group2_3.AddLight(new Light(new ZWaveIdentity(23, 3, 123)));
 
-                uint homeId = 22;
-                byte deviceId = 2;
 
-                var found = model.FindLight(homeId, deviceId);
-                found.ZWaveHomeId.ShouldEqual(homeId);
-                found.ZWaveDeviceId.ShouldEqual(deviceId);
+                var found = model.FindLight(_expectedIdentity);
+                found.ZWaveIdentity.ShouldEqual(_expectedIdentity);
                 found.ParentGroup.ShouldBeSameAs(group2_2);
                 found.ParentGroup.ParentProject.ShouldBeSameAs(project2);
             }
@@ -65,14 +66,25 @@ namespace UnitTests.ZBuildLights.Core.Models
         public class When_getting_all_lights
         {
             private Light[] _result;
+            private ZWaveIdentity _identity1;
+            private ZWaveIdentity _identity2;
+            private ZWaveIdentity _identity3;
+            private ZWaveIdentity _identity4;
 
             [SetUp]
             public void ContextSetup()
             {
                 var model = new MasterModel();
                 var group = model.CreateProject().CreateGroup();
-                group.AddLight(new Light(1, 11, 123)).AddLight(new Light(2, 22, 123));
-                model.AddUnassignedLights(new[] { new Light(3, 33, 123), new Light(4, 44, 123) });
+                _identity1 = new ZWaveIdentity(1, 11, 123);
+                _identity2 = new ZWaveIdentity(2, 22, 123);
+                _identity3 = new ZWaveIdentity(3, 33, 123);
+                _identity4 = new ZWaveIdentity(4, 44, 123);
+
+                group
+                    .AddLight(new Light(_identity1))
+                    .AddLight(new Light(_identity2));
+                model.AddUnassignedLights(new[] { new Light(_identity3), new Light(_identity4) });
 
                 _result = model.AllLights;
             }
@@ -80,15 +92,15 @@ namespace UnitTests.ZBuildLights.Core.Models
             [Test]
             public void Should_include_lights_in_groups()
             {
-                _result.Any(x => x.ZWaveHomeId.Equals(1)).ShouldBeTrue();
-                _result.Any(x => x.ZWaveHomeId.Equals(2)).ShouldBeTrue();
+                _result.Any(x => x.ZWaveIdentity.Equals(_identity1)).ShouldBeTrue();
+                _result.Any(x => x.ZWaveIdentity.Equals(_identity2)).ShouldBeTrue();
             }
 
             [Test]
             public void Should_include_lights_that_are_unassigned()
             {
-                _result.Any(x => x.ZWaveHomeId.Equals(3)).ShouldBeTrue();
-                _result.Any(x => x.ZWaveHomeId.Equals(4)).ShouldBeTrue();
+                _result.Any(x => x.ZWaveIdentity.Equals(_identity3)).ShouldBeTrue();
+                _result.Any(x => x.ZWaveIdentity.Equals(_identity4)).ShouldBeTrue();
             }
 
             [Test]
@@ -167,13 +179,14 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                _light = new Light(11, 23, 123);
+                var zWaveIdentity = new ZWaveIdentity(11, 23, 222);
+                _light = new Light(zWaveIdentity);
                 _model = new MasterModel();
                 _destinationGroup = _model.CreateProject().CreateGroup();
 
                 _model.AddUnassignedLight(_light);
 
-                _model.AssignLightToGroup(11, 23, _destinationGroup.Id);
+                _model.AssignLightToGroup(zWaveIdentity, _destinationGroup.Id);
             }
 
             [Test]
@@ -210,10 +223,11 @@ namespace UnitTests.ZBuildLights.Core.Models
                 _fooGroup = model.CreateProject().CreateGroup();
                 _barGroup = model.CreateProject().CreateGroup();
 
-                _light = new Light(1, 2, 123);
+                var zWaveIdentity = new ZWaveIdentity(1, 2, 123);
+                _light = new Light(zWaveIdentity);
                 _fooGroup.AddLight(_light);
 
-                model.AssignLightToGroup(1, 2, _barGroup.Id);
+                model.AssignLightToGroup(zWaveIdentity, _barGroup.Id);
             }
 
             [Test]
@@ -226,7 +240,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_add_the_light_to_the_new_group()
             {
                 _barGroup.Lights.Length.ShouldEqual(1);
-                _barGroup.Lights[0].ZWaveHomeId.ShouldEqual((uint) 1);
+                _barGroup.Lights[0].ZWaveIdentity.ValueId.ShouldEqual((ulong)123);
                 _light.ParentGroup.ShouldBeSameAs(_barGroup);
             }
         }
@@ -327,11 +341,11 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 _masterModel = new MasterModel();
                 var notDeleted = _masterModel.CreateProject(x => x.Name = "Not Deleted");
-                notDeleted.CreateGroup().AddLight(new Light(1, 11, 123)).AddLight(new Light(1, 12, 123));
-                notDeleted.CreateGroup().AddLight(new Light(1, 13, 123)).AddLight(new Light(1, 14, 123));
+                notDeleted.CreateGroup().AddLight(new Light(new ZWaveIdentity(1, 11, 123))).AddLight(new Light(new ZWaveIdentity(1, 12, 123)));
+                notDeleted.CreateGroup().AddLight(new Light(new ZWaveIdentity(1, 13, 123))).AddLight(new Light(new ZWaveIdentity(1, 14, 123)));
                 var toBeDeleted = _masterModel.CreateProject(x => x.Name = "To Be Deleted");
-                toBeDeleted.CreateGroup().AddLight(new Light(1, 21, 123)).AddLight(new Light(1, 22, 123));
-                toBeDeleted.CreateGroup().AddLight(new Light(1, 23, 123)).AddLight(new Light(1, 24, 123));
+                toBeDeleted.CreateGroup().AddLight(new Light(new ZWaveIdentity(1, 21, 123))).AddLight(new Light(new ZWaveIdentity(1, 22, 123)));
+                toBeDeleted.CreateGroup().AddLight(new Light(new ZWaveIdentity(1, 23, 123))).AddLight(new Light(new ZWaveIdentity(1, 24, 123)));
 
                 _masterModel.RemoveProject(toBeDeleted.Id);
             }
@@ -341,10 +355,10 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 var unassignedLights = _masterModel.UnassignedLights;
                 unassignedLights.Length.ShouldEqual(4);
-                unassignedLights.Any(x => x.ZWaveDeviceId == (byte) 21).ShouldBeTrue();
-                unassignedLights.Any(x => x.ZWaveDeviceId == (byte) 22).ShouldBeTrue();
-                unassignedLights.Any(x => x.ZWaveDeviceId == (byte) 23).ShouldBeTrue();
-                unassignedLights.Any(x => x.ZWaveDeviceId == (byte) 24).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveIdentity.NodeId == (byte) 21).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveIdentity.NodeId == (byte) 22).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveIdentity.NodeId == (byte) 23).ShouldBeTrue();
+                unassignedLights.Any(x => x.ZWaveIdentity.NodeId == (byte) 24).ShouldBeTrue();
             }
 
             [Test]
@@ -354,10 +368,10 @@ namespace UnitTests.ZBuildLights.Core.Models
                 var undeletedProject = _masterModel.Projects.Single(x => x.Name == "Not Deleted");
                 var assignedLights = undeletedProject.Groups.SelectMany(x => x.Lights).ToArray();
                 assignedLights.Length.ShouldEqual(4);
-                assignedLights.Any(x => x.ZWaveDeviceId == (byte) 11).ShouldBeTrue();
-                assignedLights.Any(x => x.ZWaveDeviceId == (byte) 12).ShouldBeTrue();
-                assignedLights.Any(x => x.ZWaveDeviceId == (byte) 13).ShouldBeTrue();
-                assignedLights.Any(x => x.ZWaveDeviceId == (byte) 14).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveIdentity.NodeId == (byte) 11).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveIdentity.NodeId == (byte) 12).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveIdentity.NodeId == (byte) 13).ShouldBeTrue();
+                assignedLights.Any(x => x.ZWaveIdentity.NodeId == (byte) 14).ShouldBeTrue();
             }
 
             [Test]

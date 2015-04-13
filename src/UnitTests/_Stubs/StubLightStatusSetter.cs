@@ -22,7 +22,7 @@ namespace UnitTests._Stubs
             foreach (var light in lights)
             {
                 _lights.Add(light);
-                var key = MakeKey(light.ZWaveHomeId, light.ZWaveDeviceId);
+                var key = MakeKey(light.ZWaveIdentity);
                 if (_stubStates.ContainsKey(key))
                     light.SwitchState = _stubStates[key];
                 else
@@ -35,16 +35,16 @@ namespace UnitTests._Stubs
             get { return _lights.ToArray(); }
         }
 
-        public StubLightStatusSetter StubStatus(uint homeId, byte deviceId, SwitchState switchState)
+        public StubLightStatusSetter StubStatus(ZWaveIdentity identity, SwitchState switchState)
         {
-            var key = MakeKey(homeId, deviceId);
+            var key = MakeKey(identity);
             _stubStates[key] = switchState;
             return this;
         }
 
-        private static string MakeKey(uint homeId, byte deviceId)
+        private static string MakeKey(ZWaveIdentity identity)
         {
-            return string.Format("{0}-{1}", homeId, deviceId);
+            return identity.ToString();
         }
     }
 }

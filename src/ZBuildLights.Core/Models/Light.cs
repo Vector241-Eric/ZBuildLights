@@ -1,33 +1,37 @@
 namespace ZBuildLights.Core.Models
 {
-    public class Light
+    public class Light : IHasZWaveIdentity
     {
-        public byte ZWaveDeviceId { get; private set; }
-        public uint ZWaveHomeId { get; private set; }
-        public ulong ZWaveValueId { get; private set; }
         public LightGroup ParentGroup { get; set; }
+        public ZWaveIdentity ZWaveIdentity { get; private set; }
 
-        public Light(uint zwaveHomeId, byte zWaveDeviceId, ulong valueId)
+        public Light(ZWaveIdentity identity)
         {
-            ZWaveHomeId = zwaveHomeId;
-            ZWaveDeviceId = zWaveDeviceId;
-            ZWaveValueId = valueId;
             SwitchState = SwitchState.Unknown;
             Color = LightColor.Unknown;
+            ZWaveIdentity = identity;
         }
+
+//        public Light(uint homeId, byte nodeId, ulong valueId) : this(new ZWaveIdentity(homeId, nodeId, valueId))
+//        {
+//        }
 
         public LightColor Color { get; set; }
         public SwitchState SwitchState { get; set; }
-        public bool IsInGroup { get { return ParentGroup != null; } }
+
+        public bool IsInGroup
+        {
+            get { return ParentGroup != null; }
+        }
 
         public override string ToString()
         {
-            return string.Format("Home: {0} Id:{1}, State: {2}", ZWaveHomeId, ZWaveDeviceId, SwitchState);
+            return string.Format("Light: {0}", ZWaveIdentity);
         }
 
         protected bool Equals(Light other)
         {
-            return ZWaveDeviceId == other.ZWaveDeviceId && ZWaveHomeId == other.ZWaveHomeId;
+            return Equals(ZWaveIdentity, other.ZWaveIdentity);
         }
 
         public override bool Equals(object obj)
@@ -40,10 +44,7 @@ namespace ZBuildLights.Core.Models
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (ZWaveDeviceId.GetHashCode()*397) ^ (int) ZWaveHomeId;
-            }
+            return (ZWaveIdentity != null ? ZWaveIdentity.GetHashCode() : 0);
         }
 
         public void Unassign()

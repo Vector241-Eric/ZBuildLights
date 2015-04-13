@@ -64,7 +64,7 @@ namespace UnitTests.ZBuildLights.Core.Repository
                 fileStorage.Stub(x => x.ReadMasterModel()).Return(_existingModel);
 
                 var unassignedLightService = new StubUnassignedLightService()
-                    .WithUnassignedLight(new Light(1, 3, 123));
+                    .WithUnassignedLight(new Light(new ZWaveIdentity(1, 3, 123)));
 
                 var repository = new MasterModelRepository(fileStorage, unassignedLightService);
                 _result = repository.GetCurrent();
@@ -80,8 +80,8 @@ namespace UnitTests.ZBuildLights.Core.Repository
             public void Should_add_the_unassigned_lights_from_the_network()
             {
                 _result.UnassignedLights.Length.ShouldEqual(1);
-                _result.UnassignedLights[0].ZWaveHomeId.ShouldEqual((uint)1);
-                _result.UnassignedLights[0].ZWaveDeviceId.ShouldEqual((byte)3);
+                _result.UnassignedLights[0].ZWaveIdentity.HomeId.ShouldEqual((uint)1);
+                _result.UnassignedLights[0].ZWaveIdentity.NodeId.ShouldEqual((byte)3);
             }
         }
 

@@ -373,10 +373,11 @@
 
             var homeId = $('#edit-light-homeid').val();
             var deviceId = $('#edit-light-deviceid').val();
+            var valueId = $('#edit-light-valueid').val();
             var groupId = $('#select-light-group').val();
             var colorId = $('#select-light-color').val();
 
-            $.post(Admin.Urls.editLight, { homeId: homeId, deviceId: deviceId, groupId: groupId, colorId: colorId })
+            $.post(Admin.Urls.editLight, { homeId: homeId, deviceId: deviceId, valueId: valueId, groupId: groupId, colorId: colorId })
                 .always(function() {
                     $('#edit-light-modal').modal('hide');
                     spinner.hide();
@@ -392,11 +393,13 @@
 
             var homeId = container.data('homeid');
             var deviceId = container.data('deviceid');
+            var valueId = container.data('valueid');
             var group = container.data('group');
             var color = container.data('color');
 
             $('#edit-light-homeid').val(homeId);
             $('#edit-light-deviceid').val(deviceId);
+            $('#edit-light-valueid').val(valueId);
             selectColor(color);
             $('#select-light-group').val(group);
             $('#edit-light-modal').modal('show');

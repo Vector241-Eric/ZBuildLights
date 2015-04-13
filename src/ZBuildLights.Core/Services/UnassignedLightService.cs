@@ -19,14 +19,11 @@ namespace ZBuildLights.Core.Services
 
             var switchesAlreadyInAProject = allSwitches
                 .Where(sw =>
-                    allLights.Any(l =>
-                        l.ZWaveDeviceId.Equals(sw.NodeId) &&
-                        l.ZWaveHomeId.Equals(sw.HomeId)
-                        )
+                    allLights.Any(l =>l.ZWaveIdentity.Equals(sw.ZWaveIdentity))
                 ).ToArray();
 
             var newSwitches = allSwitches.Except(switchesAlreadyInAProject);
-            var newLights = newSwitches.Select(x => new Light(x.HomeId, x.NodeId, x.ValueId)).ToArray();
+            var newLights = newSwitches.Select(x => new Light(x.ZWaveIdentity)).ToArray();
 
             masterModel.AddUnassignedLights(newLights);
         }
