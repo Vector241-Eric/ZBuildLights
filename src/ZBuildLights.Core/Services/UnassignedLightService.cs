@@ -19,7 +19,12 @@ namespace ZBuildLights.Core.Services
 
             var switchesAlreadyInAProject = allSwitches
                 .Where(sw =>
-                    allLights.Any(l =>l.ZWaveIdentity.Equals(sw.ZWaveIdentity))
+                    allLights.Any(l =>
+                    {
+                        var lightIdentity = l.ZWaveIdentity;
+                        var switchIdentity = sw.ZWaveIdentity;
+                        return lightIdentity.Equals(switchIdentity);
+                    })
                 ).ToArray();
 
             var newSwitches = allSwitches.Except(switchesAlreadyInAProject);
