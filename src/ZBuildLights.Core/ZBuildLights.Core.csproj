@@ -54,9 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CruiseControl\CcReader.cs" />
-    <Compile Include="CruiseControl\ICcReader.cs" />
-    <Compile Include="CruiseControl\XmlObjectModel.cs" />
+    <Compile Include="Services\CruiseControl\CcReader.cs" />
+    <Compile Include="Services\CruiseControl\ICcReader.cs" />
+    <Compile Include="Models\CruiseControl\XmlObjectModel.cs" />
     <Compile Include="Models\CruiseControl\CcProjectViewModel.cs" />
     <Compile Include="Models\CruiseControl\CcProjectCollectionViewModel.cs" />
     <Compile Include="Models\CruiseProjectAssociation.cs" />

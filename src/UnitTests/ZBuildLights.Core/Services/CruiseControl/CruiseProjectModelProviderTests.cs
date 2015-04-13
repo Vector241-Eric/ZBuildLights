@@ -3,7 +3,6 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Should;
 using UnitTests._Bases;
-using ZBuildLights.Core.CruiseControl;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Models.CruiseControl;
 using ZBuildLights.Core.Models.Requests;

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace ZBuildLights.Core.CruiseControl
+namespace ZBuildLights.Core.Models.CruiseControl
 {
     [GeneratedCode("xsd", "4.0.30319.18020")]
     [Serializable]

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ZBuildLights.Core.CruiseControl;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Models.CruiseControl;
 using ZBuildLights.Web.Models.Admin;

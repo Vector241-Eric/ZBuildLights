@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using ZBuildLights.Core.CruiseControl;
 using ZBuildLights.Core.Models.CruiseControl;
 using ZBuildLights.Core.Models.Requests;
 using ZBuildLights.Core.Wrappers;
