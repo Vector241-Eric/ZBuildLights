@@ -1,12 +1,13 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using NLog;
 using OpenZWaveDotNet;
 
 namespace ZWaveControl
 {
     public static class ZWaveNotificationHandler
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private static List<Node> _nodes = new List<Node>();
 
         public static Node[] GetNodes()
@@ -21,56 +22,43 @@ namespace ZWaveControl
             switch (notificationType)
             {
                 case ZWNotification.Type.ValueAdded:
-                {
-                    var value = notification.GetValueID();
-                    Debug.WriteLine("Node {0} Value Added: {1} - {2} - {3}", notification.GetNodeId(),
-                        manager.GetValueLabel(value), GetValue(value, manager), manager.GetValueUnits(value));
-                    var node = GetNode(notification.GetHomeId(), notification.GetNodeId());
-                    if (node != null)
+                    var addedValue = notification.GetValueID();
+                    Log.Debug("Node {0} Value Added: {1} - {2} - {3}", notification.GetNodeId(),
+                        manager.GetValueLabel(addedValue), GetValue(addedValue, manager),
+                        manager.GetValueUnits(addedValue));
+                    var vaNode = GetNode(notification.GetHomeId(), notification.GetNodeId());
+                    if (vaNode != null)
                     {
-                        node.Values.Add(value);
+                        vaNode.Values.Add(addedValue);
                     }
                     break;
-                }
                 case ZWNotification.Type.ValueRemoved:
-                {
-                    var value = notification.GetValueID();
-                    Debug.WriteLine("Node {0} Value Removed", notification.GetNodeId());
-                    var node = GetNode(notification.GetHomeId(), notification.GetNodeId());
-                    if (node != null)
+                    var removedValue = notification.GetValueID();
+                    Log.Debug("Node {0} Value Removed", notification.GetNodeId());
+                    var vrNode = GetNode(notification.GetHomeId(), notification.GetNodeId());
+                    if (vrNode != null)
                     {
-                        node.Values.Remove(value);
+                        vrNode.Values.Remove(removedValue);
                     }
                     break;
-                }
                 case ZWNotification.Type.ValueChanged:
-                {
-                    var value = notification.GetValueID();
-                    Debug.WriteLine("Node {0} Value Changed: {1} - {2} - {3}", notification.GetNodeId(),
-                        manager.GetValueLabel(value), GetValue(value, manager), manager.GetValueUnits(value));
+                    var changedValue = notification.GetValueID();
+                    Log.Debug("Node {0} Value Changed: {1} - {2} - {3}", notification.GetNodeId(),
+                        manager.GetValueLabel(changedValue), GetValue(changedValue, manager),
+                        manager.GetValueUnits(changedValue));
                     break;
-                }
 
-                case ZWNotification.Type.ValueRefreshed:
-                    Debug.WriteLine("Value Refreshed");
-                    break;
-                case ZWNotification.Type.Group:
-                    Debug.WriteLine("Group");
-                    break;
                 case ZWNotification.Type.NodeNew:
-                {
                     // if the node is not in the z-wave config this will be called first
-                    var node = new Node
+                    var newNode = new Node
                     {
                         Id = notification.GetNodeId(),
                         HomeId = notification.GetHomeId()
                     };
-                    Debug.WriteLine("Node New: {0}, Home: {1}", node.Id, node.HomeId);
-                    _nodes.Add(node);
+                    Log.Debug("Node New: {0}, Home: {1}", newNode.Id, newNode.HomeId);
+                    _nodes.Add(newNode);
                     break;
-                }
                 case ZWNotification.Type.NodeAdded:
-                {
                     // if the node is in the z-wave config then this will be the first node notification
                     if (GetNode(notification.GetHomeId(), notification.GetNodeId()) == null)
                     {
@@ -79,83 +67,26 @@ namespace ZWaveControl
                             Id = notification.GetNodeId(),
                             HomeId = notification.GetHomeId()
                         };
-                        Debug.WriteLine("Node Added: {0}, Home: {1}", node.Id, node.HomeId);
+                        Log.Debug("Node Added: {0}, Home: {1}", node.Id, node.HomeId);
                         _nodes.Add(node);
                     }
                     break;
-                }
 
-                case ZWNotification.Type.NodeRemoved:
-                    Debug.WriteLine("NodeRemoved");
-                    break;
-                case ZWNotification.Type.NodeProtocolInfo:
-                    Debug.WriteLine("NodeProtocolInfo");
-                    break;
                 case ZWNotification.Type.NodeNaming:
-                {
-                    var node = GetNode(notification.GetHomeId(), notification.GetNodeId());
-                    if (node != null)
+                    var namedNode = GetNode(notification.GetHomeId(), notification.GetNodeId());
+                    if (namedNode != null)
                     {
-                        node.Name = manager.GetNodeName(node.HomeId, node.Id);
-                        node.Manufacturer = manager.GetNodeManufacturerName(node.HomeId, node.Id);
-                        node.Product = manager.GetNodeProductName(node.HomeId, node.Id);
-                        node.Location = manager.GetNodeLocation(node.HomeId, node.Id);
+                        namedNode.Name = manager.GetNodeName(namedNode.HomeId, namedNode.Id);
+                        namedNode.Manufacturer = manager.GetNodeManufacturerName(namedNode.HomeId, namedNode.Id);
+                        namedNode.Product = manager.GetNodeProductName(namedNode.HomeId, namedNode.Id);
+                        namedNode.Location = manager.GetNodeLocation(namedNode.HomeId, namedNode.Id);
 
-                        Debug.WriteLine("Name: {0}, Manufacturer: {1}, Product: {2}, Location: {3}", node.Name,
-                            node.Manufacturer, node.Product, node.Location);
+                        Log.Debug("Name: {0}, Manufacturer: {1}, Product: {2}, Location: {3}", namedNode.Name,
+                            namedNode.Manufacturer, namedNode.Product, namedNode.Location);
                     }
                     break;
-                }
-                case ZWNotification.Type.NodeEvent:
-                    Debug.WriteLine("Node Event");
-                    break;
-                case ZWNotification.Type.PollingDisabled:
-                    Debug.WriteLine("Polling Disabled");
-                    break;
-                case ZWNotification.Type.PollingEnabled:
-                    Debug.WriteLine("Polling Enabled");
-                    break;
-                case ZWNotification.Type.SceneEvent:
-                    Debug.WriteLine("Scene Event");
-                    break;
-                case ZWNotification.Type.CreateButton:
-                    Debug.WriteLine("Create Button");
-                    break;
-                case ZWNotification.Type.DeleteButton:
-                    Debug.WriteLine("Delete Button");
-                    break;
-                case ZWNotification.Type.ButtonOn:
-                    Debug.WriteLine("Button On");
-                    break;
-                case ZWNotification.Type.ButtonOff:
-                    Debug.WriteLine("Button Off");
-                    break;
-                case ZWNotification.Type.DriverReady:
-                    Debug.WriteLine("Driver Ready");
-                    break;
-                case ZWNotification.Type.DriverFailed:
-                    Debug.WriteLine("Driver Failed");
-                    break;
-                case ZWNotification.Type.DriverReset:
-                    Debug.WriteLine("Driver Reset");
-                    break;
-                case ZWNotification.Type.EssentialNodeQueriesComplete:
-                    Debug.WriteLine("Essential Node Queries Complete");
-                    break;
-                case ZWNotification.Type.NodeQueriesComplete:
-                    Debug.WriteLine("Node Queries Complete");
-                    break;
-                case ZWNotification.Type.AwakeNodesQueried:
-                    Debug.WriteLine("Awake Nodes Queried");
-                    break;
-                case ZWNotification.Type.AllNodesQueried:
-                    Debug.WriteLine("All Nodes Queried");
-                    break;
-                case ZWNotification.Type.AllNodesQueriedSomeDead:
-                    Debug.WriteLine("All Nodes Queried Some Dead");
-                    break;
-                case ZWNotification.Type.Notification:
-                    Debug.WriteLine("Notification");
+                default:
+                    Log.Trace("ZWave Notification: {0}", notificationType.ToString());
                     break;
             }
         }
