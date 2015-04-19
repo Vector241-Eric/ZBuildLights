@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Xml.Serialization;
+using NLog;
 using ZBuildLights.Core.Models.CruiseControl;
 using ZBuildLights.Core.Models.Requests;
 
@@ -9,6 +10,7 @@ namespace ZBuildLights.Core.Services.CruiseControl
 {
     public class CcReader : ICcReader
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         public NetworkResponse<Projects> GetStatus(string url)
         {
             try
@@ -28,6 +30,7 @@ namespace ZBuildLights.Core.Services.CruiseControl
             }
             catch (Exception e)
             {
+                Log.ErrorException("Exception when trying to get status from Cruise server.", e);
                 return NetworkResponse.Fail<Projects>(string.Format("{0}: {1}", e.GetType().Name, e.Message));
             }
         }
