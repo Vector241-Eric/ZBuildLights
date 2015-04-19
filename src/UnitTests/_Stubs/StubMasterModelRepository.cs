@@ -11,6 +11,7 @@ namespace UnitTests._Stubs
         {
             _currentModel = model;
         }
+
         public MasterModel GetCurrent()
         {
             return _currentModel;
