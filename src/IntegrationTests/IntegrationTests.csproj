@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Mapping\AutoMapperConfigurationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZBuildLights.Core\Services\CruiseControl\CcReaderTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\SystemClockTests.cs" />
     <Compile Include="ZBuildLights.Core\Services\JsonSerializerServiceTests.cs" />
     <Compile Include="ZWaveControl\ZWaveNetworkTests.cs" />
