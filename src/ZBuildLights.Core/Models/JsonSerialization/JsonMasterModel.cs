@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ZBuildLights.Core.Enumerations;
 
 namespace ZBuildLights.Core.Models.JsonSerialization
 {
@@ -58,11 +59,13 @@ namespace ZBuildLights.Core.Models.JsonSerialization
         public JsonLightGroup[] Groups { get; set; }
         public string CcXmlUrl { get; set; }
         public JsonCruiseProjectAssociation[] CruiseProjectAssociations { get; set; }
+        public int StatusModeValue { get; set; }
 
         public Action<Project> InitializeDomainObject()
         {
             return p =>
             {
+                p.StatusMode = StatusMode.FromValue(StatusModeValue);
                 p.Name = Name;
                 p.Id = Id;
                 p.CcXmlUrl = CcXmlUrl;

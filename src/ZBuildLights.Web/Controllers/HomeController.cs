@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using ZBuildLights.Core.Repository;
 using ZBuildLights.Core.Services;
 using ZBuildLights.Web.Models.Home;
 
@@ -7,18 +6,18 @@ namespace ZBuildLights.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IMasterModelRepository _masterModelRepository;
+        private readonly ISystemStatusProvider _systemStatusProvider;
         private readonly ILightDisplayUpdater _lightDisplayUpdater;
 
-        public HomeController(IMasterModelRepository masterModelRepository, ILightDisplayUpdater lightDisplayUpdater)
+        public HomeController(ISystemStatusProvider systemStatusProvider, ILightDisplayUpdater lightDisplayUpdater)
         {
-            _masterModelRepository = masterModelRepository;
+            _systemStatusProvider = systemStatusProvider;
             _lightDisplayUpdater = lightDisplayUpdater;
         }
 
         public ActionResult Index()
         {
-            var masterModel = _masterModelRepository.GetCurrent();
+            var masterModel = _systemStatusProvider.GetSystemStatus();
             var projects = masterModel.Projects;
             var model = new ViewModel {Projects = projects};
             return View(model);
