@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using Should;
 using UnitTests._Stubs;
@@ -128,6 +127,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _cruiseReader.GetLookupCountForUrl(_cruiseServerNotReferenced.Url).ShouldEqual(0);
             }
         }
+
         [TestFixture]
         public class When_all_projects_are_passing_and_some_are_checking_modifications
         {
@@ -147,7 +147,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _zBuildLightsProject.CruiseProjectAssociations = new[]
                 {
                     new CruiseProjectAssociation {Name = "Project 1.1", ServerId = cruiseServer.Id},
-                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id},
+                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id}
                 };
 
                 var ccServerData = new Projects
@@ -204,7 +204,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _zBuildLightsProject.CruiseProjectAssociations = new[]
                 {
                     new CruiseProjectAssociation {Name = "Project 1.1", ServerId = cruiseServer1.Id},
-                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer1.Id},
+                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer1.Id}
                 };
 
                 var cruiseProjects = new Projects
@@ -264,7 +264,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _zBuildLightsProject.CruiseProjectAssociations = new[]
                 {
                     new CruiseProjectAssociation {Name = "Project 1.1", ServerId = cruiseServer.Id},
-                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id},
+                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id}
                 };
 
                 var ccReaderDataServer1 = new Projects
@@ -325,7 +325,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _zBuildLightsProject.CruiseProjectAssociations = new[]
                 {
                     new CruiseProjectAssociation {Name = "Project 1.1", ServerId = cruiseServer.Id},
-                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id},
+                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id}
                 };
 
                 var ccReaderDataServer1 = new Projects
@@ -387,7 +387,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 {
                     new CruiseProjectAssociation {Name = "Project 1.1", ServerId = cruiseServer.Id},
                     new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id},
-                    new CruiseProjectAssociation {Name = "Project 1.3", ServerId = cruiseServer.Id},
+                    new CruiseProjectAssociation {Name = "Project 1.3", ServerId = cruiseServer.Id}
                 };
 
                 var ccReaderDataServer1 = new Projects
@@ -451,14 +451,15 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _zBuildLightsProject.CruiseProjectAssociations = new[]
                 {
                     new CruiseProjectAssociation {Name = "Project 1.1", ServerId = cruiseServer.Id},
-                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id},
+                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id}
                 };
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(masterModel);
 
                 var cruiseReader = new StubCcReader()
-                    .WithResponse(cruiseServer.Url, NetworkResponse.Fail<Projects>("Could not reach server or something bad happened."));
+                    .WithResponse(cruiseServer.Url,
+                        NetworkResponse.Fail<Projects>("Could not reach server or something bad happened."));
 
                 var updater = new ProjectStatusUpdater(repository, cruiseReader);
                 updater.UpdateAllProjectStatuses();
@@ -496,7 +497,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _zBuildLightsProject.CruiseProjectAssociations = new[]
                 {
                     new CruiseProjectAssociation {Name = "Project 1.1", ServerId = cruiseServer.Id},
-                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id},
+                    new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id}
                 };
 
                 var ccReaderDataServer1 = new Projects
@@ -508,7 +509,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                             .StatusString("I'm a bad value"),
                         New.ProjectsProject.Name("Project 1.2")
                             .Activity(CcBuildActivity.Sleeping)
-                            .Status(CcBuildStatus.Success),
+                            .Status(CcBuildStatus.Success)
                     }
                 };
 
@@ -555,7 +556,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 {
                     new CruiseProjectAssociation {Name = "Project 1.1", ServerId = cruiseServer.Id},
                     new CruiseProjectAssociation {Name = "Project 1.2", ServerId = cruiseServer.Id},
-                    new CruiseProjectAssociation {Name = "Project Not On Server", ServerId = cruiseServer.Id},
+                    new CruiseProjectAssociation {Name = "Project Not On Server", ServerId = cruiseServer.Id}
                 };
 
                 var ccReaderDataServer1 = new Projects
