@@ -4,11 +4,11 @@ using ZBuildLights.Core.Models;
 
 namespace ZBuildLights.Core.Services
 {
-    public class LightStatusSetter : ILightStatusSetter
+    public class SetModelStatusFromNetworkSwitches : ISetModelStatusFromNetworkSwitches
     {
         private readonly IZWaveNetwork _network;
 
-        public LightStatusSetter(IZWaveNetwork network)
+        public SetModelStatusFromNetworkSwitches(IZWaveNetwork network)
         {
             _network = network;
         }

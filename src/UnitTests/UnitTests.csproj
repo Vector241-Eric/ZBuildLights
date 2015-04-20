@@ -74,7 +74,7 @@
     <Compile Include="_Stubs\StorageStub.cs" />
     <Compile Include="_Stubs\StubApplicationConfiguration.cs" />
     <Compile Include="_Stubs\StubCcReader.cs" />
-    <Compile Include="_Stubs\StubLightStatusSetter.cs" />
+    <Compile Include="_Stubs\StubSetModelStatusFromNetworkSwitches.cs" />
     <Compile Include="_Stubs\StubMapper.cs" />
     <Compile Include="_Stubs\StubMasterModelRepository.cs" />
     <Compile Include="_Stubs\StubUnassignedLightService.cs" />

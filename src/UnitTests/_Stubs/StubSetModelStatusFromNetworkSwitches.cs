@@ -4,14 +4,14 @@ using ZBuildLights.Core.Services;
 
 namespace UnitTests._Stubs
 {
-    public class StubLightStatusSetter : ILightStatusSetter
+    public class StubSetModelStatusFromNetworkSwitches : ISetModelStatusFromNetworkSwitches
     {
         private readonly List<Light> _lights = new List<Light>();
         private SwitchState _defaultState;
 
         private readonly Dictionary<string, SwitchState> _stubStates = new Dictionary<string, SwitchState>();
 
-        public StubLightStatusSetter DefaultStatus(SwitchState stubState)
+        public StubSetModelStatusFromNetworkSwitches DefaultStatus(SwitchState stubState)
         {
             _defaultState = stubState;
             return this;
@@ -35,7 +35,7 @@ namespace UnitTests._Stubs
             get { return _lights.ToArray(); }
         }
 
-        public StubLightStatusSetter StubStatus(ZWaveIdentity identity, SwitchState switchState)
+        public StubSetModelStatusFromNetworkSwitches StubStatus(ZWaveIdentity identity, SwitchState switchState)
         {
             var key = MakeKey(identity);
             _stubStates[key] = switchState;

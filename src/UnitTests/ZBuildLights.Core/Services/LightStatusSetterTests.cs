@@ -39,7 +39,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _network = S<IZWaveNetwork>();
                 _network.Stub(x => x.GetAllSwitches()).Return(switches);
 
-                var statusProvider = new LightStatusSetter(_network);
+                var statusProvider = new SetModelStatusFromNetworkSwitches(_network);
                 statusProvider.SetLightStatus(_lights);
             }
 
@@ -85,7 +85,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var network = S<IZWaveNetwork>();
                 network.Stub(x => x.GetAllSwitches()).Return(switches);
 
-                var statusProvider = new LightStatusSetter(network);
+                var statusProvider = new SetModelStatusFromNetworkSwitches(network);
                 statusProvider.SetLightStatus(_lights);
             }
 
