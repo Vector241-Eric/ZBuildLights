@@ -16,12 +16,10 @@ namespace ZBuildLights.Core.Enumerations
         private StatusMode(int id, string displayName, params LightColor[] lights)
             : base(id, displayName)
         {
-            StatusLightConfiguration = new StatusLightConfiguration
-            {
-                GreenState = lights.Contains(LightColor.Green) ? SwitchState.On : SwitchState.Off,
-                YellowState = lights.Contains(LightColor.Yellow) ? SwitchState.On : SwitchState.Off,
-                RedState = lights.Contains(LightColor.Red) ? SwitchState.On : SwitchState.Off
-            };
+            StatusLightConfiguration = new StatusLightConfiguration();
+            StatusLightConfiguration[LightColor.Green] = lights.Contains(LightColor.Green) ? SwitchState.On: SwitchState.Off;
+            StatusLightConfiguration[LightColor.Yellow] = lights.Contains(LightColor.Yellow) ? SwitchState.On: SwitchState.Off;
+            StatusLightConfiguration[LightColor.Red] = lights.Contains(LightColor.Red) ? SwitchState.On: SwitchState.Off;
         }
 
         public StatusLightConfiguration StatusLightConfiguration { get; private set; }

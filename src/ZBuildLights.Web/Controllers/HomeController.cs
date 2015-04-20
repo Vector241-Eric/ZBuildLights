@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using ZBuildLights.Core.Repository;
+using ZBuildLights.Core.Services;
 using ZBuildLights.Web.Models.Home;
 
 namespace ZBuildLights.Web.Controllers
@@ -7,10 +8,12 @@ namespace ZBuildLights.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IMasterModelRepository _masterModelRepository;
+        private readonly ILightDisplayUpdater _lightDisplayUpdater;
 
-        public HomeController(IMasterModelRepository masterModelRepository)
+        public HomeController(IMasterModelRepository masterModelRepository, ILightDisplayUpdater lightDisplayUpdater)
         {
             _masterModelRepository = masterModelRepository;
+            _lightDisplayUpdater = lightDisplayUpdater;
         }
 
         public ActionResult Index()
@@ -21,7 +24,6 @@ namespace ZBuildLights.Web.Controllers
             return View(model);
         }
 
-
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -29,10 +31,9 @@ namespace ZBuildLights.Web.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult UpdateLights()
         {
-            ViewBag.Message = "Your contact page.";
-
+            _lightDisplayUpdater.Update();
             return View();
         }
     }

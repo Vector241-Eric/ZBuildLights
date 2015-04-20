@@ -1,21 +1,26 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ZBuildLights.Core.Models
 {
     public class StatusLightConfiguration
     {
-        public SwitchState GreenState { get; set; }
-        public SwitchState YellowState { get; set; }
-        public SwitchState RedState { get; set; }
+        private readonly Dictionary<LightColor, SwitchState> _states = new Dictionary<LightColor, SwitchState>();
 
         private LightSetting[] AsSettings()
         {
             return new[]
             {
-                new LightSetting(LightColor.Green, GreenState),
-                new LightSetting(LightColor.Yellow, YellowState),
-                new LightSetting(LightColor.Red, RedState)
+                new LightSetting(LightColor.Green, this[LightColor.Green]),
+                new LightSetting(LightColor.Yellow, this[LightColor.Yellow]),
+                new LightSetting(LightColor.Red, this[LightColor.Red])
             };
+        }
+
+        public SwitchState this[LightColor color]
+        {
+            get { return _states[color]; }
+            set { _states[color] = value; }
         }
 
         public override string ToString()

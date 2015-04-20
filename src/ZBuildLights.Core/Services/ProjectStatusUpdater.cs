@@ -6,27 +6,23 @@ using ZBuildLights.Core.Enumerations;
 using ZBuildLights.Core.Models;
 using ZBuildLights.Core.Models.CruiseControl;
 using ZBuildLights.Core.Models.Requests;
-using ZBuildLights.Core.Repository;
 using ZBuildLights.Core.Services.CruiseControl;
 
 namespace ZBuildLights.Core.Services
 {
-    public class ProjectStatusUpdater
+    public class ProjectStatusUpdater : IProjectStatusUpdater
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        private readonly IMasterModelRepository _repository;
         private readonly ICcReader _cruiseReader;
 
-        public ProjectStatusUpdater(IMasterModelRepository repository, ICcReader cruiseReader)
+        public ProjectStatusUpdater(ICcReader cruiseReader)
         {
-            _repository = repository;
             _cruiseReader = cruiseReader;
         }
 
-        public void UpdateAllProjectStatuses()
+        public void UpdateAllProjectStatuses(MasterModel masterModel)
         {
-            var masterModel = _repository.GetCurrent();
             var projects = masterModel.Projects;
             var serverIds = projects.SelectMany(x => x.CruiseProjectAssociations)
                 .Select(x => x.ServerId)
@@ -59,7 +55,6 @@ namespace ZBuildLights.Core.Services
                 else
                     project.StatusMode = StatusMode.Broken;
             }
-            _repository.Save(masterModel);
         }
 
         private TEnum[] GetProjectValues<TEnum>(Project project,

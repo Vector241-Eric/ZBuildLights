@@ -72,10 +72,13 @@
     <Compile Include="Services\CruiseControl\ICruiseProjectModelProvider.cs" />
     <Compile Include="Services\CruiseServerManager.cs" />
     <Compile Include="Services\ICruiseServerManager.cs" />
+    <Compile Include="Services\ILightDisplayUpdater.cs" />
     <Compile Include="Services\IProjectManager.cs" />
+    <Compile Include="Services\IProjectStatusUpdater.cs" />
     <Compile Include="Services\ISetModelStatusFromNetworkSwitches.cs" />
     <Compile Include="Services\ISystemStatusProvider.cs" />
     <Compile Include="Services\IZWaveNetwork.cs" />
+    <Compile Include="Services\LightDisplayUpdater.cs" />
     <Compile Include="Services\LightModelUpdater.cs" />
     <Compile Include="Services\ProjectManager.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
@@ -107,7 +110,6 @@
     <Compile Include="Services\ILightGroupManager.cs" />
     <Compile Include="Services\IUnassignedLightService.cs" />
     <Compile Include="Services\ILightModelUpdater.cs" />
-    <Compile Include="Services\StubZWaveNetwork.cs" />
     <Compile Include="Services\UnassignedLightService.cs" />
     <Compile Include="Services\SystemClock.cs" />
     <Compile Include="Services\SetModelStatusFromNetworkSwitches.cs" />

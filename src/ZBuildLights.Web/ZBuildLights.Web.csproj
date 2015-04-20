@@ -220,6 +220,7 @@
     <Content Include="Views\Admin\_AdminConstants.cshtml" />
     <Content Include="Scripts\underscore.min.map" />
     <None Include="Views\Admin\ManageCruiseServers.cshtml" />
+    <None Include="Views\Home\UpdateLights.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
