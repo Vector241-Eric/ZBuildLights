@@ -5,11 +5,11 @@ using ZBuildLights.Core.Repository;
 
 namespace ZBuildLights.Core.Services
 {
-    public class LightUpdater : ILightUpdater
+    public class LightModelUpdater : ILightModelUpdater
     {
         private readonly IMasterModelRepository _masterModelRepository;
 
-        public LightUpdater(IMasterModelRepository masterModelRepository)
+        public LightModelUpdater(IMasterModelRepository masterModelRepository)
         {
             _masterModelRepository = masterModelRepository;
         }

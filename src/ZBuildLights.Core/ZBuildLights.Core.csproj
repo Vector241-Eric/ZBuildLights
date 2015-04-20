@@ -76,7 +76,7 @@
     <Compile Include="Services\ISetModelStatusFromNetworkSwitches.cs" />
     <Compile Include="Services\ISystemStatusProvider.cs" />
     <Compile Include="Services\IZWaveNetwork.cs" />
-    <Compile Include="Services\LightUpdater.cs" />
+    <Compile Include="Services\LightModelUpdater.cs" />
     <Compile Include="Services\ProjectManager.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\IApplicationConfiguration.cs" />
@@ -106,7 +106,7 @@
     <Compile Include="Services\Storage\IFileSystemStorage.cs" />
     <Compile Include="Services\ILightGroupManager.cs" />
     <Compile Include="Services\IUnassignedLightService.cs" />
-    <Compile Include="Services\ILightUpdater.cs" />
+    <Compile Include="Services\ILightModelUpdater.cs" />
     <Compile Include="Services\StubZWaveNetwork.cs" />
     <Compile Include="Services\UnassignedLightService.cs" />
     <Compile Include="Services\SystemClock.cs" />

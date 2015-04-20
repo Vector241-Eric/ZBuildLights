@@ -14,20 +14,20 @@ namespace ZBuildLights.Web.Controllers
         private readonly IProjectManager _projectManager;
         private readonly ILightGroupManager _lightGroupManager;
         private readonly IAdminViewModelProvider _viewModelProvider;
-        private readonly ILightUpdater _lightUpdater;
+        private readonly ILightModelUpdater _lightModelUpdater;
         private readonly ICruiseProjectModelProvider _ccProjectProvider;
         private readonly ICruiseServerManager _cruiseServerManager;
         private readonly IZWaveNetwork _zWaveNetwork;
 
         public AdminController(IProjectManager projectManager, ILightGroupManager lightGroupManager,
-            IAdminViewModelProvider viewModelProvider, ILightUpdater lightUpdater,
+            IAdminViewModelProvider viewModelProvider, ILightModelUpdater lightModelUpdater,
             ICruiseProjectModelProvider ccProjectProvider, ICruiseServerManager cruiseServerManager,
             IZWaveNetwork zWaveNetwork)
         {
             _projectManager = projectManager;
             _lightGroupManager = lightGroupManager;
             _viewModelProvider = viewModelProvider;
-            _lightUpdater = lightUpdater;
+            _lightModelUpdater = lightModelUpdater;
             _ccProjectProvider = ccProjectProvider;
             _cruiseServerManager = cruiseServerManager;
             _zWaveNetwork = zWaveNetwork;
@@ -99,7 +99,7 @@ namespace ZBuildLights.Web.Controllers
 //        public ActionResult EditLight(uint homeId, byte nodeId, ulong valueId, Guid groupId, int colorId)
         public ActionResult EditLight(uint homeId, byte nodeId, ulong valueId, Guid groupId, int colorId)
         {
-            _lightUpdater.Update(new ZWaveIdentity(homeId, nodeId, valueId), groupId, colorId);
+            _lightModelUpdater.Update(new ZWaveIdentity(homeId, nodeId, valueId), groupId, colorId);
             return RedirectToAction("Index");
         }
 

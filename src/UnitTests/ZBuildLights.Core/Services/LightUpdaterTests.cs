@@ -57,7 +57,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);
 
-                var updater = new LightUpdater(repository);
+                var updater = new LightModelUpdater(repository);
                 updater.Update(_zWaveIdentity, _destinationGroupId, LightColor.Red.Value);
 
                 _saved = repository.LastSaved;
@@ -114,7 +114,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var repository = S<IMasterModelRepository>();
                 repository.Stub(x => x.GetCurrent()).Return(_masterModel);
 
-                var updater = new LightUpdater(repository);
+                var updater = new LightModelUpdater(repository);
                 updater.Update(_zWaveIdentity, groupId, LightColor.Red.Value);
             }
 
@@ -144,7 +144,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(masterModel);
 
-                var updater = new LightUpdater(repository);
+                var updater = new LightModelUpdater(repository);
                 updater.Update(zWaveIdentity, Guid.Empty, LightColor.Red.Value);
 
                 _lastSaved = repository.LastSaved;
@@ -175,7 +175,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var repository = S<IMasterModelRepository>();
                 repository.Stub(x => x.GetCurrent()).Return(_masterModel);
 
-                var updater = new LightUpdater(repository);
+                var updater = new LightModelUpdater(repository);
                 _thrown = ExpectException<InvalidOperationException>(
                     () => updater.Update(new ZWaveIdentity(12, 42, 444), groupId, LightColor.Red.Value));
             }
