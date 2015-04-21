@@ -86,14 +86,6 @@ namespace ZWaveControl
             Log.Info("zWave initialization complete.");
         }
 
-//        private static bool NetworkIsQuiet()
-//        {
-//            var now = DateTime.Now;
-//            var elapsedSinceLastEvent = now - LastEventTimestamp;
-//            Log.Error("Elapsed since last event: {0} ({1} - {2})", elapsedSinceLastEvent, now, LastEventTimestamp);
-//            return elapsedSinceLastEvent > QuietThreshold;
-//        }
-
         private static void SetOptions()
         {
             // the directory the config files are copied to in the post build
