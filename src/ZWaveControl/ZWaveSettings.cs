@@ -10,6 +10,8 @@ namespace ZWaveControl
 
     public class ZWaveSettings : IZWaveSettings
     {
+        public const string ZWaveComPortSettingKey = "ZWaveControllerComPort";
+
         public string ConfigurationPath
         {
             get { return GetRequiredSetting("ZWaveConfigurationPath"); }
@@ -17,7 +19,7 @@ namespace ZWaveControl
 
         public string ControllerComPort
         {
-            get { return @"\\.\" + GetRequiredSetting("ZWaveControllerComPort").ToUpperInvariant(); }
+            get { return @"\\.\" + GetRequiredSetting(ZWaveComPortSettingKey).ToUpperInvariant(); }
         }
 
         private string GetRequiredSetting(string key)
