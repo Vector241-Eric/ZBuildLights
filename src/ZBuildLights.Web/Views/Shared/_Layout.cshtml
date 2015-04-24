@@ -21,7 +21,7 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
+                <li><a href="https://github.com/Vector241-Eric/ZBuildLights/blob/master/README.md" target="_blank">Help</a></li>
                 <li>
 
                 </li>
@@ -30,6 +30,7 @@
                     <ul class="dropdown-menu" aria-labelledby="admin-menu">
                         <li>@Html.ActionLink("Projects and Lights", "Index", "Admin")</li>
                         <li>@Html.ActionLink("Manage Cruise Servers", "ManageCruiseServers", "Admin")</li>
+                        <li>@Html.ActionLink("Force Update Displays", "UpdateLights", "Home")</li>
                     </ul>
                 </li>
             </ul>
