@@ -19,7 +19,7 @@ namespace ZWaveControl
 
         public string ControllerComPort
         {
-            get { return @"\\.\" + GetRequiredSetting(ZWaveComPortSettingKey).ToUpperInvariant(); }
+            get { return GetRequiredSetting(ZWaveComPortSettingKey).ToUpperInvariant(); }
         }
 
         private string GetRequiredSetting(string key)

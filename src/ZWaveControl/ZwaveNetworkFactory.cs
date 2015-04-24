@@ -20,8 +20,9 @@ namespace ZWaveControl
         public IZWaveNetwork GetNetwork()
         {
             var configuredComPort = _zWaveSettings.ControllerComPort;
+            var portNames = SerialPort.GetPortNames();
             if (
-                SerialPort.GetPortNames()
+                portNames
                     .Any(x => String.Compare(x, configuredComPort, StringComparison.OrdinalIgnoreCase) == 0))
                 return new ZWaveNetwork();
 
