@@ -35,14 +35,14 @@ namespace UnitTests._Stubs
             get { return _lights.ToArray(); }
         }
 
-        public StubSetModelStatusFromNetworkSwitches StubStatus(ZWaveIdentity identity, SwitchState switchState)
+        public StubSetModelStatusFromNetworkSwitches StubStatus(ZWaveValueIdentity identity, SwitchState switchState)
         {
             var key = MakeKey(identity);
             _stubStates[key] = switchState;
             return this;
         }
 
-        private static string MakeKey(ZWaveIdentity identity)
+        private static string MakeKey(ZWaveValueIdentity identity)
         {
             return identity.ToString();
         }

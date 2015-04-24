@@ -47,9 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmptyNetwork.cs" />
+    <Compile Include="IZWaveNodeList.cs" />
     <Compile Include="ZWaveControlMarkerType.cs" />
     <Compile Include="ZWaveNetwork.cs" />
     <Compile Include="ZwaveNetworkFactory.cs" />
+    <Compile Include="ZWaveNodeList.cs" />
     <Compile Include="ZWaveSettings.cs" />
     <Compile Include="ConsoleCommandWatcher.cs" />
     <Compile Include="Node.cs" />

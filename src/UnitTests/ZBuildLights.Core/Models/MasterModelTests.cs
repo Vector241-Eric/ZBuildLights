@@ -11,7 +11,7 @@ namespace UnitTests.ZBuildLights.Core.Models
         [TestFixture]
         public class When_model_has_multiple_projects_with_multiple_groups_with_multiple_lights
         {
-            private ZWaveIdentity _expectedIdentity;
+            private ZWaveValueIdentity _expectedIdentity;
 
             [Test]
             public void Should_find_a_light_by_homeId_and_nodeId_and_valueId()
@@ -21,38 +21,38 @@ namespace UnitTests.ZBuildLights.Core.Models
                 var project1 = model.CreateProject(x => x.Name = "1");
 
                 var group1_1 = project1.CreateGroup(x => x.Name = "1.1");
-                var light1_1_1 = group1_1.AddLight(new Light(new ZWaveIdentity(11, 1, 123)));
-                var light1_1_2 = group1_1.AddLight(new Light(new ZWaveIdentity(11, 2, 123)));
-                var light1_1_3 = group1_1.AddLight(new Light(new ZWaveIdentity(11, 3, 123)));
+                var light1_1_1 = group1_1.AddLight(new Light(new ZWaveValueIdentity(11, 1, 123)));
+                var light1_1_2 = group1_1.AddLight(new Light(new ZWaveValueIdentity(11, 2, 123)));
+                var light1_1_3 = group1_1.AddLight(new Light(new ZWaveValueIdentity(11, 3, 123)));
 
                 var group1_2 = project1.CreateGroup(x => x.Name = "1.2");
-                var light1_2_1 = group1_2.AddLight(new Light(new ZWaveIdentity(12, 1, 123)));
-                var light1_2_2 = group1_2.AddLight(new Light(new ZWaveIdentity(12, 2, 123)));
-                var light1_2_3 = group1_2.AddLight(new Light(new ZWaveIdentity(12, 3, 123)));
+                var light1_2_1 = group1_2.AddLight(new Light(new ZWaveValueIdentity(12, 1, 123)));
+                var light1_2_2 = group1_2.AddLight(new Light(new ZWaveValueIdentity(12, 2, 123)));
+                var light1_2_3 = group1_2.AddLight(new Light(new ZWaveValueIdentity(12, 3, 123)));
 
                 var group1_3 = project1.CreateGroup(x => x.Name = "1.3");
-                var light1_3_1 = group1_3.AddLight(new Light(new ZWaveIdentity(13, 1, 123)));
-                var light1_3_2 = group1_3.AddLight(new Light(new ZWaveIdentity(13, 2, 123)));
-                var light1_3_3 = group1_3.AddLight(new Light(new ZWaveIdentity(13, 3, 123)));
+                var light1_3_1 = group1_3.AddLight(new Light(new ZWaveValueIdentity(13, 1, 123)));
+                var light1_3_2 = group1_3.AddLight(new Light(new ZWaveValueIdentity(13, 2, 123)));
+                var light1_3_3 = group1_3.AddLight(new Light(new ZWaveValueIdentity(13, 3, 123)));
 
                 var project2 = model.CreateProject(x => x.Name = "1");
 
                 var group2_1 = project2.CreateGroup(x => x.Name = "2.1");
-                var light2_1_1 = group2_1.AddLight(new Light(new ZWaveIdentity(21, 1, 123)));
-                var light2_1_2 = group2_1.AddLight(new Light(new ZWaveIdentity(21, 2, 123)));
-                var light2_1_3 = group2_1.AddLight(new Light(new ZWaveIdentity(21, 3, 123)));
+                var light2_1_1 = group2_1.AddLight(new Light(new ZWaveValueIdentity(21, 1, 123)));
+                var light2_1_2 = group2_1.AddLight(new Light(new ZWaveValueIdentity(21, 2, 123)));
+                var light2_1_3 = group2_1.AddLight(new Light(new ZWaveValueIdentity(21, 3, 123)));
 
                 var group2_2 = project2.CreateGroup(x => x.Name = "2.2");
-                var light2_2_1 = group2_2.AddLight(new Light(new ZWaveIdentity(22, 1, 123)));
-                _expectedIdentity = new ZWaveIdentity(22, 2, 111);
+                var light2_2_1 = group2_2.AddLight(new Light(new ZWaveValueIdentity(22, 1, 123)));
+                _expectedIdentity = new ZWaveValueIdentity(22, 2, 111);
                 var light2_2_2 = group2_2.AddLight(new Light(_expectedIdentity));
-                var light2_2_2_2 = group2_2.AddLight(new Light(new ZWaveIdentity(22, 2, 222)));
-                var light2_2_3 = group2_2.AddLight(new Light(new ZWaveIdentity(22, 3, 123)));
+                var light2_2_2_2 = group2_2.AddLight(new Light(new ZWaveValueIdentity(22, 2, 222)));
+                var light2_2_3 = group2_2.AddLight(new Light(new ZWaveValueIdentity(22, 3, 123)));
 
                 var group2_3 = project2.CreateGroup(x => x.Name = "2.3");
-                var light2_3_1 = group2_3.AddLight(new Light(new ZWaveIdentity(23, 1, 123)));
-                var light2_3_2 = group2_3.AddLight(new Light(new ZWaveIdentity(23, 2, 123)));
-                var light2_3_3 = group2_3.AddLight(new Light(new ZWaveIdentity(23, 3, 123)));
+                var light2_3_1 = group2_3.AddLight(new Light(new ZWaveValueIdentity(23, 1, 123)));
+                var light2_3_2 = group2_3.AddLight(new Light(new ZWaveValueIdentity(23, 2, 123)));
+                var light2_3_3 = group2_3.AddLight(new Light(new ZWaveValueIdentity(23, 3, 123)));
 
 
                 var found = model.FindLight(_expectedIdentity);
@@ -66,20 +66,20 @@ namespace UnitTests.ZBuildLights.Core.Models
         public class When_getting_all_lights
         {
             private Light[] _result;
-            private ZWaveIdentity _identity1;
-            private ZWaveIdentity _identity2;
-            private ZWaveIdentity _identity3;
-            private ZWaveIdentity _identity4;
+            private ZWaveValueIdentity _identity1;
+            private ZWaveValueIdentity _identity2;
+            private ZWaveValueIdentity _identity3;
+            private ZWaveValueIdentity _identity4;
 
             [SetUp]
             public void ContextSetup()
             {
                 var model = new MasterModel();
                 var group = model.CreateProject().CreateGroup();
-                _identity1 = new ZWaveIdentity(1, 11, 123);
-                _identity2 = new ZWaveIdentity(2, 22, 123);
-                _identity3 = new ZWaveIdentity(3, 33, 123);
-                _identity4 = new ZWaveIdentity(4, 44, 123);
+                _identity1 = new ZWaveValueIdentity(1, 11, 123);
+                _identity2 = new ZWaveValueIdentity(2, 22, 123);
+                _identity3 = new ZWaveValueIdentity(3, 33, 123);
+                _identity4 = new ZWaveValueIdentity(4, 44, 123);
 
                 group
                     .AddLight(new Light(_identity1))
@@ -179,7 +179,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             [SetUp]
             public void ContextSetup()
             {
-                var zWaveIdentity = new ZWaveIdentity(11, 23, 222);
+                var zWaveIdentity = new ZWaveValueIdentity(11, 23, 222);
                 _light = new Light(zWaveIdentity);
                 _model = new MasterModel();
                 _destinationGroup = _model.CreateProject().CreateGroup();
@@ -223,7 +223,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 _fooGroup = model.CreateProject().CreateGroup();
                 _barGroup = model.CreateProject().CreateGroup();
 
-                var zWaveIdentity = new ZWaveIdentity(1, 2, 123);
+                var zWaveIdentity = new ZWaveValueIdentity(1, 2, 123);
                 _light = new Light(zWaveIdentity);
                 _fooGroup.AddLight(_light);
 
@@ -341,11 +341,11 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 _masterModel = new MasterModel();
                 var notDeleted = _masterModel.CreateProject(x => x.Name = "Not Deleted");
-                notDeleted.CreateGroup().AddLight(new Light(new ZWaveIdentity(1, 11, 123))).AddLight(new Light(new ZWaveIdentity(1, 12, 123)));
-                notDeleted.CreateGroup().AddLight(new Light(new ZWaveIdentity(1, 13, 123))).AddLight(new Light(new ZWaveIdentity(1, 14, 123)));
+                notDeleted.CreateGroup().AddLight(new Light(new ZWaveValueIdentity(1, 11, 123))).AddLight(new Light(new ZWaveValueIdentity(1, 12, 123)));
+                notDeleted.CreateGroup().AddLight(new Light(new ZWaveValueIdentity(1, 13, 123))).AddLight(new Light(new ZWaveValueIdentity(1, 14, 123)));
                 var toBeDeleted = _masterModel.CreateProject(x => x.Name = "To Be Deleted");
-                toBeDeleted.CreateGroup().AddLight(new Light(new ZWaveIdentity(1, 21, 123))).AddLight(new Light(new ZWaveIdentity(1, 22, 123)));
-                toBeDeleted.CreateGroup().AddLight(new Light(new ZWaveIdentity(1, 23, 123))).AddLight(new Light(new ZWaveIdentity(1, 24, 123)));
+                toBeDeleted.CreateGroup().AddLight(new Light(new ZWaveValueIdentity(1, 21, 123))).AddLight(new Light(new ZWaveValueIdentity(1, 22, 123)));
+                toBeDeleted.CreateGroup().AddLight(new Light(new ZWaveValueIdentity(1, 23, 123))).AddLight(new Light(new ZWaveValueIdentity(1, 24, 123)));
 
                 _masterModel.RemoveProject(toBeDeleted.Id);
             }

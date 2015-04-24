@@ -28,22 +28,22 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _projectId1 = project1.Id;
 
                 var lightGroup1 = project1.CreateGroup();
-                lightGroup1.AddLight(new Light(new ZWaveIdentity(1, 1, 1)) {Color = LightColor.Green});
-                lightGroup1.AddLight(new Light(new ZWaveIdentity(1, 2, 1)) {Color = LightColor.Yellow});
-                lightGroup1.AddLight(new Light(new ZWaveIdentity(1, 3, 1)) {Color = LightColor.Red});
+                lightGroup1.AddLight(new Light(new ZWaveValueIdentity(1, 1, 1)) {Color = LightColor.Green});
+                lightGroup1.AddLight(new Light(new ZWaveValueIdentity(1, 2, 1)) {Color = LightColor.Yellow});
+                lightGroup1.AddLight(new Light(new ZWaveValueIdentity(1, 3, 1)) {Color = LightColor.Red});
 
                 var project2 = masterModel.CreateProject(x => { x.Name = "Project 1"; });
                 _projectId2 = project2.Id;
 
                 var lightGroup2 = project2.CreateGroup();
-                lightGroup2.AddLight(new Light(new ZWaveIdentity(1, 4, 1)) {Color = LightColor.Green});
-                lightGroup2.AddLight(new Light(new ZWaveIdentity(1, 5, 1)) {Color = LightColor.Yellow});
-                lightGroup2.AddLight(new Light(new ZWaveIdentity(1, 6, 1)) {Color = LightColor.Red});
+                lightGroup2.AddLight(new Light(new ZWaveValueIdentity(1, 4, 1)) {Color = LightColor.Green});
+                lightGroup2.AddLight(new Light(new ZWaveValueIdentity(1, 5, 1)) {Color = LightColor.Yellow});
+                lightGroup2.AddLight(new Light(new ZWaveValueIdentity(1, 6, 1)) {Color = LightColor.Red});
 
                 var lightGroup3 = project2.CreateGroup();
-                lightGroup3.AddLight(new Light(new ZWaveIdentity(1, 7, 1)) {Color = LightColor.Green});
-                lightGroup3.AddLight(new Light(new ZWaveIdentity(1, 8, 1)) {Color = LightColor.Yellow});
-                lightGroup3.AddLight(new Light(new ZWaveIdentity(1, 9, 1)) {Color = LightColor.Red});
+                lightGroup3.AddLight(new Light(new ZWaveValueIdentity(1, 7, 1)) {Color = LightColor.Green});
+                lightGroup3.AddLight(new Light(new ZWaveValueIdentity(1, 8, 1)) {Color = LightColor.Yellow});
+                lightGroup3.AddLight(new Light(new ZWaveValueIdentity(1, 9, 1)) {Color = LightColor.Red});
 
                 var projectStatusUpdater = new StubProjectStatusUpdater()
                     .WithStubStatus(project1, StatusMode.Broken)
@@ -65,20 +65,20 @@ namespace UnitTests.ZBuildLights.Core.Services
             [Test]
             public void Should_set_appropriate_switch_state_for_each_light_on_each_project()
             {
-                VerifySwitchState(new ZWaveIdentity(1, 1, 1), SwitchState.Off);
-                VerifySwitchState(new ZWaveIdentity(1, 2, 1), SwitchState.Off);
-                VerifySwitchState(new ZWaveIdentity(1, 3, 1), SwitchState.On);
+                VerifySwitchState(new ZWaveValueIdentity(1, 1, 1), SwitchState.Off);
+                VerifySwitchState(new ZWaveValueIdentity(1, 2, 1), SwitchState.Off);
+                VerifySwitchState(new ZWaveValueIdentity(1, 3, 1), SwitchState.On);
 
-                VerifySwitchState(new ZWaveIdentity(1, 4, 1), SwitchState.On);
-                VerifySwitchState(new ZWaveIdentity(1, 5, 1), SwitchState.On);
-                VerifySwitchState(new ZWaveIdentity(1, 6, 1), SwitchState.Off);
+                VerifySwitchState(new ZWaveValueIdentity(1, 4, 1), SwitchState.On);
+                VerifySwitchState(new ZWaveValueIdentity(1, 5, 1), SwitchState.On);
+                VerifySwitchState(new ZWaveValueIdentity(1, 6, 1), SwitchState.Off);
 
-                VerifySwitchState(new ZWaveIdentity(1, 7, 1), SwitchState.On);
-                VerifySwitchState(new ZWaveIdentity(1, 8, 1), SwitchState.On);
-                VerifySwitchState(new ZWaveIdentity(1, 9, 1), SwitchState.Off);
+                VerifySwitchState(new ZWaveValueIdentity(1, 7, 1), SwitchState.On);
+                VerifySwitchState(new ZWaveValueIdentity(1, 8, 1), SwitchState.On);
+                VerifySwitchState(new ZWaveValueIdentity(1, 9, 1), SwitchState.Off);
             }
 
-            private void VerifySwitchState(ZWaveIdentity zWaveIdentity, SwitchState switchState)
+            private void VerifySwitchState(ZWaveValueIdentity zWaveIdentity, SwitchState switchState)
             {
                 _switches.Single(x => x.ZWaveIdentity.Equals(zWaveIdentity)).SwitchState.ShouldEqual(switchState);
             }

@@ -1,21 +1,23 @@
-using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using OpenZWaveDotNet;
 
 namespace ZWaveControl
 {
-    public static class ZWaveNotificationHandler
+    public class ZWaveNotificationHandler
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        private static List<Node> _nodes = new List<Node>();
 
-        public static Node[] GetNodes()
+        private readonly IZWaveNodeList _nodes;
+        private readonly ZWManager _manager;
+
+        public ZWaveNotificationHandler(IZWaveNodeList nodes, ZWManager manager)
         {
-            return _nodes.ToArray();
+            _nodes = nodes;
+            _manager = manager;
         }
 
-        public static void HandleNotification(ZWNotification notification, ZWManager manager)
+        public void HandleNotification(ZWNotification notification)
         {
             var notificationType = notification.GetType();
 
@@ -24,8 +26,8 @@ namespace ZWaveControl
                 case ZWNotification.Type.ValueAdded:
                     var addedValue = notification.GetValueID();
                     Log.Debug("Node {0} Value Added: {1} - {2} - {3}", notification.GetNodeId(),
-                        manager.GetValueLabel(addedValue), GetValue(addedValue, manager),
-                        manager.GetValueUnits(addedValue));
+                        _manager.GetValueLabel(addedValue), GetValue(addedValue, _manager),
+                        _manager.GetValueUnits(addedValue));
                     var vaNode = GetNode(notification.GetHomeId(), notification.GetNodeId());
                     if (vaNode != null)
                     {
@@ -42,33 +44,26 @@ namespace ZWaveControl
                     }
                     break;
                 case ZWNotification.Type.ValueChanged:
+                    //TODO:  This is only logging.  Remove this for simplicity
                     var changedValue = notification.GetValueID();
                     Log.Debug("Node {0} Value Changed: {1} - {2} - {3}", notification.GetNodeId(),
-                        manager.GetValueLabel(changedValue), GetValue(changedValue, manager),
-                        manager.GetValueUnits(changedValue));
+                        _manager.GetValueLabel(changedValue), GetValue(changedValue, _manager),
+                        _manager.GetValueUnits(changedValue));
                     break;
 
                 case ZWNotification.Type.NodeNew:
                     // if the node is not in the z-wave config this will be called first
-                    var newNode = new Node
-                    {
-                        Id = notification.GetNodeId(),
-                        HomeId = notification.GetHomeId()
-                    };
-                    Log.Debug("Node New: {0}, Home: {1}", newNode.Id, newNode.HomeId);
-                    _nodes.Add(newNode);
+                    var newNode = AddNode(notification.GetHomeId(), notification.GetNodeId());
+                    Log.Debug("Node New: {0}, Home: {1}", newNode.NodeId, newNode.HomeId);
                     break;
                 case ZWNotification.Type.NodeAdded:
                     // if the node is in the z-wave config then this will be the first node notification
-                    if (GetNode(notification.GetHomeId(), notification.GetNodeId()) == null)
+                    var homeId = notification.GetHomeId();
+                    var nodeId = notification.GetNodeId();
+                    if (GetNode(homeId, nodeId) == null)
                     {
-                        var node = new Node
-                        {
-                            Id = notification.GetNodeId(),
-                            HomeId = notification.GetHomeId()
-                        };
-                        Log.Debug("Node Added: {0}, Home: {1}", node.Id, node.HomeId);
-                        _nodes.Add(node);
+                        var node = AddNode(homeId, nodeId);
+                        Log.Debug("Node Added: {0}, Home: {1}", node.NodeId, node.HomeId);
                     }
                     break;
 
@@ -76,28 +71,39 @@ namespace ZWaveControl
                     var namedNode = GetNode(notification.GetHomeId(), notification.GetNodeId());
                     if (namedNode != null)
                     {
-                        namedNode.Name = manager.GetNodeName(namedNode.HomeId, namedNode.Id);
-                        namedNode.Manufacturer = manager.GetNodeManufacturerName(namedNode.HomeId, namedNode.Id);
-                        namedNode.Product = manager.GetNodeProductName(namedNode.HomeId, namedNode.Id);
-                        namedNode.Location = manager.GetNodeLocation(namedNode.HomeId, namedNode.Id);
+                        namedNode.Name = _manager.GetNodeName(namedNode.HomeId, namedNode.NodeId);
+                        namedNode.Manufacturer = _manager.GetNodeManufacturerName(namedNode.HomeId, namedNode.NodeId);
+                        namedNode.Product = _manager.GetNodeProductName(namedNode.HomeId, namedNode.NodeId);
+                        namedNode.Location = _manager.GetNodeLocation(namedNode.HomeId, namedNode.NodeId);
 
                         Log.Debug("Name: {0}, Manufacturer: {1}, Product: {2}, Location: {3}", namedNode.Name,
                             namedNode.Manufacturer, namedNode.Product, namedNode.Location);
                     }
                     break;
                 default:
-                    Log.Trace("ZWave Notification: {0}", notificationType.ToString());
+                    Log.Trace("Unhandled ZWave Notification: {0}", notificationType.ToString());
                     break;
             }
         }
 
-        private static Node GetNode(uint homeId, byte nodeId)
+        private Node AddNode(uint homeId, byte nodeId)
         {
-            return _nodes.FirstOrDefault(n => n.Id == nodeId && n.HomeId == homeId);
+            var node = new Node
+            {
+                NodeId = nodeId,
+                HomeId = homeId
+            };
+            _nodes.AddNode(node);
+            return node;
+        }
+
+        private Node GetNode(uint homeId, byte nodeId)
+        {
+            return _nodes.AllNodes.FirstOrDefault(n => n.NodeId == nodeId && n.HomeId == homeId);
         }
 
 
-        public static string GetValue(ZWValueID value, ZWManager manager)
+        private static string GetValue(ZWValueID value, ZWManager manager)
         {
             switch (value.GetType())
             {

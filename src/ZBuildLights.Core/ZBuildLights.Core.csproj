@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Models\CruiseControl\CcBuildActivity.cs" />
     <Compile Include="Models\CruiseControl\CcBuildStatus.cs" />
+    <Compile Include="Models\ZWaveNodeIdentity.cs" />
     <Compile Include="Services\CruiseControl\CcReader.cs" />
     <Compile Include="Services\CruiseControl\ICcReader.cs" />
     <Compile Include="Models\CruiseControl\XmlObjectModel.cs" />
@@ -66,7 +67,7 @@
     <Compile Include="Models\EditProject.cs" />
     <Compile Include="Models\IHasZWaveIdentity.cs" />
     <Compile Include="Models\Requests\NetworkResponse.cs" />
-    <Compile Include="Models\ZWaveIdentity.cs" />
+    <Compile Include="Models\ZWaveValueIdentity.cs" />
     <Compile Include="Models\ZWaveSwitch.cs" />
     <Compile Include="Services\CruiseControl\CruiseProjectModelProvider.cs" />
     <Compile Include="Services\CruiseControl\ICruiseProjectModelProvider.cs" />

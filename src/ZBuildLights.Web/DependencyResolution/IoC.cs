@@ -29,6 +29,8 @@ namespace ZBuildLights.Web.DependencyResolution {
             {
                 c.AddRegistry<DefaultRegistry>();
                 c.For<IZWaveNetwork>().Use(context => context.GetInstance<ZwaveNetworkFactory>().GetNetwork()).SetLifecycleTo<HttpContextLifecycle>();
+                c.For<IZWaveNodeList>().Singleton();
+                c.For<IZWaveManagerFactory>().Singleton();
             });
         }
     }

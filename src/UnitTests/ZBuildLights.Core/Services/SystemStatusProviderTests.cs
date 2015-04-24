@@ -18,7 +18,7 @@ namespace UnitTests.ZBuildLights.Core.Services
             private MasterModel _model;
             private MasterModel _result;
             private StubSetModelStatusFromNetworkSwitches _setModelStatusFromNetworkSwitches;
-            private ZWaveIdentity _identityForOffSwitch;
+            private ZWaveValueIdentity _identityForOffSwitch;
 
             [SetUp]
             public void ContextSetup()
@@ -26,11 +26,11 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var repo = S<IMasterModelRepository>();
                 _model = new MasterModel();
                 var group = _model.CreateProject().CreateGroup();
-                _identityForOffSwitch = new ZWaveIdentity(3, 11, 123);
+                _identityForOffSwitch = new ZWaveValueIdentity(3, 11, 123);
                 group.AddLight(new Light(_identityForOffSwitch));
-                group.AddLight(new Light(new ZWaveIdentity(3, 22, 123)));
-                group.AddLight(new Light(new ZWaveIdentity(3, 33, 123)));
-                group.AddLight(new Light(new ZWaveIdentity(3, 44, 123)));
+                group.AddLight(new Light(new ZWaveValueIdentity(3, 22, 123)));
+                group.AddLight(new Light(new ZWaveValueIdentity(3, 33, 123)));
+                group.AddLight(new Light(new ZWaveValueIdentity(3, 44, 123)));
                 repo.Stub(x => x.GetCurrent()).Return(_model);
 
                 _setModelStatusFromNetworkSwitches = new StubSetModelStatusFromNetworkSwitches().DefaultStatus(SwitchState.On).StubStatus(_identityForOffSwitch, SwitchState.Off);

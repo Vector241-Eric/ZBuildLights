@@ -33,7 +33,7 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                 masterModel.CreateProject(); //4
                 masterModel.CreateProject(); //5
 
-                masterModel.AddUnassignedLight(new Light(new ZWaveIdentity(1, 22, 123)));
+                masterModel.AddUnassignedLight(new Light(new ZWaveValueIdentity(1, 22, 123)));
 
                 var statusProvider = S<ISystemStatusProvider>();
                 statusProvider.Stub(x => x.GetSystemStatus())
@@ -44,7 +44,7 @@ namespace UnitTests.ZBuildLights.Web.Services.ViewModelProviders
                     .Return(new AdminProjectViewModel[3]);
                 mapper.Stub(x => x.Map<Light[], AdminLightViewModel[]>(masterModel.UnassignedLights))
                     .IgnoreArguments()
-                    .Return(new[] {new AdminLightViewModel {ZWaveIdentity = new ZWaveIdentity(1, 22, 444)}});
+                    .Return(new[] {new AdminLightViewModel {ZWaveIdentity = new ZWaveValueIdentity(1, 22, 444)}});
 
                 var provider = new AdminViewModelProvider(statusProvider, mapper, null);
                 _result = provider.GetIndexViewModel();

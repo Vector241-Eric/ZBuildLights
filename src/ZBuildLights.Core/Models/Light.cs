@@ -3,9 +3,9 @@ namespace ZBuildLights.Core.Models
     public class Light : IHasZWaveIdentity
     {
         public LightGroup ParentGroup { get; set; }
-        public ZWaveIdentity ZWaveIdentity { get; private set; }
+        public ZWaveValueIdentity ZWaveIdentity { get; private set; }
 
-        public Light(ZWaveIdentity identity)
+        public Light(ZWaveValueIdentity identity)
         {
             SwitchState = SwitchState.Unknown;
             Color = LightColor.Unknown;

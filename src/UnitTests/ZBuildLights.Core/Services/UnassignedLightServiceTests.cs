@@ -22,22 +22,22 @@ namespace UnitTests.ZBuildLights.Core.Services
             {
                 _masterModel = new MasterModel();
                 var group = _masterModel.CreateProject().CreateGroup();
-                group.AddLight(new Light(new ZWaveIdentity(1, 11, 1)));
-                group.AddLight(new Light(new ZWaveIdentity(1, 22, 4)));
-                group.AddLight(new Light(new ZWaveIdentity(1, 33, 5)));
+                group.AddLight(new Light(new ZWaveValueIdentity(1, 11, 1)));
+                group.AddLight(new Light(new ZWaveValueIdentity(1, 22, 4)));
+                group.AddLight(new Light(new ZWaveValueIdentity(1, 33, 5)));
 
-                _masterModel.AddUnassignedLight(new Light(new ZWaveIdentity(1, 44, 123)) { Color = LightColor.Red });
+                _masterModel.AddUnassignedLight(new Light(new ZWaveValueIdentity(1, 44, 123)) { Color = LightColor.Red });
 
                 var allSwitches = new[]
                 {
-                    new ZWaveSwitch(new ZWaveIdentity(1, 11, 1)), //In a group
-                    new ZWaveSwitch(new ZWaveIdentity(1, 15, 2)), //New
-                    new ZWaveSwitch(new ZWaveIdentity(1, 16, 3)), //New
-                    new ZWaveSwitch(new ZWaveIdentity(1, 22, 4)), //In a group
-                    new ZWaveSwitch(new ZWaveIdentity(1, 22, 5)), //New (different value ID)
-                    new ZWaveSwitch(new ZWaveIdentity(1, 33, 5)), //In a group
-                    new ZWaveSwitch(new ZWaveIdentity(2, 11, 6)), //New (different home ID)
-                    new ZWaveSwitch(new ZWaveIdentity(2, 22, 7)) //New (different home ID)
+                    new ZWaveSwitch(new ZWaveValueIdentity(1, 11, 1)), //In a group
+                    new ZWaveSwitch(new ZWaveValueIdentity(1, 15, 2)), //New
+                    new ZWaveSwitch(new ZWaveValueIdentity(1, 16, 3)), //New
+                    new ZWaveSwitch(new ZWaveValueIdentity(1, 22, 4)), //In a group
+                    new ZWaveSwitch(new ZWaveValueIdentity(1, 22, 5)), //New (different value ID)
+                    new ZWaveSwitch(new ZWaveValueIdentity(1, 33, 5)), //In a group
+                    new ZWaveSwitch(new ZWaveValueIdentity(2, 11, 6)), //New (different home ID)
+                    new ZWaveSwitch(new ZWaveValueIdentity(2, 22, 7)) //New (different home ID)
                 };
 
                 var network = S<IZWaveNetwork>();

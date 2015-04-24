@@ -67,7 +67,7 @@ namespace ZBuildLights.Web.Models.Admin
     public class AdminLightViewModel
     {
         public LightColor Color { get; set; }
-        public ZWaveIdentity ZWaveIdentity { get; set; }
+        public ZWaveValueIdentity ZWaveIdentity { get; set; }
         public SwitchState SwitchState { get; set; }
     }
 }

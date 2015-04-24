@@ -111,7 +111,7 @@ namespace ZBuildLights.Core.Models.JsonSerialization
 
     public class JsonLight
     {
-        public ZWaveIdentity ZWaveIdentity { get; set; }
+        public ZWaveValueIdentity ZWaveIdentity { get; set; }
         public int ColorValue { get; set; }
 
         public Light ToDomainObject()

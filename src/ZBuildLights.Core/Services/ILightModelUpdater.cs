@@ -5,6 +5,6 @@ namespace ZBuildLights.Core.Services
 {
     public interface ILightModelUpdater
     {
-        void Update(ZWaveIdentity identity, Guid groupId, int colorId);
+        void Update(ZWaveValueIdentity identity, Guid groupId, int colorId);
     }
 }

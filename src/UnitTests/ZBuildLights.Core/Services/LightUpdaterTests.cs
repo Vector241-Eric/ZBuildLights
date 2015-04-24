@@ -18,40 +18,40 @@ namespace UnitTests.ZBuildLights.Core.Services
         {
             private MasterModel _saved;
             private Guid _destinationGroupId;
-            private ZWaveIdentity _zWaveIdentity;
+            private ZWaveValueIdentity _zWaveIdentity;
 
             [SetUp]
             public void ContextSetup()
             {
                 _destinationGroupId = Guid.NewGuid();
-                _zWaveIdentity = new ZWaveIdentity(1, 14, 123);
+                _zWaveIdentity = new ZWaveValueIdentity(1, 14, 123);
 
                 var existingMasterModel = new MasterModel();
                 var project = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 project.CreateGroup(x => x.Id = _destinationGroupId)
-                    .AddLight(new Light(new ZWaveIdentity(1, 11, 123)))
-                    .AddLight(new Light(new ZWaveIdentity(1, 12, 123)));
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 11, 123)))
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 12, 123)));
                 project.CreateGroup()
-                    .AddLight(new Light(new ZWaveIdentity(1, 13, 123)))
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 13, 123)))
                     .AddLight(new Light(_zWaveIdentity));
 
                 project.CreateGroup()
-                    .AddLight(new Light(new ZWaveIdentity(1, 15, 123)))
-                    .AddLight(new Light(new ZWaveIdentity(1, 16, 123)));
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 15, 123)))
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 16, 123)));
 
                 project.CreateGroup()
-                    .AddLight(new Light(new ZWaveIdentity(2, 13, 123)))
-                    .AddLight(new Light(new ZWaveIdentity(2, 14, 123)));
+                    .AddLight(new Light(new ZWaveValueIdentity(2, 13, 123)))
+                    .AddLight(new Light(new ZWaveValueIdentity(2, 14, 123)));
 
                 var project2 = existingMasterModel.CreateProject(x => x.Name = "Existing Project 2");
                 project2.CreateGroup()
-                    .AddLight(new Light(new ZWaveIdentity(1, 21, 123)))
-                    .AddLight(new Light(new ZWaveIdentity(1, 22, 123)));
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 21, 123)))
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 22, 123)));
 
                 var project3 = existingMasterModel.CreateProject(x => x.Name = "Existing Project 3");
                 project3.CreateGroup()
-                    .AddLight(new Light(new ZWaveIdentity(1, 31, 123)))
-                    .AddLight(new Light(new ZWaveIdentity(1, 32, 123)));
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 31, 123)))
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 32, 123)));
 
 
                 var repository = new StubMasterModelRepository();
@@ -88,7 +88,7 @@ namespace UnitTests.ZBuildLights.Core.Services
         public class When_assigning_an_unassigned_light : TestBase
         {
             private MasterModel _masterModel;
-            private ZWaveIdentity _zWaveIdentity;
+            private ZWaveValueIdentity _zWaveIdentity;
 
             [SetUp]
             public void ContextSetup()
@@ -98,15 +98,15 @@ namespace UnitTests.ZBuildLights.Core.Services
                 _masterModel = new MasterModel();
                 var project = _masterModel.CreateProject(x => x.Name = "Existing Project");
                 project.CreateGroup(x => x.Id = groupId)
-                    .AddLight(new Light(new ZWaveIdentity(1, 11, 123)))
-                    .AddLight(new Light(new ZWaveIdentity(1, 12, 123)));
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 11, 123)))
+                    .AddLight(new Light(new ZWaveValueIdentity(1, 12, 123)));
 
-                _zWaveIdentity = new ZWaveIdentity(1, 14, 123);
+                _zWaveIdentity = new ZWaveValueIdentity(1, 14, 123);
                 var unassignedLights = new[]
                 {
-                    new Light(new ZWaveIdentity(1, 51, 123)),
+                    new Light(new ZWaveValueIdentity(1, 51, 123)),
                     new Light(_zWaveIdentity),
-                    new Light(new ZWaveIdentity(1, 53, 123))
+                    new Light(new ZWaveValueIdentity(1, 53, 123))
                 };
 
                 _masterModel.AddUnassignedLights(unassignedLights);
@@ -138,7 +138,7 @@ namespace UnitTests.ZBuildLights.Core.Services
                 var masterModel = new MasterModel();
                 var project = masterModel.CreateProject(x => x.Name = "Existing Project");
 
-                var zWaveIdentity = new ZWaveIdentity(1, 11, 5555);
+                var zWaveIdentity = new ZWaveValueIdentity(1, 11, 5555);
                 project.CreateGroup().AddLight(new Light(zWaveIdentity) {Color = LightColor.Yellow});
 
                 var repository = new StubMasterModelRepository();
@@ -177,7 +177,7 @@ namespace UnitTests.ZBuildLights.Core.Services
 
                 var updater = new LightModelUpdater(repository);
                 _thrown = ExpectException<InvalidOperationException>(
-                    () => updater.Update(new ZWaveIdentity(12, 42, 444), groupId, LightColor.Red.Value));
+                    () => updater.Update(new ZWaveValueIdentity(12, 42, 444), groupId, LightColor.Red.Value));
             }
 
             [Test]

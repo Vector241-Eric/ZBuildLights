@@ -2,13 +2,13 @@
 {
     public class ZWaveSwitch : IHasZWaveIdentity
     {
-        public ZWaveSwitch(ZWaveIdentity identity)
+        public ZWaveSwitch(ZWaveValueIdentity identity)
         {
             ZWaveIdentity = identity;
         }
 
         public SwitchState SwitchState { get; set; }
         public string SwitchStateDisplayText { get { return SwitchState.ToString(); } }
-        public ZWaveIdentity ZWaveIdentity { get; private set; }
+        public ZWaveValueIdentity ZWaveIdentity { get; private set; }
     }
 }

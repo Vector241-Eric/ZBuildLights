@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using Should;
 using ZBuildLights.Core.Models;
+using ZBuildLights.Web.DependencyResolution;
 using ZWaveControl;
 
 namespace IntegrationTests.ZWaveControl
@@ -17,7 +18,9 @@ namespace IntegrationTests.ZWaveControl
             {
                 try
                 {
-                    var network = new ZWaveNetwork();
+                    var container = IoC.Initialize();
+                    var network = container.GetInstance<ZWaveNetwork>();
+
                     var switches = network.GetAllSwitches();
                     Console.WriteLine(JsonConvert.SerializeObject(switches, Formatting.Indented));
                 }
@@ -32,8 +35,10 @@ namespace IntegrationTests.ZWaveControl
             {
                 try
                 {
-                    var network = new ZWaveNetwork();
-                    var result = network.SetSwitchState(new ZWaveIdentity(25479126, 2, 72057594076282880), SwitchState.Off);
+                    var container = IoC.Initialize();
+                    var network = container.GetInstance<ZWaveNetwork>();
+
+                    var result = network.SetSwitchState(new ZWaveValueIdentity(25479126, 2, 72057594076282880), SwitchState.Off);
                     result.IsSuccessful.ShouldBeTrue();
                 }
                 finally

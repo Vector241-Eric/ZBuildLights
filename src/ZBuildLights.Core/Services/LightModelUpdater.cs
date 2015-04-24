@@ -14,7 +14,7 @@ namespace ZBuildLights.Core.Services
             _masterModelRepository = masterModelRepository;
         }
 
-        public void Update(ZWaveIdentity identity, Guid groupId, int colorId)
+        public void Update(ZWaveValueIdentity identity, Guid groupId, int colorId)
         {
             var masterModel = _masterModelRepository.GetCurrent();
             var light = FindLight(identity, masterModel);
@@ -37,7 +37,7 @@ namespace ZBuildLights.Core.Services
             _masterModelRepository.Save(masterModel);
         }
 
-        private Light FindLight(ZWaveIdentity identity, MasterModel masterModel)
+        private Light FindLight(ZWaveValueIdentity identity, MasterModel masterModel)
         {
             var light = masterModel.AllLights
                 .SingleOrDefault(x => x.ZWaveIdentity.Equals(identity));

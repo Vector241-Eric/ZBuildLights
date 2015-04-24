@@ -64,7 +64,7 @@ namespace UnitTests.ZBuildLights.Core.Repository
                 fileStorage.Stub(x => x.ReadMasterModel()).Return(_existingModel);
 
                 var unassignedLightService = new StubUnassignedLightService()
-                    .WithUnassignedLight(new Light(new ZWaveIdentity(1, 3, 123)));
+                    .WithUnassignedLight(new Light(new ZWaveValueIdentity(1, 3, 123)));
 
                 var repository = new MasterModelRepository(fileStorage, unassignedLightService);
                 _result = repository.GetCurrent();

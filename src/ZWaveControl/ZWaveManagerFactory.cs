@@ -6,22 +6,34 @@ using OpenZWaveDotNet;
 
 namespace ZWaveControl
 {
-    public static class ZWaveManagerFactory
+    public interface IZWaveManagerFactory
+    {
+        ZWManager GetManager();
+    }
+
+    public class ZWaveManagerFactory : IZWaveManagerFactory
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
+        private readonly ZWOptions _options = new ZWOptions();
+        private bool _allNodesQueried;
+
+        private static readonly object _lock = new object();
         private static ZWManager _instance;
         private static bool _destroyed;
 
-        private static readonly ZWaveSettings ZWaveSettings = new ZWaveSettings();
-
-        private static readonly ZWOptions _options = new ZWOptions();
-        private static readonly object _lock = new object();
-
-        private static bool _allNodesQueried;
         private static readonly TimeSpan MaxQuietWait = TimeSpan.FromMinutes(2);
 
-        public static ZWManager GetInstance()
+        private readonly IZWaveSettings _settings;
+        private readonly IZWaveNodeList _nodeList;
+
+        public ZWaveManagerFactory(IZWaveSettings settings, IZWaveNodeList nodeList)
+        {
+            _settings = settings;
+            _nodeList = nodeList;
+        }
+
+        public ZWManager GetManager()
         {
             lock (_lock)
             {
@@ -46,32 +58,32 @@ namespace ZWaveControl
             }
         }
 
-        private static ZWManager Create()
+        private ZWManager Create()
         {
             SetOptions();
 
             var manager = new ZWManager();
             // create the OpenZWave Manager
             manager.Create();
-            manager.OnNotification += notification =>
-            {
-                ZWaveNotificationHandler.HandleNotification(notification, manager);
-                var type = notification.GetType();
-                if (type.Equals(ZWNotification.Type.AllNodesQueriedSomeDead) ||
-                    type.Equals(ZWNotification.Type.AllNodesQueried))
-                    _allNodesQueried = true;
-            };
-            manager.OnControllerStateChanged += state =>    
-            {
-                Log.Debug(state);
-            };
+            manager.OnNotification += new ZWaveNotificationHandler(_nodeList, manager).HandleNotification;
+            manager.OnNotification += CheckAllNodesQueried;
+            manager.OnControllerStateChanged += state => Log.Debug(state);
+
             // once the driver is added it takes some time for the device to get ready
-            manager.AddDriver(@"\\.\" + ZWaveSettings.ControllerComPort);
+            manager.AddDriver(@"\\.\" + _settings.ControllerComPort);
             WaitForZWaveToInitialize();
             return manager;
         }
 
-        private static void WaitForZWaveToInitialize()
+        private void CheckAllNodesQueried(ZWNotification notification)
+        {
+            var type = notification.GetType();
+            if (type.Equals(ZWNotification.Type.AllNodesQueriedSomeDead) ||
+                type.Equals(ZWNotification.Type.AllNodesQueried))
+                _allNodesQueried = true;
+        }
+
+        private void WaitForZWaveToInitialize()
         {
             Log.Info("Waiting for zWave network to initialize and stabilize (Max wait: {0}).", MaxQuietWait);
             var stopwatch = new Stopwatch();
@@ -86,10 +98,10 @@ namespace ZWaveControl
             Log.Info("zWave initialization complete.");
         }
 
-        private static void SetOptions()
+        private void SetOptions()
         {
             // the directory the config files are copied to in the post build
-            _options.Create(ZWaveSettings.ConfigurationPath, @"", @"");
+            _options.Create(_settings.ConfigurationPath, @"", @"");
 
             // logging options
             _options.AddOptionInt("SaveLogLevel", (int) ZWLogLevel.Debug);

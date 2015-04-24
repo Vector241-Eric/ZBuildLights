@@ -56,7 +56,7 @@ namespace ZBuildLights.Core.Models
             get { return Projects.SelectMany(x => x.Groups).ToArray(); }
         }
 
-        public Light FindLight(ZWaveIdentity identity)
+        public Light FindLight(ZWaveValueIdentity identity)
         {
             var light = AllLights.SingleOrDefault(x => x.ZWaveIdentity.Equals(identity));
             if (light == null)
@@ -83,7 +83,7 @@ namespace ZBuildLights.Core.Models
             _unassignedLights.Add(light);
         }
 
-        public void AssignLightToGroup(ZWaveIdentity identity, Guid groupId)
+        public void AssignLightToGroup(ZWaveValueIdentity identity, Guid groupId)
         {
             var light = FindLight(identity);
             if (light.IsInGroup)

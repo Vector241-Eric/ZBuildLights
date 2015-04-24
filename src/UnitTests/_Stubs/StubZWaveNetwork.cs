@@ -8,15 +8,15 @@ namespace UnitTests._Stubs
 {
     public class StubZWaveNetwork : IZWaveNetwork
     {
-        private static readonly Dictionary<ZWaveIdentity, SwitchState> _switches =
-            new Dictionary<ZWaveIdentity, SwitchState>();
+        private static readonly Dictionary<ZWaveValueIdentity, SwitchState> _switches =
+            new Dictionary<ZWaveValueIdentity, SwitchState>();
 
         public ZWaveSwitch[] GetAllSwitches()
         {
             return _switches.Keys.Select(k => new ZWaveSwitch(k) {SwitchState = _switches[k]}).ToArray();
         }
 
-        public ZWaveOperationResult SetSwitchState(ZWaveIdentity identity, SwitchState state)
+        public ZWaveOperationResult SetSwitchState(ZWaveValueIdentity identity, SwitchState state)
         {
             _switches[identity] = state;
             return ZWaveOperationResult.Success;

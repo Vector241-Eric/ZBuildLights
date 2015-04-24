@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Linq;
 using OpenZWaveDotNet;
+using ZBuildLights.Core.Models;
 
 namespace ZWaveControl
 {
     public class ConsoleCommandWatcher
     {
+        private readonly ZWaveNodeList _nodeList = new ZWaveNodeList();
+
         public void Run()
         {
-            var manager = ZWaveManagerFactory.GetInstance();
+            var manager = new ZWaveManagerFactory(new ZWaveSettings(), _nodeList).GetManager();
+
             Console.ReadKey();
             Console.WriteLine("NODES:");
             Console.WriteLine("------");
 
-            var nodes = ZWaveNotificationHandler.GetNodes();
             Console.WriteLine("------");
-            var homeId = nodes[0].HomeId;
-            var activeNodeId = 2;
+            var homeId = _nodeList.AllNodes[0].HomeId;
+            ZWaveNodeIdentity activeNode = new ZWaveNodeIdentity(homeId, 2);
             ulong activeValueId = default(ulong);
             while (true)
             {
-                Console.WriteLine("Waiting for input (Current node: {0})...", activeNodeId);
+                Console.WriteLine("Waiting for input (Current node: {0})...", activeNode.NodeId);
                 var input = ReadKey();
                 if (input.Equals("q"))
                     break;
@@ -32,10 +35,10 @@ namespace ZWaveControl
                 {
                     Console.Write("Enter node number: ");
                     var numberString = Console.ReadLine();
-                    int value;
-                    if (Int32.TryParse(numberString, out value))
+                    byte value;
+                    if (Byte.TryParse(numberString, out value))
                     {
-                        activeNodeId = value;
+                        activeNode = new ZWaveNodeIdentity(homeId, value);
                     }
                 }
                 else if (input.Equals("v"))
@@ -50,14 +53,14 @@ namespace ZWaveControl
                 }
                 else if (input.Equals("d"))
                 {
-                    var node = GetNode(nodes, activeNodeId);
+                    var node = _nodeList.GetNode(activeNode);
                     if (node == null)
                         continue;
                     DumpNodeValues(node, manager);
                 }
                 else if (input.Equals("s"))
                 {
-                    var node = GetNode(nodes, activeNodeId);
+                    var node = _nodeList.GetNode(activeNode);
                     if (node == null)
                         continue;
                     var switchZwValue = node.Values.FirstOrDefault(x => x.GetId().Equals(activeValueId));
@@ -76,7 +79,7 @@ namespace ZWaveControl
 
         private static Node GetNode(Node[] nodes, int nodeId)
         {
-            var node = nodes.SingleOrDefault(x => x.Id == nodeId);
+            var node = nodes.SingleOrDefault(x => x.NodeId == nodeId);
             if (node == null)
             {
                 Console.WriteLine("Could not locate node {0}.", nodeId);

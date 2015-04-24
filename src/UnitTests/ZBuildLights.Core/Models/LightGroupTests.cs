@@ -31,7 +31,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void ContextSetup()
             {
                 _group = new MasterModel().CreateProject().CreateGroup();
-                _light = new Light(new ZWaveIdentity(1, 2, 123));
+                _light = new Light(new ZWaveValueIdentity(1, 2, 123));
                 _group.AddLight(_light);
             }
 
@@ -59,7 +59,7 @@ namespace UnitTests.ZBuildLights.Core.Models
                 var masterModel = new MasterModel();
                 var fooDaddy = masterModel.CreateProject(x => x.Name = "FooDaddy");
                 var group = fooDaddy.CreateGroup(x => x.Name = "Foo");
-                var light = new Light(new ZWaveIdentity(1, 2, 123));
+                var light = new Light(new ZWaveValueIdentity(1, 2, 123));
                 group.AddLight(light);
 
                 var barDaddy = masterModel.CreateProject(x => x.Name = "BarDaddy");
@@ -94,7 +94,7 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void ContextSetup()
             {
                 _group = new MasterModel().CreateProject().CreateGroup();
-                _light = new Light(new ZWaveIdentity(1, 2, 123));
+                _light = new Light(new ZWaveValueIdentity(1, 2, 123));
 
                 _group.AddLight(_light);
                 _group.RemoveLight(_light);
@@ -118,13 +118,13 @@ namespace UnitTests.ZBuildLights.Core.Models
         {
             private LightGroup _group;
             private Light _light;
-            private ZWaveIdentity _identity;
+            private ZWaveValueIdentity _identity;
 
             [SetUp]
             public void ContextSetup()
             {
                 _group = new MasterModel().CreateProject().CreateGroup();
-                _identity = new ZWaveIdentity(1, 2, 123);
+                _identity = new ZWaveValueIdentity(1, 2, 123);
                 _light = new Light(_identity);
 
                 _group.AddLight(_light);
@@ -155,7 +155,7 @@ namespace UnitTests.ZBuildLights.Core.Models
 
                 var fooDaddy = masterModel.CreateProject(x => { x.Name = "FooDaddy"; });
                 var foo = fooDaddy.CreateGroup(x => x.Name = "Foo");
-                _light = new Light(new ZWaveIdentity(1, 2, 123));
+                _light = new Light(new ZWaveValueIdentity(1, 2, 123));
 
 
                 _bar.AddLight(_light);
@@ -195,8 +195,8 @@ namespace UnitTests.ZBuildLights.Core.Models
             {
                 _masterModel = new MasterModel();
                 _group = _masterModel.CreateProject().CreateGroup();
-                _group.AddLight(new Light(new ZWaveIdentity(11, 22, 123)));
-                _group.AddLight(new Light(new ZWaveIdentity(11, 44, 123)));
+                _group.AddLight(new Light(new ZWaveValueIdentity(11, 22, 123)));
+                _group.AddLight(new Light(new ZWaveValueIdentity(11, 44, 123)));
 
                 _group.UnassignAllLights();
             }

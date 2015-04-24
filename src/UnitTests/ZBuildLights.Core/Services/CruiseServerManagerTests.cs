@@ -354,10 +354,10 @@ namespace UnitTests.ZBuildLights.Core.Services
 
                 _parentProject = existingMasterModel.CreateProject(x => x.Name = "Existing Project");
                 var existingGroup = _parentProject.CreateGroup(x => x.Name = "Existing Group");
-                existingGroup.AddLight(new Light(new ZWaveIdentity(1, 1, 4234)));
-                existingGroup.AddLight(new Light(new ZWaveIdentity(1, 2, 203984)));
+                existingGroup.AddLight(new Light(new ZWaveValueIdentity(1, 1, 4234)));
+                existingGroup.AddLight(new Light(new ZWaveValueIdentity(1, 2, 203984)));
                 _remainingGroup = _parentProject.CreateGroup();
-                _remainingGroup.AddLight(new Light(new ZWaveIdentity(1, 10, 239)));
+                _remainingGroup.AddLight(new Light(new ZWaveValueIdentity(1, 10, 239)));
 
                 var repository = new StubMasterModelRepository();
                 repository.UseCurrentModel(existingMasterModel);

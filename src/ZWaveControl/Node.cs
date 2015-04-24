@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using OpenZWaveDotNet;
+using ZBuildLights.Core.Models;
 
 namespace ZWaveControl
 {
@@ -10,7 +11,7 @@ namespace ZWaveControl
             Values = new List<ZWValueID>();
         }
 
-        public byte Id { get; set; }
+        public byte NodeId { get; set; }
         public uint HomeId { get; set; }
 
         public string Name { get; set; }
@@ -19,6 +20,11 @@ namespace ZWaveControl
 
         public string Manufacturer { get; set; }
         public string Product { get; set; }
+
+        public ZWaveNodeIdentity NodeIdentity
+        {
+            get { return new ZWaveNodeIdentity(HomeId, NodeId); }
+        }
 
         public ICollection<ZWValueID> Values { get; set; }
     }

@@ -9,16 +9,18 @@ namespace ZWaveControl
 {
     public class ZWaveNetwork : IZWaveNetwork
     {
+        private readonly IZWaveNodeList _nodeList;
         private ZWManager _manager;
 
-        public ZWaveNetwork()
+        public ZWaveNetwork(IZWaveNodeList nodeList, IZWaveManagerFactory managerFactory)
         {
-            _manager = ZWaveManagerFactory.GetInstance();
+            _nodeList = nodeList;
+            _manager = managerFactory.GetManager();
         }
 
         public ZWaveSwitch[] GetAllSwitches()
         {
-            var nodes = ZWaveNotificationHandler.GetNodes();
+            var nodes = _nodeList.AllNodes;
             var switches = new List<ZWaveSwitch>();
             foreach (var node in nodes)
             {
@@ -39,7 +41,7 @@ namespace ZWaveControl
         {
             bool switchValue;
             var successfullyReadValue = _manager.GetValueAsBool(value, out switchValue);
-            var zWaveSwitch = new ZWaveSwitch(new ZWaveIdentity(node.HomeId, node.Id, value.GetId()));
+            var zWaveSwitch = new ZWaveSwitch(new ZWaveValueIdentity(node.HomeId, node.NodeId, value.GetId()));
             if (successfullyReadValue)
                 zWaveSwitch.SwitchState = switchValue ? SwitchState.On : SwitchState.Off;
             else
@@ -47,11 +49,9 @@ namespace ZWaveControl
             return zWaveSwitch;
         }
 
-        public ZWaveOperationResult SetSwitchState(ZWaveIdentity identity, SwitchState state)
+        public ZWaveOperationResult SetSwitchState(ZWaveValueIdentity identity, SwitchState state)
         {
-            var node =
-                ZWaveNotificationHandler.GetNodes()
-                    .SingleOrDefault(x => x.HomeId.Equals(identity.HomeId) && x.Id.Equals(identity.NodeId));
+            var node = _nodeList.AllNodes.SingleOrDefault(x => x.NodeIdentity.Equals(identity.NodeIdentity));
             if (node == null)
             {
                 var message = string.Format("Could not locate a node with HomeId {0} and NodeId {1}",

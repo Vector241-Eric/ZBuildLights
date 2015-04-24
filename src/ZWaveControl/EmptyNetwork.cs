@@ -11,7 +11,7 @@ namespace ZWaveControl
             return new ZWaveSwitch[0];
         }
 
-        public ZWaveOperationResult SetSwitchState(ZWaveIdentity identity, SwitchState state)
+        public ZWaveOperationResult SetSwitchState(ZWaveValueIdentity identity, SwitchState state)
         {
             return ZWaveOperationResult.Fail("ZWave Network is not connected.");
         }

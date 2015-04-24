@@ -99,7 +99,7 @@ namespace ZBuildLights.Web.Controllers
 //        public ActionResult EditLight(uint homeId, byte nodeId, ulong valueId, Guid groupId, int colorId)
         public ActionResult EditLight(uint homeId, byte nodeId, ulong valueId, Guid groupId, int colorId)
         {
-            _lightModelUpdater.Update(new ZWaveIdentity(homeId, nodeId, valueId), groupId, colorId);
+            _lightModelUpdater.Update(new ZWaveValueIdentity(homeId, nodeId, valueId), groupId, colorId);
             return RedirectToAction("Index");
         }
 
@@ -132,7 +132,7 @@ namespace ZBuildLights.Web.Controllers
         [HttpPost]
         public ActionResult ToggleSwitchState(uint homeId, byte nodeId, ulong valueId, SwitchState currentState)
         {
-            var zWaveIdentity = new ZWaveIdentity(homeId, nodeId, valueId);
+            var zWaveIdentity = new ZWaveValueIdentity(homeId, nodeId, valueId);
             var newState = currentState == SwitchState.On ? SwitchState.Off : SwitchState.On;
             var result = _zWaveNetwork.SetSwitchState(zWaveIdentity, newState);
             if (result.IsSuccessful)

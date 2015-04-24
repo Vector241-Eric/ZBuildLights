@@ -1,19 +1,24 @@
 ﻿namespace ZBuildLights.Core.Models
 {
-    public class ZWaveIdentity
+    public class ZWaveValueIdentity
     {
         public uint HomeId { get; private set; }
         public byte NodeId { get; private set; }
         public ulong ValueId { get; private set; }
 
-        public ZWaveIdentity(uint homeId, byte nodeId, ulong valueId)
+        public ZWaveValueIdentity(uint homeId, byte nodeId, ulong valueId)
         {
             HomeId = homeId;
             NodeId = nodeId;
             ValueId = valueId;
         }
 
-        protected bool Equals(ZWaveIdentity other)
+        public ZWaveNodeIdentity NodeIdentity
+        {
+            get { return new ZWaveNodeIdentity(HomeId, NodeId); }
+        }
+
+        protected bool Equals(ZWaveValueIdentity other)
         {
             return HomeId == other.HomeId && NodeId == other.NodeId && ValueId == other.ValueId;
         }
@@ -23,7 +28,7 @@
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((ZWaveIdentity) obj);
+            return Equals((ZWaveValueIdentity) obj);
         }
 
         public override int GetHashCode()
