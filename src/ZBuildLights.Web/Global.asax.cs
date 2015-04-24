@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using NLog;
+using StructureMap.Web.Pipeline;
 using ZBuildLights.Core.Services;
 using ZWaveControl;
 
@@ -29,6 +30,11 @@ namespace ZBuildLights.Web
         private void InitializeStaticFactories()
         {
             SystemClock.UseCurrentTime();
+        }
+
+        protected void Application_EndRequest(object sender, EventArgs e)
+        {
+            HttpContextLifecycle.DisposeAndClearAll();
         }
 
         protected void Application_End()

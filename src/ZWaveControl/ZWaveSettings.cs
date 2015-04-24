@@ -2,16 +2,22 @@
 
 namespace ZWaveControl
 {
-    public class ZWaveSettings
+    public interface IZWaveSettings
+    {
+        string ConfigurationPath { get; }
+        string ControllerComPort { get; }
+    }
+
+    public class ZWaveSettings : IZWaveSettings
     {
         public string ConfigurationPath
         {
             get { return GetRequiredSetting("ZWaveConfigurationPath"); }
         }
 
-        public string ControllerPortNumber
+        public string ControllerComPort
         {
-            get { return @"\\.\COM" + GetRequiredSetting("ZWaveControllerPortNumber"); }
+            get { return @"\\.\" + GetRequiredSetting("ZWaveControllerComPort").ToUpperInvariant(); }
         }
 
         private string GetRequiredSetting(string key)

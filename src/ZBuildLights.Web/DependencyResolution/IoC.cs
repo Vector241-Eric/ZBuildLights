@@ -16,12 +16,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using StructureMap.Web.Pipeline;
+using ZBuildLights.Core.Services;
+using ZWaveControl;
+
 namespace ZBuildLights.Web.DependencyResolution {
     using StructureMap;
 	
     public static class IoC {
         public static IContainer Initialize() {
-            return new Container(c => c.AddRegistry<DefaultRegistry>());
+            return new Container(c =>
+            {
+                c.AddRegistry<DefaultRegistry>();
+                c.For<IZWaveNetwork>().Use(context => context.GetInstance<ZwaveNetworkFactory>().GetNetwork()).SetLifecycleTo<HttpContextLifecycle>();
+            });
         }
     }
 }

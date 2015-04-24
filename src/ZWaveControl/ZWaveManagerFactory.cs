@@ -66,7 +66,7 @@ namespace ZWaveControl
                 Log.Debug(state);
             };
             // once the driver is added it takes some time for the device to get ready
-            manager.AddDriver(ZWaveSettings.ControllerPortNumber);
+            manager.AddDriver(ZWaveSettings.ControllerComPort);
             WaitForZWaveToInitialize();
             return manager;
         }
