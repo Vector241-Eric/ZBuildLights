@@ -128,15 +128,20 @@ namespace OpenZWaveDemo
 
         private static ZWManager CreateOpenZWaveManager()
         {
+            SetOptions();
+
+            var manager = new ZWManager();
+            manager.Create();
+            return manager;
+        }
+
+        private static void SetOptions()
+        {
             var options = new ZWOptions();
             options.Create(@"C:\work\OSS\ZBuildLights\lib\OpenZWave_1-3-Release\config", @"c:\temp\OzwDemo\UserData",
                 string.Empty);
             options.AddOptionInt("SaveLogLevel", (int) ZWLogLevel.None);
             options.Lock();
-
-            var manager = new ZWManager();
-            manager.Create();
-            return manager;
         }
     }
 }
