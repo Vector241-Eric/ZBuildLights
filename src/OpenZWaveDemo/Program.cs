@@ -1,15 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace OpenZWaveDemo
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            var lowerArgs = args.Select(x => x.ToLowerInvariant()).ToArray();
+            if (lowerArgs.Contains("--nodes"))
+                DumpZWaveNodes();
+        }
+
+        private static void DumpZWaveNodes()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
