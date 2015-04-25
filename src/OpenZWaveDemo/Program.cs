@@ -113,12 +113,17 @@ namespace OpenZWaveDemo
 
             if (valueId != null)
             {
-                bool switchValue;
-                manager.GetValueAsBool(valueId, out switchValue);
-                manager.SetValue(valueId, !switchValue);
+                ToggleSwitchValue(manager, valueId);
             }
             
             manager.Destroy();
+        }
+
+        private static void ToggleSwitchValue(ZWManager manager, ZWValueID valueId)
+        {
+            bool switchValue;
+            manager.GetValueAsBool(valueId, out switchValue);
+            manager.SetValue(valueId, !switchValue);
         }
 
         private static ZWManager CreateOpenZWaveManager()
