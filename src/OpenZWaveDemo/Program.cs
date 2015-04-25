@@ -20,7 +20,7 @@ namespace OpenZWaveDemo
 
         private static void DumpZWaveNodes()
         {
-            var manager = CreateManager();
+            var manager = CreateOpenZWaveManager();
 
             bool allNodesQueried = false;
             manager.OnNotification += notification =>
@@ -49,7 +49,7 @@ namespace OpenZWaveDemo
 
         private static void DumpZWaveValues()
         {
-            var manager = CreateManager();
+            var manager = CreateOpenZWaveManager();
 
             bool allNodesQueried = false;
             manager.OnNotification += notification =>
@@ -83,7 +83,7 @@ namespace OpenZWaveDemo
 
         private static void ToggleSwitch(string switchId)
         {
-            var manager = CreateManager();
+            var manager = CreateOpenZWaveManager();
             ZWValueID valueId = null;
 
             bool allNodesQueried = false;
@@ -121,11 +121,7 @@ namespace OpenZWaveDemo
             manager.Destroy();
         }
 
-        public class Node
-        {
-        }
-
-        private static ZWManager CreateManager()
+        private static ZWManager CreateOpenZWaveManager()
         {
             var options = new ZWOptions();
             options.Create(@"C:\work\OSS\ZBuildLights\lib\OpenZWave_1-3-Release\config", @"c:\temp\OzwDemo\UserData",
