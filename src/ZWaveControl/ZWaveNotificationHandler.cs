@@ -34,50 +34,13 @@ namespace ZWaveControl
                         vaNode.Values.Add(addedValue);
                     }
                     break;
-                case ZWNotification.Type.ValueRemoved:
-                    var removedValue = notification.GetValueID();
-                    Log.Debug("Node {0} Value Removed", notification.GetNodeId());
-                    var vrNode = GetNode(notification.GetHomeId(), notification.GetNodeId());
-                    if (vrNode != null)
-                    {
-                        vrNode.Values.Remove(removedValue);
-                    }
-                    break;
-                case ZWNotification.Type.ValueChanged:
-                    //TODO:  This is only logging.  Remove this for simplicity
-                    var changedValue = notification.GetValueID();
-                    Log.Debug("Node {0} Value Changed: {1} - {2} - {3}", notification.GetNodeId(),
-                        _manager.GetValueLabel(changedValue), GetValue(changedValue, _manager),
-                        _manager.GetValueUnits(changedValue));
-                    break;
-
-                case ZWNotification.Type.NodeNew:
-                    // if the node is not in the z-wave config this will be called first
-                    var newNode = AddNode(notification.GetHomeId(), notification.GetNodeId());
-                    Log.Debug("Node New: {0}, Home: {1}", newNode.NodeId, newNode.HomeId);
-                    break;
                 case ZWNotification.Type.NodeAdded:
-                    // if the node is in the z-wave config then this will be the first node notification
                     var homeId = notification.GetHomeId();
                     var nodeId = notification.GetNodeId();
                     if (GetNode(homeId, nodeId) == null)
                     {
                         var node = AddNode(homeId, nodeId);
                         Log.Debug("Node Added: {0}, Home: {1}", node.NodeId, node.HomeId);
-                    }
-                    break;
-
-                case ZWNotification.Type.NodeNaming:
-                    var namedNode = GetNode(notification.GetHomeId(), notification.GetNodeId());
-                    if (namedNode != null)
-                    {
-                        namedNode.Name = _manager.GetNodeName(namedNode.HomeId, namedNode.NodeId);
-                        namedNode.Manufacturer = _manager.GetNodeManufacturerName(namedNode.HomeId, namedNode.NodeId);
-                        namedNode.Product = _manager.GetNodeProductName(namedNode.HomeId, namedNode.NodeId);
-                        namedNode.Location = _manager.GetNodeLocation(namedNode.HomeId, namedNode.NodeId);
-
-                        Log.Debug("Name: {0}, Manufacturer: {1}, Product: {2}, Location: {3}", namedNode.Name,
-                            namedNode.Manufacturer, namedNode.Product, namedNode.Location);
                     }
                     break;
                 default:
