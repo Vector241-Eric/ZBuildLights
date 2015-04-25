@@ -54,7 +54,6 @@
     <Compile Include="ZwaveNetworkFactory.cs" />
     <Compile Include="ZWaveNodeList.cs" />
     <Compile Include="ZWaveSettings.cs" />
-    <Compile Include="ConsoleCommandWatcher.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZWaveManagerFactory.cs" />
