@@ -18,6 +18,7 @@
 
 using StructureMap.Web.Pipeline;
 using ZBuildLights.Core.Services;
+using ZBuildLights.Core.Services.Storage;
 using ZWaveControl;
 
 namespace ZBuildLights.Web.DependencyResolution {
@@ -31,6 +32,8 @@ namespace ZBuildLights.Web.DependencyResolution {
                 c.For<IZWaveNetwork>().Use(context => context.GetInstance<ZwaveNetworkFactory>().GetNetwork()).SetLifecycleTo<HttpContextLifecycle>();
                 c.For<IZWaveNodeList>().Singleton();
                 c.For<IZWaveManagerFactory>().Singleton();
+
+                c.For<IFileSystemStorage>().Singleton();
             });
         }
     }

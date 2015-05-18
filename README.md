@@ -16,3 +16,12 @@ Rebuilding the OpenZWave .Net Library
 6. Allow newer versions of Visual Studio to upgrade the projects.
 7. From the menu up top, click **Build --> Rebuild Solution**
 8. Once compilation is complete, the OpenZWave .Net library will be at **[zwave source]\dotnet\examples\OZWForm\src\bin\x86\Debug\OpenZWaveDotNetd.dll**
+
+Installing to IIS
+=================
+
+1. Make sure the host machine has IIS installed.
+2. Register Asp.Net 4.5 with IIS
+    1. Use the "Turn Windows Features on or off"
+    2. Enable "Internet Information Services / World Wide Web Services / Application Development Features / ASP.Net 4.5"
+    3. See https://support.microsoft.com/en-us/kb/2736284
