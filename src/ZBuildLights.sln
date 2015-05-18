@@ -35,10 +35,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionScripts", "SolutionScripts", "{A1A5CC70-EA9F-43B8-AEF2-3238652FAF72}"
 	ProjectSection(SolutionItems) = preProject
 		SolutionScripts\01_LocalDeploymentSettings.ps1 = SolutionScripts\01_LocalDeploymentSettings.ps1
-		SolutionScripts\Get-ProjectPath.ps1 = SolutionScripts\Get-ProjectPath.ps1
+		SolutionScripts\01_PackageSettings.ps1 = SolutionScripts\01_PackageSettings.ps1
+		SolutionScripts\02_ModuleImports.ps1 = SolutionScripts\02_ModuleImports.ps1
 		SolutionScripts\Install-WebApplication.ps1 = SolutionScripts\Install-WebApplication.ps1
-		SolutionScripts\Install-ZBuildLights.ps1 = SolutionScripts\Install-ZBuildLights.ps1
-		SolutionScripts\Invoke-MsBuild.ps1 = SolutionScripts\Invoke-MsBuild.ps1
+		SolutionScripts\Package-ZBuildLights.ps1 = SolutionScripts\Package-ZBuildLights.ps1
 		SolutionScripts\SharedFunctions.ps1 = SolutionScripts\SharedFunctions.ps1
 	EndProjectSection
 EndProject

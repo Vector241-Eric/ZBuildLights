@@ -9,6 +9,12 @@ function global:Reset-Directory([string] $directoryPath) {
 	New-Item -ItemType directory -Path $directoryPath
 }
 
+function global:Initialize-Directory([string] $directoryPath) {
+	if (-not (Test-Path $directoryPath)) {
+		New-Item -ItemType directory -Path $directoryPath
+	}
+}
+
 function global:Test-Any {
     [CmdletBinding()]
     param($EvaluateCondition,
