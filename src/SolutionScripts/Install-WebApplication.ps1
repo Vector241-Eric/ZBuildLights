@@ -42,27 +42,6 @@ function global:Install-WebApplication([string] $applicationPath) {
 		}
 	}
 
-	function Create-Application([string] $webSite, [string] $appName) {
-		$applications = Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd list app"))
-		$fullAppName = "$webSite/$appName".ToUpper()
-
-		[bool] $hasApplication = 
-			$applications -split [environment]::NewLine  | Test-Any {($_ -split '"')[1].ToUpper() -eq $fullAppName}
-
-		if ($hasApplication) {
-			Write-Host "Found existing application $fullAppName"
-		}
-		else {
-			$addScript = "$appcmd add app /site.name:$webSite /path:/$appName /physicalPath:$($localDeploymentSettings.DeploymentPath)"
-			
-			Write-Host "Add App [$addScript]"
-			Invoke-Command -ScriptBlock ([scriptblock]::Create($addScript))
-			Write-Host "Set App"
-			Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd set app $fullAppName /applicationPool:$($localDeploymentSettings.AppPool)"))
-		}
-	}
-
-
 	#
 	#	Main Script Body
 	#
@@ -77,7 +56,4 @@ function global:Install-WebApplication([string] $applicationPath) {
 	
 	Write-Notification "Creating web site"
 	Create-WebSite $localDeploymentSettings.WebSiteName $localDeploymentSettings.DeploymentPath $localDeploymentSettings.Port
-	
-#	Write-Notification "Creating web application"
-#	Create-Application $localDeploymentSettings.WebSiteName $localDeploymentSettings.WebApplicationName
 }
