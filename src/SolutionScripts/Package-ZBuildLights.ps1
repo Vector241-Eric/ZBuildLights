@@ -19,10 +19,19 @@ function global:Package-ZBuildLights() {
 		return $zipFilePath
 	}
 
-	New-Package -ProjectName 'ZBuildLights.Web' -BuildConfiguration $localDeploymentSettings.BuildConfiguration -PublishProfile 'Package'
-	$projectPath = Get-ProjectDirectory -ProjectName 'ZBuildLights.Web'
+	New-Package -ProjectName $packageSettings.Project -BuildConfiguration $packageSettings.BuildConfiguration -PublishProfile 'Package'
+	$projectPath = Get-ProjectDirectory -ProjectName $packageSettings.Project
 
 	$packageDirectory = $packageSettings.PackageDirectory
+	$packagedScriptsDirectory = Join-Path -Path $packageDirectory -ChildPath "Powershell"
+	Reset-Directory $packagedScriptsDirectory
+
+	#
+	#	Copy over PS scripts for installation
+	#
+	Copy-Item -Path (Join-Path -Path (Get-RootDirectory) -ChildPath "tools\scripts\Install-ZBuildLights.ps1") -Destination $packageDirectory
+	Copy-Item -Path (Join-Path -Path (Get-RootDirectory) -ChildPath "tools\scripts\DeploymentSettings.ps1") -Destination $packageDirectory
+	Copy-Item -Path (Join-Path -Path (Get-RootDirectory) -ChildPath "tools") -Destination $packagedScriptsDirectory -Recurse
 
 	Initialize-Directory $packageSettings.ReleaseDirectory
 
