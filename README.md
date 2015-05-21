@@ -46,8 +46,8 @@ Running the Installation Script
 1. Make sure the host machine has been prepared as detailed in "Prepare the Host Machine."
 2. Download the latest release from Github at [https://github.com/Vector241-Eric/ZBuildLights/releases](https://github.com/Vector241-Eric/ZBuildLights/releases)
 3. Unzip the release
-4. Modify the configuration settings in DeploymentSettings.ps1. Specific instructions for each configuration value are included in this file.
-5. Execute the Install-ZBuildLights.ps1 script using Administrator permissions. This script will perform the following actions
+4. Modify the configuration settings in **DeploymentSettings.ps1**. Specific instructions for each configuration value are included in this file.
+5. Execute the **Install-ZBuildLights.ps1** script using Administrator permissions. This script will perform the following actions
 	1. Create a new IIS Application pool
 	2. Install the ASP.Net application running under the new app pool
 	3. Configure the application based on the settings in DeploymentSettings.ps1
