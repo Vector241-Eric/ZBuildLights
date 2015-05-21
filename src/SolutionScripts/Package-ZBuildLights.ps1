@@ -38,6 +38,13 @@ function global:Package-ZBuildLights() {
 	$packagedScriptsDirectory = Join-Path -Path $packageDirectory -ChildPath "Powershell"
 	Reset-Directory $packagedScriptsDirectory
 
+
+	#
+	#	Copy README into package
+	#
+	Copy-Item -Path (Join-Path -Path (Get-RootDirectory) -ChildPath "README.md") -Destination $packageDirectory
+
+
 	#
 	#	Copy over PS scripts for installation
 	#
