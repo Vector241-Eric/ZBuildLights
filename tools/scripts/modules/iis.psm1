@@ -1,6 +1,6 @@
 $appcmd = "$($env:windir)\system32\inetsrv\appcmd.exe"
 
-function Create-AppPool([string] $appPoolName) {
+function New-AppPool([string] $appPoolName) {
 
 	$poolNames = (Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd list apppool"))) -split "APPPOOL " | 
 		Where-Object {$_.length -gt 0} | 
@@ -16,18 +16,18 @@ function Create-AppPool([string] $appPoolName) {
 
 	Write-Host "Making sure IIS application pool [$appPoolName] is ready..."
 	if ($hasAppPool) {
-		Write-Host "    Application pool will be reset."
+		Write-Host "    Existing application pool will be reset."
 		Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd recycle apppool /apppool.name:$appPoolName"))
 	}
 	else {
-		Write-Host "    Application pool will be created."
+		Write-Host "    Existing application pool will be created."
 		Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd add apppool /name:$appPoolName /managedRuntimeVersion:v4.0"))
 		Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd set apppool /apppool.name:$appPoolName -enable32BitAppOnWin64:true"))
 	}
 	Write-Host "Application pool setup complete."
 }
 	
-function Create-WebSite([string] $webSite, [string] $deployPath, [string] $portNumber) {
+function New-WebSite([string] $webSite, [string] $deployPath, [string] $portNumber) {
 	$webSites = (Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd list site"))) -split "SITE " | 
 		Where-Object {$_.length -gt 0} | 
 		Select-Object @{Name="WebSite"; Expression={($_ -split "`"")[1]}} | 
@@ -54,8 +54,8 @@ function Create-WebSite([string] $webSite, [string] $deployPath, [string] $portN
 
 
 $functionsToExport = @(
-	'Create-AppPool'
-	'Create-WebSite'
+	'New-AppPool'
+	'New-WebSite'
 )
 
 Export-ModuleMember -Function $functionsToExport

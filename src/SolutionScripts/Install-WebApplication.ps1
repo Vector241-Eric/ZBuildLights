@@ -8,8 +8,8 @@ function global:Install-WebApplication([string] $applicationPath) {
 	Copy-Item "$applicationPath\*" $localDeploymentSettings.DeploymentPath -Recurse
 	
 	Write-Notification "Setting up application pool"
-	Create-AppPool $localDeploymentSettings.AppPool
+	New-AppPool $localDeploymentSettings.AppPool
 	
 	Write-Notification "Creating web site"
-	Create-WebSite $localDeploymentSettings.WebSiteName $localDeploymentSettings.DeploymentPath $localDeploymentSettings.Port
+	New-WebSite $localDeploymentSettings.WebSiteName $localDeploymentSettings.DeploymentPath $localDeploymentSettings.Port
 }
