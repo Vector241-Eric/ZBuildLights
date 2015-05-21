@@ -6,5 +6,5 @@ function Load-Module([string] $moduleName) {
 	import-module $modulePath -Force
 }
 
-Load-Module "paths.psm1"
+Load-Module "file_utilities.psm1"
 Load-Module "msbuild.psm1"

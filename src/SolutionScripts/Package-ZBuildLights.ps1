@@ -18,11 +18,24 @@ function global:Package-ZBuildLights() {
 		}
 		return $zipFilePath
 	}
-
-	New-Package -ProjectName $packageSettings.Project -BuildConfiguration $packageSettings.BuildConfiguration -PublishProfile 'Package'
-	$projectPath = Get-ProjectDirectory -ProjectName $packageSettings.Project
-
+	
 	$packageDirectory = $packageSettings.PackageDirectory
+	Reset-Directory $packageDirectory
+
+	#
+	#	Package the web project
+	#
+	New-Package -ProjectName $packageSettings.WebProject -BuildConfiguration $packageSettings.WebBuildConfiguration -PublishProfile 'Package'
+
+	#
+	#	Package the service project
+	#
+	Invoke-ProjectBuild -ProjectName $packageSettings.ServiceProject -BuildConfiguration $packageSettings.ServiceBuildConfiguration
+	$serviceProjectOutput = Resolve-Path -Path (Join-Path -Path (Get-ProjectDirectory $packageSettings.ServiceProject) -ChildPath "bin\x86\$($packageSettings.ServiceBuildConfiguration)")
+	$servicePackageDirectory = "$packageDirectory\WindowsService"
+	Write-Host "Copying $serviceProjectOutput to $servicePackageDirectory" -ForegroundColor Red
+	Copy-Item -Path $serviceProjectOutput -Destination $servicePackageDirectory -Recurse
+
 	$packagedScriptsDirectory = Join-Path -Path $packageDirectory -ChildPath "Powershell"
 	Reset-Directory $packagedScriptsDirectory
 

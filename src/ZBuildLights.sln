@@ -34,12 +34,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BCBC7D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionScripts", "SolutionScripts", "{A1A5CC70-EA9F-43B8-AEF2-3238652FAF72}"
 	ProjectSection(SolutionItems) = preProject
+		SolutionScripts\00_Paths.ps1 = SolutionScripts\00_Paths.ps1
 		SolutionScripts\01_LocalDeploymentSettings.ps1 = SolutionScripts\01_LocalDeploymentSettings.ps1
 		SolutionScripts\01_PackageSettings.ps1 = SolutionScripts\01_PackageSettings.ps1
 		SolutionScripts\02_ModuleImports.ps1 = SolutionScripts\02_ModuleImports.ps1
 		SolutionScripts\Install-WebApplication.ps1 = SolutionScripts\Install-WebApplication.ps1
 		SolutionScripts\Package-ZBuildLights.ps1 = SolutionScripts\Package-ZBuildLights.ps1
 		SolutionScripts\SharedFunctions.ps1 = SolutionScripts\SharedFunctions.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{07AF8A48-4302-44C6-AC7D-1C906F5B62BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{3D4E06F0-EF21-419D-8F55-3F2DB5C7F563}"
+	ProjectSection(SolutionItems) = preProject
+		..\tools\scripts\DeploymentSettings.ps1 = ..\tools\scripts\DeploymentSettings.ps1
+		..\tools\scripts\Install-ZBuildLights.ps1 = ..\tools\scripts\Install-ZBuildLights.ps1
+		..\tools\scripts\Polyfills.psm1 = ..\tools\scripts\Polyfills.psm1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{B0148503-2B08-4C85-BCB1-B256BEAE4A22}"
+	ProjectSection(SolutionItems) = preProject
+		..\tools\scripts\modules\enumerables.psm1 = ..\tools\scripts\modules\enumerables.psm1
+		..\tools\scripts\modules\file_utilities.psm1 = ..\tools\scripts\modules\file_utilities.psm1
+		..\tools\scripts\modules\iis.psm1 = ..\tools\scripts\modules\iis.psm1
+		..\tools\scripts\modules\msbuild.psm1 = ..\tools\scripts\modules\msbuild.psm1
 	EndProjectSection
 EndProject
 Global
@@ -121,5 +139,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3CF89D49-88AC-4DF7-9F19-0BAE61C77376} = {FD3C53D5-91DD-4584-A92D-F170D0A551EF}
 		{99009ABF-B68D-4BF2-BE3E-79DD1466A459} = {FD3C53D5-91DD-4584-A92D-F170D0A551EF}
+		{3D4E06F0-EF21-419D-8F55-3F2DB5C7F563} = {07AF8A48-4302-44C6-AC7D-1C906F5B62BB}
+		{B0148503-2B08-4C85-BCB1-B256BEAE4A22} = {3D4E06F0-EF21-419D-8F55-3F2DB5C7F563}
 	EndGlobalSection
 EndGlobal
