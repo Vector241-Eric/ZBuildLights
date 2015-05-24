@@ -27,7 +27,7 @@ namespace ZBuildLights.Core.Services
             {
                 x.Name = editModel.Name;
                 x.CruiseProjectAssociations =
-                    editModel.CruiseProjects.Select(
+                    editModel.SafeProjects.Select(
                         cp => new CruiseProjectAssociation {ServerId = cp.Server, Name = cp.Project})
                         .ToArray();
             });
