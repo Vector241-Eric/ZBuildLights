@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
 using System.Net;
 using System.ServiceProcess;
 using System.Timers;
@@ -21,7 +20,6 @@ namespace ZBuildLightsUpdater
 
         protected override void OnStart(string[] args)
         {
-            File.AppendAllLines(@"c:\var\ZBuildLights\_logs\servicelog.txt", new[] {"Service starting..."});
             Log.Info("ZBuildLights Updater Service Starting...");
             _timer = new Timer();
             var updateSeconds = Int32.Parse(ConfigurationManager.AppSettings["UpdateIntervalSeconds"]);
