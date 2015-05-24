@@ -52,9 +52,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenZWaveDotNetd, Version=1.0.5441.27761, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\OpenZWave_1-3-Release\OpenZWaveDotNetd.dll</HintPath>
+    <Reference Include="OpenZWaveDotNet">
+      <HintPath>..\..\lib\OpenZWave_1-3-Release\OpenZWaveDotNet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
