@@ -2,11 +2,70 @@ Write-Host
 Write-Host "Installing web application to IIS" -ForegroundColor Yellow
 Write-Host
 
+#
+# Some variables used throughout the whole script
+#
 $scriptDirectory = Split-Path $script:MyInvocation.MyCommand.Path
 $toolsDirectory = Resolve-Path -Path (Join-Path -Path $scriptDirectory -ChildPath "Powershell\tools")
 $webPackage = Resolve-Path -Path (Join-Path -Path $scriptDirectory -ChildPath "Web")
 $servicePackage = Resolve-Path -Path (Join-Path -Path $scriptDirectory -ChildPath "WindowsService")
 
+
+#
+# Check some preconditions
+#
+
+# Check .Net 4.5
+$hasDotNet45 = $FALSE
+Try 
+{
+	$dotNetVersionKey = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full'
+	$hasDotNet45 = ($dotNetVersionKey.Release -ge 378389)
+}
+Catch [Sytem.Exception]
+{
+	#Swallow exception.  Means we don't have .Net 4.5
+}
+
+If (-not $hasDotNet45) 
+{
+	throw ".Net 4.5 is reqired!  Install .Net 4.5 or later before installing ZBuildLights."
+}
+Else
+{
+	Write-Host ".Net 4.5 detected."
+}
+
+# Check Visual Studio CPP Redistributable
+$hasVcpp = $FALSE
+Try
+{
+	#
+	#	Note:	The Visual C++ Redist is needed to use the OpenZWave library. The library is
+	#			built with the x86 architecture, so we needed the x86 redistributable
+	#
+	$key = Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\VisualStudio\12.0\vc\Runtimes\x86"
+	if ($key.Installed -eq 1)
+	{
+		$hasVcpp = $TRUE
+	}
+}
+Catch [System.Management.Automation.ItemNotFoundException]
+{
+	#Swallow exception. This means we don't have VCPP installed
+}
+
+if (-not $hasVcpp)
+{
+	Write-Host "Installing 2013 Visual C++ x86 Redistributable" -ForegroundColor Yellow
+	$redistInstaller = Resolve-Path -Path (Join-Path -Path $toolsDirectory -ChildPath "install\vcpp\vcredist_x86.exe")
+	Invoke-Command -ScriptBlock ([scriptblock]::Create("$redistInstaller /passive /norestart"))
+	Write-Host "Visual C++ Redistributable Installation Complete" -ForegroundColor Yellow
+}
+Else
+{
+	Write-Host "Visual C++ Redistributable installation detected."
+}
 
 #
 # Load Modules
