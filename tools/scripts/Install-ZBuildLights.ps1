@@ -127,7 +127,7 @@ Write-Host "Setting up application pool" -ForegroundColor Cyan
 New-AppPool $zBuildLightsDeploymentSettings.AppPool
 	
 Write-Host "Creating web site" -ForegroundColor Cyan
-New-WebSite $zBuildLightsDeploymentSettings.WebSiteName $zBuildLightsDeploymentSettings.DeploymentPath $zBuildLightsDeploymentSettings.Port
+New-WebSite $zBuildLightsDeploymentSettings.WebSiteName $zBuildLightsDeploymentSettings.DeploymentPath $zBuildLightsDeploymentSettings.Port $zBuildLightsDeploymentSettings.AppPool
 
 $websiteAddress = "http://localhost:$($zBuildLightsDeploymentSettings.Port)"
 

@@ -27,7 +27,7 @@ function New-AppPool([string] $appPoolName) {
 	Write-Host "Application pool setup complete."
 }
 	
-function New-WebSite([string] $webSite, [string] $deployPath, [string] $portNumber) {
+function New-WebSite([string] $webSite, [string] $deployPath, [string] $portNumber, [string] $appPool) {
 	$webSites = (Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd list site"))) -split "SITE " | 
 		Where-Object {$_.length -gt 0} | 
 		Select-Object @{Name="WebSite"; Expression={($_ -split "`"")[1]}} | 
@@ -47,9 +47,9 @@ function New-WebSite([string] $webSite, [string] $deployPath, [string] $portNumb
 	else {
 		Write-Host "New Web Site: '$webSite'"
 		Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd add site /name:$webSite /physicalPath:`"$deployPath`" /bindings:http/*:$($portNumber):"))
-		Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd set app $webSite/ /applicationPool:$($localDeploymentSettings.AppPool)"))
-		Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd start site `"$webSite`""))
 	}
+	Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd set site /site.name:$webSite `"/[path='/'].applicationPool:$appPool`""))
+	Invoke-Command -ScriptBlock ([scriptblock]::Create("$appcmd start site `"$webSite`""))
 }
 
 
