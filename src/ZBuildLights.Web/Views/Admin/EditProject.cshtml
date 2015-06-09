@@ -70,7 +70,8 @@
                         @for (var projectIndex = 0; projectIndex < Model.Project.CruiseProjectAssociations.Length; projectIndex++)
                         {
                             var cruiseProject = Model.Project.CruiseProjectAssociations[projectIndex];
-                            var serverDefinition = Model.CruiseServers.Single(x => x.Id.Equals(cruiseProject.ServerId));
+                            var serverDefinition = Model.CruiseServers.FirstOrDefault(x => x.Id.Equals(cruiseProject.ServerId));
+                            if (serverDefinition == null) {continue;}
                             <div class="row cruise-select-row">
                                 <div class="col-lg-6">
                                     <select class="form-control cruise-server-select" name="@string.Format("cruiseProject[{0}].Server", projectIndex)">
