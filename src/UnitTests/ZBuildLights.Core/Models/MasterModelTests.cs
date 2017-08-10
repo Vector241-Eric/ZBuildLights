@@ -205,7 +205,6 @@ namespace UnitTests.ZBuildLights.Core.Models
             public void Should_remove_the_light_from_the_unassigned_collection()
             {
                 _model.UnassignedLights.Length.ShouldEqual(0);
-                _model.UnassignedLights.Length.ShouldEqual(0);
             }
         }
 
